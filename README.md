@@ -1,8 +1,9 @@
 # Groundwork Somerville
 
 ## Contributors
-Manish Aryal
-Saurav Gyawali
+1. Manish Aryal
+
+2. Saurav Gyawali
 
 
 ## Setting up Repository
