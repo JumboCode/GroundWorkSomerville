@@ -1,13 +1,14 @@
-# Groundwork Somerville
+# Groundwork Somerville #
 
-## Contributors
+## Contributors ##
+
 1. Manish Aryal
 
 2. Saurav Gyawali
 
 3. Benjamin Duchild
 
-## Setting up Repository
+## Setting up Repository ##
 
 1.  `cd <PATH TO WORKING DIRECTORY>`
 
@@ -38,9 +39,9 @@
 11. Install React and its dependencies with `yarn install`
 
   
-## Running the project locally
+## Running the project locally ##
 
-### Run frontend server
+### Run frontend server ###
 
 - Build project: `yarn build`
 
@@ -50,7 +51,7 @@
 
 - Quit with Control+C
 
-### Run backend server
+### Run backend server ###
 
 - If the environment is not already activated, activate it using step 7 in setup instructions
 
@@ -59,7 +60,8 @@
 - Go to the link shown in terminal to see a local version of the backend
  - Quit with Control+C
 
-## Git Essentials
+## Git Essentials ##
+
 [Here](https://education.github.com/git-cheat-sheet-education.pdf) are some essential git commands you'll need for source control in this project. Make sure you commit messages are clear and concise
 
 Instead of directly working on the master branch we will be working on separate branches which will be merged using pull requests. 
