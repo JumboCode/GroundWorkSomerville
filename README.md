@@ -18,6 +18,8 @@
 8. Rujen Amatya
 
 9. Erena Inoue
+
+10. Naomi Ephraim
 ## Setting up Repository
 
 1.  `cd <PATH TO WORKING DIRECTORY>`
