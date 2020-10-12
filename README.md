@@ -5,6 +5,7 @@
 
 2. Saurav Gyawali
 
+3. Rujen Amatya
 
 ## Setting up Repository
 
