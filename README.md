@@ -5,7 +5,10 @@
 
 2. Saurav Gyawali
 
-3. Rujen Amatya
+3. Benjamin Duchild
+
+4. Rujen Amatya
+
 
 
 ## Setting up Repository
