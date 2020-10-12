@@ -5,11 +5,13 @@
 
 2. Saurav Gyawali
 
-3. Theo Henry
+3. Henry Li
 
-4. Benjamin Duchild
+4. Theo Henry
 
-5. Rujen Amatya
+5. Benjamin Duchild
+
+6. Rujen Amatya
 
 ## Setting up Repository
 
