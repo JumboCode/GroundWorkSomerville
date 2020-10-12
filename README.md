@@ -20,6 +20,9 @@
 9. Erena Inoue
 
 10. Naomi Ephraim
+
+11. Angela Wei
+
 ## Setting up Repository
 
 1.  `cd <PATH TO WORKING DIRECTORY>`
