@@ -7,14 +7,15 @@
 
 3. Erena Inoue
 
-4. Henry Li
+4. Alyssa Vargas-Levine
 
-5. Theo Henry
+5. Henry Li
 
-6. Benjamin Duchild
+6. Theo Henry
 
-7. Rujen Amatya
+7. Benjamin Duchild
 
+8. Rujen Amatya
 ## Setting up Repository
 
 1.  `cd <PATH TO WORKING DIRECTORY>`
