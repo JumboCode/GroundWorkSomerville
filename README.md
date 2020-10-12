@@ -7,7 +7,7 @@
 
 3. Rujen Amatya
 
-
+4. Alyssa Vargas-Levine
 ## Setting up Repository
 
 1.  `cd <PATH TO WORKING DIRECTORY>`
