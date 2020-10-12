@@ -5,9 +5,17 @@
 
 2. Saurav Gyawali
 
-3. Rujen Amatya
+3. Erena Inoue
 
 4. Alyssa Vargas-Levine
+
+5. Henry Li
+
+6. Theo Henry
+
+7. Benjamin Duchild
+
+8. Rujen Amatya
 ## Setting up Repository
 
 1.  `cd <PATH TO WORKING DIRECTORY>`
@@ -31,14 +39,14 @@
 
 8. Install backend dependencies with `pip3 install -r requirements.txt`
 
-9. Create and run the migrations using 
+9. Create and run the migrations using
 	`python3 manage.py makemigrations`
-	`python3 manage.py migrate` 
+	`python3 manage.py migrate`
 	This should also be run after every change to the model
 
 11. Install React and its dependencies with `yarn install`
 
-  
+
 ## Running the project locally
 
 ### Run frontend server
@@ -63,6 +71,6 @@
 ## Git Essentials
 [Here](https://education.github.com/git-cheat-sheet-education.pdf) are some essential git commands you'll need for source control in this project. Make sure you commit messages are clear and concise
 
-Instead of directly working on the master branch we will be working on separate branches which will be merged using pull requests. 
+Instead of directly working on the master branch we will be working on separate branches which will be merged using pull requests.
 
 [Here](https://help.github.com/articles/creating-a-pull-request/)  is a resource on how to make a pull request
