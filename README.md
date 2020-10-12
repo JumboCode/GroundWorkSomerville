@@ -5,7 +5,7 @@
 
 2. Saurav Gyawali
 
-3. Erena Inoue
+3. Julia Lober
 
 4. Alyssa Vargas-Levine
 
@@ -16,6 +16,8 @@
 7. Benjamin Duchild
 
 8. Rujen Amatya
+
+9. Erena Inoue
 ## Setting up Repository
 
 1.  `cd <PATH TO WORKING DIRECTORY>`
