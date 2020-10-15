@@ -18,7 +18,7 @@
 6. Now set up a virtual environment for the backend `python3 -m venv env`
 
 7. Activate the environment:
-	* Linux/MacOS `python3 -m venv env`
+	* Linux/MacOS `source env/bin/activate`
 	* Windows `env\Scripts\activate`
 
 8. Install backend dependencies with `pip3 install -r requirements.txt`
