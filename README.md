@@ -23,6 +23,8 @@
 
 11. Angela Wei
 
+12. Anne Lau
+
 ## Setting up Repository
 
 1.  `cd <PATH TO WORKING DIRECTORY>`
@@ -38,15 +40,22 @@
 
 5. Install venv using `pip3 install virtualenv`
 
-6. Now set up a virtual environment for the backend `python3 -m venv env`
+6. Setting up your postgres DB server
+	* installing postgres: `brew install postgres`
+	* locating your postgres data directory: `export PGDATA=/usr/local/var/postgres`
+	* running postgres server: `brew services start postgres`
+	* check if postgres is running: `pg_ctl status` 
+	* (extra) running postgres in terminal: `psql` and ending the process by typing `quit`
+	
+7. Now set up a virtual environment for the backend `python3 -m venv env`
 
-7. Activate the environment:
+8. Activate the environment:
 	* Linux/MacOS `source env/bin/activate`
 	* Windows `env\Scripts\activate`
 
-8. Install backend dependencies with `pip3 install -r requirements.txt`
+9. Install backend dependencies with `pip3 install -r requirements.txt`
 
-9. Create and run the migrations using
+10. Create and run the migrations using
 	`python3 manage.py makemigrations`
 	`python3 manage.py migrate`
 	This should also be run after every change to the model
@@ -70,7 +79,7 @@
 
 - If the environment is not already activated, activate it using step 7 in setup instructions
 
-- Run the server: `python manage.py runserver`
+- Run the server: `python3 manage.py runserver`
 
 - Go to the link shown in terminal to see a local version of the backend
  - Quit with Control+C
