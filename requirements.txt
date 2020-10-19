@@ -2,5 +2,3 @@ django
 djangorestframework
 whitenoise
 gunicorn
-psycopg2==2.7.5
-django-heroku
