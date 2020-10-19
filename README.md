@@ -49,14 +49,7 @@
 
 11. Install React and its dependencies with `yarn install`
 
-<<<<<<< HEAD
-  
 ## Running the project locally ##
-=======
-
-## Running the project locally
->>>>>>> 7b7cc92ef5853ee87b102ad142054473175eb0d3
-
 ### Run frontend server ###
 
 - Build project: `yarn build`
