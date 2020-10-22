@@ -6,3 +6,9 @@ class Vegetable(models.Model):
   photo = models.ImageField(upload_to='images', default="{%static 'vegetables/default.jpg%}") #'images' is where the photos will be stored (MEDIA_ROOT/images/)
   # image = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True)
   availability = models.BooleanField(default=False)
+
+
+
+class Harvest(models.Model):
+  date = models.DateField(_("Date"), default=datetime.now())
+  farm_name = models.CharField(max_length=100)
