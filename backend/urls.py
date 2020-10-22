@@ -7,4 +7,5 @@ from .views import index
 
 urlpatterns = [
     path('', include('vegetables.urls')),
+    url(r'^admin/', admin.site.urls),
 ]
