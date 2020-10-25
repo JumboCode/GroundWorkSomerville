@@ -6,6 +6,6 @@ from django.urls import path, include
 from .views import index
 
 urlpatterns = [
-    path('', include('vegetables.urls')),
+    path('', include('apis.urls')),
     url(r'^admin/', admin.site.urls),
 ]

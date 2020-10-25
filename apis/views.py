@@ -9,13 +9,13 @@ from rest_framework.response import Response
 
 @api_view(['GET'])
 def apiOverview(request):
-    api_Urls = {
+    apiUrls = {
         'List all vegetables': '/list-vegetables',
         'Create': '/create-vegetable',
         'Delete': '/delete-vegetable/<str:pk>',
     }
 
-    return Response(api_Urls)
+    return Response(apiUrls)
 
 @api_view(['GET'])
 def ListVegetables(request):
