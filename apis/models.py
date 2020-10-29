@@ -8,8 +8,6 @@ class Vegetable(models.Model):
   # image = models.ImageField(upload_to='users/%Y/%m/%d/')
   availability = models.BooleanField(default=False)
 
-
-
 class Harvest(models.Model):
   date = models.DateField(default=timezone.now)
   farm_name = models.CharField(max_length=20)
