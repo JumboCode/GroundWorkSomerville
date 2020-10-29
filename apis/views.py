@@ -1,7 +1,5 @@
-from django.shortcuts import render
-from .models import Vegetable
 from .serializers import VegetableSerializer
- 
+from .models import Vegetable
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response

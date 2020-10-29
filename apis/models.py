@@ -6,7 +6,7 @@ class Vegetable(models.Model):
   price = models.DecimalField(max_digits=5, decimal_places=2)
   photo = models.ImageField(upload_to='images', default="{%static 'vegetables/default.jpg%}") #'images' is where the photos will be stored (MEDIA_ROOT/images/)
   # image = models.ImageField(upload_to='users/%Y/%m/%d/')
-  availability = models.BooleanField(default=False)
+  # availability = models.BooleanField(default=False)
 
 
 
