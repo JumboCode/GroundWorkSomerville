@@ -24,6 +24,7 @@ class StockedVegetable(models.Model):
   name = models.CharField(max_length=100)
   weight = models.DecimalField(max_digits=10, decimal_places=2)
   quantity = models.IntegerField()
+  # on_delete might need to be changed to models.SET_NULL
   harvested_on = models.ForeignKey(to=Harvest, on_delete=models.PROTECT)
 
   def __str__(self):

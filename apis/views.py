@@ -31,6 +31,16 @@ def CreateVegetable(request):
 
     return Response(serializer.data)
 
+@api_view(['PUT'])
+def UpdateVegetable(request, pk):
+    itemToUpdate = Vegetable.objects.get(id=pk)
+    serializer = VegetableSerializer(instance=itemToUpdate, date=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+    
+    return Response(serializer.data)
+
 @api_view(['DELETE'])
 def DeleteVegetable(request, pk):
     itemToDelete = Vegetable.objects.get(id=pk)
