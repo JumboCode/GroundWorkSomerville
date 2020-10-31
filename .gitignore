@@ -3,3 +3,6 @@ db.sqlite3
 build
 *.pyc
 *.nix
+.env
+/env
+
