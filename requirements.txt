@@ -2,3 +2,4 @@ django
 djangorestframework
 whitenoise
 gunicorn
+pillow
