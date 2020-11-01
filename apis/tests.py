@@ -29,7 +29,21 @@ class VegetablesTest(APITestCase):
 
 
 class HarvestTest(APITestCase):
+  def testListHarvests(self):
+    response = self.client.get('/list-harvests')
+    print(response)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+
   def testCreateHarvest(self):
     data = {'farm_name': 'gothic acres pumpkinry', 'availability': True}
     response = self.client.post('/create-harvest', data)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+  def testDeleteHarvest(self):
+    # create a harvest
+    data = {'farm_name': 'gothic acres pumpkinry', 'availability': True}
+    self.client.post('/create-harvest', data)
+
+    # and then delete the harvest
+    response = self.client.delete('/delete-harvest/1')
     self.assertEqual(response.status_code, status.HTTP_200_OK)

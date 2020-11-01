@@ -10,12 +10,11 @@ class Vegetable(models.Model):
   # image = models.ImageField(upload_to='users/%Y/%m/%d/')
   availability = models.BooleanField(default=False)
 
-
-
 class Harvest(models.Model):
   date = models.DateField(default=datetime.date.today())
   farm_name = models.CharField(max_length=100)
   active = models.BooleanField(default=True)
+
 
 class StockedVegetable(models.Model):
   name = models.CharField(max_length=100)
