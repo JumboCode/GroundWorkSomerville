@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Vegetable
-from .serializers import VegetableSerializer
+from .models import Vegetable, Harvest
+from .serializers import VegetableSerializer, HarvestSerializer
  
 
 from rest_framework.decorators import api_view
@@ -17,6 +17,7 @@ def apiOverview(request):
 
     return Response(apiUrls)
 
+### vegetable api
 @api_view(['GET'])
 def ListVegetables(request):
     items = Vegetable.objects.all()
@@ -39,3 +40,14 @@ def DeleteVegetable(request, pk):
     itemToDelete.delete()
 
     return Response("Item deleted")
+
+
+### harvest api
+@api_view(['POST'])
+def CreateHarvest(request):
+    serializer = HarvestSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save
+
+    return Response(serializer.data)

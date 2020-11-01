@@ -2,13 +2,12 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 
 class GetApiTestCase(APITestCase):
-
   def testApiList(self):
     response = self.client.get('')
     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-class egetablesTest(APITestCase):
 
+class VegetablesTest(APITestCase):
   def testVegetableList(self):
     response = self.client.get('/list-vegetables')
     print(response)
@@ -26,4 +25,11 @@ class egetablesTest(APITestCase):
 
     # test delete
     response = self.client.delete('/delete-vegetable/1')
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class HarvestTest(APITestCase):
+  def testCreateHarvest(self):
+    data = {'farm_name': 'gothic acres pumpkinry', 'availability': True}
+    response = self.client.post('/create-harvest', data)
     self.assertEqual(response.status_code, status.HTTP_200_OK)
