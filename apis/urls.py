@@ -2,8 +2,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.apiOverview, name="api-overview"),
-    path('list-vegetables', views.ListVegetables, name="list-vegetables"),
-    path('create-vegetable', views.CreateVegetable, name="create-vegetable"),
-    path('delete-vegetable/<str:pk>', views.DeleteVegetable, name="delete-vegetable")
+    path('', views.apiOverview),
+    path('list-vegetables', views.ListVegetables),
+    path('create-vegetable', views.CreateVegetable),
+    path('update-vegetable/<str:pk>', views.UpdateVegetable),
+    path('delete-vegetable/<str:pk>', views.DeleteVegetable),
 ]
