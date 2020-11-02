@@ -1,23 +1,40 @@
 from django.db import models
-
-import datetime
+from django.utils import timezone
 
 class Vegetable(models.Model):
   name = models.CharField(max_length=100)
-  price = models.DecimalField(max_digits=5, decimal_places=2)
-  #'images' is where the photos will be stored (MEDIA_ROOT/images/)
-  photo = models.ImageField(upload_to='images', default="{%static 'vegetables/default.jpg%}")
-  # image = models.ImageField(upload_to='users/%Y/%m/%d/')
+  # price = models.DecimalField(max_digits=5, decimal_places=2)
+  photo = models.ImageField(upload_to='images', default='/static/media/default.jpg') # server default pic in static folder
   availability = models.BooleanField(default=False)
 
+  def __str__(self):
+    return self.name
+
 class Harvest(models.Model):
-  date = models.DateField(default=datetime.date.today())
-  farm_name = models.CharField(max_length=100)
+  date = models.DateTimeField(default=timezone.now)
+  farm_name = models.CharField(max_length=20)
+  created_on = models.DateTimeField(default=timezone.now)
+  updated_on = models.DateTimeField(default=timezone.now)
   active = models.BooleanField(default=True)
+
+  def __str__(self):
+    return self.farm_name + ' - ' + str(self.date)
 
 
 class StockedVegetable(models.Model):
   name = models.CharField(max_length=100)
   weight = models.DecimalField(max_digits=10, decimal_places=2)
   quantity = models.IntegerField()
-  harvested_on = models.ForeignKey(to=Harvest, on_delete=models.CASCADE)
+  # on_delete might need to be changed to models.SET_NULL
+  harvested_on = models.ForeignKey(to=Harvest, on_delete=models.PROTECT)
+
+  def __str__(self):
+    return self.name
+
+class Price(models.Model):
+  veg = models.ForeignKey(to=Vegetable, on_delete=models.PROTECT)
+  price = models.DecimalField(max_digits=10, decimal_places=2)
+  updated_on = models.DateTimeField(default=timezone.now)
+
+  def __str__(self):
+    return self.veg.name + '-' + str(price)

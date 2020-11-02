@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from .models import Vegetable, Harvest
 from .serializers import VegetableSerializer, HarvestSerializer
- 
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -35,6 +34,17 @@ def CreateVegetable(request):
     if serializer.is_valid():
         serializer.save()
 
+    return Response(serializer.data)
+
+#TODO: This is not working. 
+@api_view(['PUT'])
+def UpdateVegetable(request, pk):
+    itemToUpdate = Vegetable.objects.get(id=pk)
+    serializer = VegetableSerializer(instance=itemToUpdate, date=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+    
     return Response(serializer.data)
 
 @api_view(['DELETE'])

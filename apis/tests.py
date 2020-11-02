@@ -35,13 +35,13 @@ class HarvestTest(APITestCase):
     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
   def testCreateHarvest(self):
-    data = {'farm_name': 'gothic acres pumpkinry', 'availability': True}
+    data = {'farm_name': 'gothic acres', 'availability': True}
     response = self.client.post('/create-harvest', data)
     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
   def testDeleteHarvest(self):
     # create a harvest
-    data = {'farm_name': 'gothic acres pumpkinry', 'availability': True}
+    data = {'farm_name': 'gothic acres', 'availability': True}
     self.client.post('/create-harvest', data)
 
     # and then delete the harvest
