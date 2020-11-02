@@ -1,5 +1,7 @@
 node_modules
 env
+yarn.lock
+shell.nix
 db.sqlite3
 build
 *.pyc
