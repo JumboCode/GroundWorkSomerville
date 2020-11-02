@@ -2,6 +2,5 @@ node_modules
 db.sqlite3
 build
 *.pyc
-
 .env
 /env

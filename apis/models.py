@@ -20,6 +20,7 @@ class Harvest(models.Model):
   def __str__(self):
     return self.farm_name + ' - ' + str(self.date)
 
+
 class StockedVegetable(models.Model):
   name = models.CharField(max_length=100)
   weight = models.DecimalField(max_digits=10, decimal_places=2)
