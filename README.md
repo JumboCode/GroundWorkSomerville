@@ -20,7 +20,7 @@
 
 9. Erena Inoue
 
-10. Naomi Ephraim
+10. Genki Kadomatsu
 
 11. Angela Wei
 
