@@ -1,41 +1,16 @@
-//https://medium.com/@pradityadhitama/simple-search-bar-component-functionality-in-react-6589fda3385d
-import React, { useState, useEffect } from 'react';
-import SearchBar from './SearchBar';//create later
-import VeggieList from './VeggieList';//create later
+import React from 'react';
 
-const SearchPage = (props) => {
-  const [input, setInput] = useState('');
-  const [veggieListDefault, setveggieListDefault] = useState();
-  const [veggieList, setveggieList] = useState();
-
-  //const fetchData = async () => {
-    // return await fetch()//WHERE WE PUT PUR DATA BASE
-    //   .then(response => response.json())
-    //   .then(data => {
-    //      setveggieList(data)
-    //      setveggieListDefault(data)
-    //    });}
-
-  const updateInput = async (input) => {
-     const filtered = veggieListDefault.filter(country => {
-      return country.name.toLowerCase().includes(input.toLowerCase())
-     })
-     setInput(input);
-     setveggieList(filtered);
-  }
-
-  useEffect( () => {fetchData()},[]);
-
+const SearchBar = ({keyword,setKeyword}) => {
+  const BarStyling = {width:"20rem",background:"#F2F1F9", border:"none", padding:"0.5rem"};
   return (
-    <>
-      <h1>Vegtable List</h1>
-      <SearchBar
-       input={input}
-       onChange={updateInput}
-      />
-      <veggieList veggieList={veggieList}/>
-    </>
-   );
+    <input
+     style={BarStyling}
+     key="random1"
+     value={keyword}
+     placeholder={"search for produce"}
+     onChange={(e) => setKeyword(e.target.value)}
+    />
+  );
 }
 
-export default SearchPage
+export default SearchBar
