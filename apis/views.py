@@ -40,7 +40,7 @@ def CreateVegetable(request):
 @api_view(['PUT'])
 def UpdateVegetable(request, pk):
     itemToUpdate = Vegetable.objects.get(id=pk)
-    serializer = VegetableSerializer(instance=itemToUpdate, date=request.data)
+    serializer = VegetableSerializer(instance=itemToUpdate, data=request.data)
 
     if serializer.is_valid():
         serializer.save()
