@@ -14,13 +14,13 @@ class VegetablesTest(APITestCase):
     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
   def testCreateVegetable(self):
-    data = {'name': 'pumpkin', 'price': 5, 'availability': True }
+    data = {'name': 'pumpkin', 'price': 5, 'availability': True, 'quantity': 'units' }
     response = self.client.post('/create-vegetable', data)
     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
   def testDeleteVegetable(self):
     # create a vegetable to delete
-    data = {'name': 'pumpkin', 'price': 5, 'availability': True }
+    data = {'name': 'pumpkin', 'price': 5, 'availability': True, 'quantity': 'units' }
     self.client.post('/create-vegetable', data)
 
     # test delete
