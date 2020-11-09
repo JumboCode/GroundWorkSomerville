@@ -1,10 +1,12 @@
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 
 class Vegetable(models.Model):
   name = models.CharField(max_length=100)
-  # price = models.DecimalField(max_digits=5, decimal_places=2)
-  photo = models.ImageField(upload_to='images', default='/static/media/default.jpg') # server default pic in static folder
+  # server default pic in static folder
+  # TODO: this is not working
+  photo = models.ImageField(upload_to='images', default='/static/media/default.jpg')
   availability = models.BooleanField(default=False)
 
   def __str__(self):
@@ -19,7 +21,6 @@ class Harvest(models.Model):
 
   def __str__(self):
     return self.farm_name + ' - ' + str(self.date)
-
 
 class StockedVegetable(models.Model):
   name = models.CharField(max_length=100)

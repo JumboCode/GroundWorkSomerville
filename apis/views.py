@@ -2,7 +2,10 @@ from django.shortcuts import render
 from .models import Vegetable, Harvest
 from .serializers import VegetableSerializer, HarvestSerializer
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 from rest_framework.response import Response
 
 
@@ -11,6 +14,7 @@ def apiOverview(request):
     apiUrls = {
         'List all vegetables': '/list-vegetables',
         'Create': '/create-vegetable',
+        'Update': '/update-vegetable/<str:pk>',
         'Delete': '/delete-vegetable/<str:pk>',
         'List all harvests': '/list-harvests',
         'Create harvest': '/create-harvest',
@@ -21,6 +25,8 @@ def apiOverview(request):
 
 ### vegetable api
 @api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def ListVegetables(request):
     items = Vegetable.objects.all()
     serializer = VegetableSerializer(items, many=True)
@@ -28,6 +34,8 @@ def ListVegetables(request):
 
 
 @api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def CreateVegetable(request):
     serializer = VegetableSerializer(data=request.data)
 
@@ -36,11 +44,12 @@ def CreateVegetable(request):
 
     return Response(serializer.data)
 
-#TODO: This is not working. 
 @api_view(['PUT'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def UpdateVegetable(request, pk):
     itemToUpdate = Vegetable.objects.get(id=pk)
-    serializer = VegetableSerializer(instance=itemToUpdate, date=request.data)
+    serializer = VegetableSerializer(instance=itemToUpdate, data=request.data)
 
     if serializer.is_valid():
         serializer.save()
@@ -48,6 +57,8 @@ def UpdateVegetable(request, pk):
     return Response(serializer.data)
 
 @api_view(['DELETE'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def DeleteVegetable(request, pk):
     itemToDelete = Vegetable.objects.get(id=pk)
     itemToDelete.delete()
@@ -57,12 +68,16 @@ def DeleteVegetable(request, pk):
 
 ### harvest api
 @api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def ListHarvests(request):
     items = Harvest.objects.all()
     serializer = HarvestSerializer(items, many=True)
     return Response(serializer.data)
 
 @api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def CreateHarvest(request):
     serializer = HarvestSerializer(data=request.data)
 
@@ -72,6 +87,8 @@ def CreateHarvest(request):
     return Response(serializer.data)
 
 @api_view(['DELETE'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def DeleteHarvest(request, pk):
     itemToDelete = Harvest.objects.get(id=pk)
     itemToDelete.delete()
