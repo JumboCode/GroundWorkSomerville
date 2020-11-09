@@ -13,5 +13,6 @@ urlpatterns = [
     path('list-harvests', views.ListHarvests, name="list-harvests"),
     path('create-harvest', views.CreateHarvest, name="create-harvest"),
     path('delete-harvest/<str:pk>', views.DeleteHarvest, name="delete-harvest"),
+    path('search-vegetables/<str:pk>', views.SearchVegetables, name="search-vegetables"),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT,})
 ]

@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.response import Response
 
+from pprint import pprint
 
 @api_view(['GET'])
 def apiOverview(request):
@@ -19,6 +20,7 @@ def apiOverview(request):
         'List all harvests': '/list-harvests',
         'Create harvest': '/create-harvest',
         'Delete harvest': '/delete-harvest/<str:pk>',
+        'Search vegetables': '/search-vegetables/<str:pk>',
     }
 
     return Response(apiUrls)
@@ -94,3 +96,13 @@ def DeleteHarvest(request, pk):
     itemToDelete.delete()
 
     return Response("Item deleted")
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def SearchVegetables(request, pk):
+    pprint (pk)
+    items = Vegetable.objects.get(name=pk)
+    pprint (pk)
+    serializer = VegetableSerializer(items, many=True)
+    return Response(serializer.data)
