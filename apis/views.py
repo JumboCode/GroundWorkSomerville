@@ -28,7 +28,7 @@ def ListVegetables(request):
 
 
 @api_view(['POST'])
-def CreateVegetable(request):
+def CreateVegetabl(request):
     serializer = VegetableSerializer(data=request.data)
 
     if serializer.is_valid():
