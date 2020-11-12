@@ -15,6 +15,7 @@ class Vegetable(models.Model):
 class Harvest(models.Model):
   date = models.DateTimeField(default=timezone.now)
   farm_name = models.CharField(max_length=20)
+  created_by = models.ForeignKey
   created_on = models.DateTimeField(default=timezone.now)
   updated_on = models.DateTimeField(default=timezone.now)
   active = models.BooleanField(default=True)
