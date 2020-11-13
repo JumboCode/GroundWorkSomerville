@@ -16,7 +16,7 @@ const DisplayVegetable = (veg, i) => {
   )
 }
 
-// fetches for the 
+// fetches for the vegetables then display them in a table
 const VegetableList = () => {
   // TODO: figure out authentication headers, right now authentication is
   // disabled for this one single route for testing.
