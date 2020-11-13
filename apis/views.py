@@ -30,8 +30,9 @@ def apiOverview(request):
 
 ### vegetable api
 @api_view(['GET'])
-@user_loggedin
-@allowed_users(allowed_roles=['admin','mobile_market','shc'])
+# commented out for testing frontend
+# @user_loggedin
+# @allowed_users(allowed_roles=['admin','mobile_market','shc'])
 def ListVegetables(request):
     items = Vegetable.objects.all()
     serializer = VegetableSerializer(items, many=True)
