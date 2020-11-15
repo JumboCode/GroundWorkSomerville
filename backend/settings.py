@@ -7,7 +7,7 @@ SECRET_KEY = 'ksm)yrthc#ix%h(t%&1_%v(66098(5lt77=$n1g#oazrn+z#7t'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'groundworks-staging.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'groundworks-staging.herokuapp.com']
 
 
 # Application definition

@@ -6,7 +6,7 @@ from django.conf import settings
 # server default pic in static folder
 class Vegetable(models.Model):
   name = models.CharField(max_length=100)
-  price = models.DecimalField(max_digits=5, decimal_places=2)
+  # price = models.DecimalField(max_digits=5, decimal_places=2)
   photo = models.ImageField(upload_to='images', default='/static/media/default.jpg')
   availability = models.BooleanField(default=False)
   quantity = models.CharField(max_length=100, default="units")
