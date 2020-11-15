@@ -13,4 +13,4 @@ const SearchBar = ({keyword,setKeyword}) => {
   );
 }
 
-export default SearchBar
+export default SearchBar;
