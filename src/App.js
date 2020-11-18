@@ -1,9 +1,12 @@
 import React from 'react';
-import VegetableList from './VegetableList';
+// import VegetableList from './components/VegetableList';
+import SearchBar from './components/SearchBar';
+
 
 function App() {
     return (
-        <VegetableList />
+        // <VegetableList />
+        <SearchBar />
     );
 };
 
