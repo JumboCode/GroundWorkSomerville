@@ -2,7 +2,6 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 from enum import Enum
-
 class Category(Enum):
   FRUIT = "FRUIT"
   VEGETABLE = "VEGETABLE"
@@ -15,7 +14,7 @@ class Category(Enum):
   
 class Vegetable(models.Model):
   name = models.CharField(max_length=100)
-  photo = models.ImageField(upload_to='images', default='/static/media/default.jpg')
+  photo = models.ImageField(upload_to='images', default='default.jpg')
   availability = models.BooleanField(default=False)
   categories = models.CharField(max_length=180, choices=Category.choices(), default='VEGETABLE')
 
