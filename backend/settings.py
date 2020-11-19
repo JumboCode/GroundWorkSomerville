@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'apis.apps.ApisConfig',
     'corsheaders',
+    'multiselectfield'
 ]
 
 MIDDLEWARE = [

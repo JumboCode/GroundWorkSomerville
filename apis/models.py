@@ -2,21 +2,22 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 from enum import Enum
-class Category(Enum):
-  FRUIT = "FRUIT"
-  VEGETABLE = "VEGETABLE"
-  HERBS = "HERBS"
-  SEASONAL = "SEASONAL"
+from multiselectfield import MultiSelectField
 
-  @classmethod
-  def choices(cls):
-    return tuple((i.name, i.value) for i in cls)
+# TODO: 1: figure out frontend authentication 
+# TODO: 2: add endpoints for User, Group, CATEGORIES CRUD operations 
+#           or figure out if Django supports them already
+
+CATEGORIES = ((1, 'FRUIT'),
+              (2, 'VEGETABLE'),
+              (3, 'HERBS'),
+              (4, 'SEASONAL'))
   
 class Vegetable(models.Model):
   name = models.CharField(max_length=100)
   photo = models.ImageField(upload_to='images', default='default.jpg')
   availability = models.BooleanField(default=False)
-  categories = models.CharField(max_length=180, choices=Category.choices(), default='VEGETABLE')
+  categories = MultiSelectField(choices=CATEGORIES)
 
   def __str__(self):
     return self.name
