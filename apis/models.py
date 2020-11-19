@@ -4,8 +4,8 @@ from django.conf import settings
 from enum import Enum
 from multiselectfield import MultiSelectField
 
-# TODO: 1: figure out frontend authentication 
-# TODO: 2: add endpoints for User, Group, CATEGORIES CRUD operations 
+# TODO: 1: figure out frontend authentication
+# TODO: 2: add endpoints for User, Group, CATEGORIES CRUD operations
 #           or figure out if Django supports them already
 
 CATEGORIES = ((1, 'FRUIT'),
