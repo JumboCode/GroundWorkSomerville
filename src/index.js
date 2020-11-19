@@ -1,13 +1,7 @@
 import React from 'react';
-import SearchPage from './components/searchPage';
+import ReactDOM from 'react-dom';
+import App from './App';
+import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function App() {
-  return (
-    // <div class="App">
-    //   <SearchPage/>
-    // </div>
-    <h1>Hello world!</h1>
-  );
-}
-
-export default App;
+ReactDOM.render(<App />, document.getElementById('root'));
