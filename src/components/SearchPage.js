@@ -31,7 +31,7 @@
       <h1>Vegtable List</h1>
          <SearchBar
           input={input}
-          onChange={updateInput}
+          setKeyword={this.updateInput}
          />
          <veggieList veggieList={veggieList}/>
        </div>

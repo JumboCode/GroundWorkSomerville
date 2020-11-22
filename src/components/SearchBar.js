@@ -1,6 +1,16 @@
-import React from 'react';
+import React, {Component} from 'react';
 
- const SearchBar = ({keyword,setKeyword}) => {
+//https://medium.com/wesionary-team/react-functional-components-vs-class-components-86a2d2821a22
+
+class SearchBar extends Component {
+  constructor(props){
+     super(props);
+  }
+
+
+
+}
+ const SearchBar = ({keyword, setKeyword}) => {
    const BarStyling = {width:"20rem",background:"#F2F1F9", border:"none", padding:"0.5rem"};
    return (
      <input
@@ -8,8 +18,7 @@ import React from 'react';
       key="random1"
       value={keyword}
       placeholder={"search for produce"}
-      onChange={(e) => setKeyword(e.target.value)}
-     />
+      onChange= {(e) =>{ setKeyword(e.target.value);}}   />
    );
  }
 
