@@ -8,7 +8,6 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.response import Response
 
-from pprint import pprint
 
 @api_view(['GET'])
 def apiOverview(request):
