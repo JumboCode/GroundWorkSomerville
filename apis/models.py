@@ -1,16 +1,27 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+from enum import Enum
+from multiselectfield import MultiSelectField
 
+# TODO: 1: figure out frontend authentication
+# TODO: 2: add endpoints for User, Group, CATEGORIES CRUD operations
+#           or figure out if Django supports them already
+
+CATEGORIES = ((1, 'FRUIT'),
+              (2, 'VEGETABLE'),
+              (3, 'HERBS'),
+              (4, 'SEASONAL'))
+  
 class Vegetable(models.Model):
   name = models.CharField(max_length=100)
-  # server default pic in static folder
-  # TODO: this is not working
-  photo = models.ImageField(upload_to='images', default='/static/media/default.jpg')
+  photo = models.ImageField(upload_to='images', default='default.jpg')
   availability = models.BooleanField(default=False)
+  categories = MultiSelectField(choices=CATEGORIES)
 
   def __str__(self):
     return self.name
+
 
 class Harvest(models.Model):
   date = models.DateTimeField(default=timezone.now)
