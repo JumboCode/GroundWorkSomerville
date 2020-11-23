@@ -101,8 +101,6 @@ def DeleteHarvest(request, pk):
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def SearchVegetables(request, pk):
-    pprint (pk)
-    items = Vegetable.objects.get(name=pk)
-    pprint (pk)
+    items = Vegetable.objects.all().filter(name__icontains=pk)
     serializer = VegetableSerializer(items, many=True)
     return Response(serializer.data)
