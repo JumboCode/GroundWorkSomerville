@@ -24,6 +24,7 @@ def apiOverview(request):
         'List all harvests': '/list-harvests',
         'Create harvest': '/create-harvest',
         'Delete harvest': '/delete-harvest/<str:pk>',
+        'Search vegetables': '/search-vegetables/<str:pk>',
     }
 
     return Response(apiUrls)
@@ -101,9 +102,15 @@ def DeleteHarvest(request, pk):
     itemToDelete = Harvest.objects.get(id=pk)
     serializer = HarvestSerializer(itemToDelete)
     itemToDelete.delete()
+    return Response("Item deleted")
 
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def SearchVegetables(request, pk):
+    items = Vegetable.objects.all().filter(name__icontains=pk)
+    serializer = VegetableSerializer(items, many=True)
     return Response(serializer.data)
-
 
 #TODO: Create new route called createUser, it first creates, then assigns user into a user group
 
@@ -114,6 +121,3 @@ def DeleteHarvest(request, pk):
 #from django.contrib.auth.models import Group
 #my_group = Group.objects.get(name='my_group_name') 
 #my_group.user_set.add(your_user)
-
-
-
