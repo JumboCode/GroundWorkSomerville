@@ -125,7 +125,6 @@ def CreatePurchase(request):
     # to the purchase item table, decrease quantity in stocked vegetable
     # create one single entry in transaction table, link everything to this entry
     body = json.loads(request.body)
-    # print(body["veggies"][0]["amount"])
     # for loop through the data
     for veg in body["veggies"]:
         print(veg)
@@ -140,18 +139,15 @@ def CreatePurchase(request):
                         total_amount=50, stocked_vegetable=stocked)
             # Remove amount from StockedVegetable
             stocked.remove_quantity(quantity)
+
+            # transaction = Transaction.objects.create(purchased_item=purchase,
+            # user_id=request.user, is_complete=True, is_paid=True,
+            # method_of_payment="credit")
+
         except ObjectDoesNotExist:
             print("There is no stocked " + veg["name"])
         except MultipleObjectsReturned:
             print("Multiple " + veg["name"] + " please select one to start.")
-        # if (veg["name"] == StockedVegetable.objects.get(id=1))
-        # print(StockedVegetable.objects.get(id=1))
-    # print(StockedVegetable.objects.get(id=1))
-    # PurchasedItem.food_quantity = 5
-    # serializer = TransactionSerializer(data=request.data)
-
-    # if serializer.is_valid():
-    #     serializer.save()
 
     return Response("Transaction recieved")
 
