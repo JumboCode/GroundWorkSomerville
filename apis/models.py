@@ -32,6 +32,10 @@ class StockedVegetable(models.Model):
   # on_delete might need to be changed to models.SET_NULL
   harvested_on = models.ForeignKey(to=Harvest, on_delete=models.PROTECT)
 
+  def remove_quantity(self, removal_amount):
+    self.quantity -= removal_amount
+    self.save()
+
   def __str__(self):
     return self.name
 
