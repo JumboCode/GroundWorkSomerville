@@ -13,17 +13,36 @@ function InventoryItem(props) {
 }
 
 function ItemTable(props) {
-    console.log(useAxios("/list-vegetables"));
-    var veggies = [{name: "potate"}, {name: "beet"}];
-    var items = veggies.map((item) => {
-        return <InventoryItem name={item.name} />;    
-    });
+    // TODO: get auth information from login form
+    var response = useAxios({
+        url: '/list-vegetables',
+        auth: {
+            username: '<placeholder>',
+            password: '<placeholder>',
+        }
+    })[0].data;
+    
+    if (response !== undefined) {
+        console.log(response);
 
-    return (
-        <div className="inventory">
-            {items}
-        </div>
-    );
+        var veggies = response.map(function(v) {
+            return {name: v.name};
+        });
+        var items = veggies.map((item) => {
+            return <InventoryItem name={item.name} />;    
+        });
+
+        return (
+            <div className="inventory">
+                {items}
+            </div>
+        );
+    } else {
+        return (
+            <div className='inventory'>
+            </div>
+        );
+    }
 }
 
 class Inventory extends React.Component {
