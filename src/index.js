@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import useAxios from 'axios-hooks';
+import {useDropzone} from 'react-dropzone';
 
 
 function InventoryItem(props) {
@@ -21,7 +22,9 @@ function ItemTable(props) {
             password: '<placeholder>',
         }
     })[0].data;
-    
+
+    // responses usually come back "undefined" a few times,
+    // so this block handles that case
     if (response !== undefined) {
         console.log(response);
 
@@ -38,16 +41,43 @@ function ItemTable(props) {
             </div>
         );
     } else {
-        return (
-            <div className='inventory'>
-            </div>
-        );
+        return <div className='inventory' />;
     }
 }
 
+function FileUpload(props) {
+    const {acceptedFiles, getRootProps, getInputProps} = useDropzone();
+    
+    const files = acceptedFiles.map(file => (
+        <li key={file.path}>
+            {file.path} - {file.size} bytes
+        </li>
+    ));
+
+    return (
+        <section className="container">
+            <div {...getRootProps({className: 'dropzone'})}>
+                <input {...getInputProps()} />
+                <p>Drag 'n' drop some files here, or click to select files</p>
+            </div>
+            <aside>
+                <h4>Files</h4>
+                <ul>{files}</ul>
+            </aside>
+
+        </section>
+    );
+}
+
+
 class Inventory extends React.Component {
     render() {
-        return <ItemTable />;
+        return (
+            <div>
+                <ItemTable />
+                <FileUpload />
+            </div>
+        );
     }
 }
 
