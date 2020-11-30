@@ -7,6 +7,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.response import Response
+import pandas as pandas
 
 
 @api_view(['GET'])
@@ -22,6 +23,7 @@ def apiOverview(request):
     }
 
     return Response(apiUrls)
+
 
 ### vegetable api
 @api_view(['GET'])
@@ -78,15 +80,22 @@ def ListHarvests(request):
     return Response(serializer.data)
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# TODO: once you get file uploads working, turn auth back on
+# and then figure out how to authenticate in the FE
+#@authentication_classes([SessionAuthentication, BasicAuthentication])
+#@permission_classes([IsAuthenticated])
 def CreateHarvest(request):
-    serializer = HarvestSerializer(data=request.data)
+    spreadsheet = request.FILES['file']
+    spreadsheet_data = pandas.read_excel(spreadsheet)
+    print("filename: ", spreadsheet)
+    print("data: ", spreadsheet_data)
+    return Response("uploaded data from spreadsheet")
+    # serializer = HarvestSerializer(data=request.data)
 
-    if serializer.is_valid():
-        serializer.save()
+    # if serializer.is_valid():
+    #     serializer.save()
 
-    return Response(serializer.data)
+    # return Response(serializer.data)
 
 @api_view(['DELETE'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
