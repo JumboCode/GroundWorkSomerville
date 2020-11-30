@@ -112,6 +112,14 @@ def UserTransactions(request, pk):
     serializer = TransactionSerializer(transactions, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def SearchVegetables(request, pk):
+    items = Vegetable.objects.all().filter(name__icontains=pk)
+    serializer = VegetableSerializer(items, many=True)
+    return Response(serializer.data)
+
 @api_view(['POST'])
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
 # @permission_classes([IsAuthenticated])
@@ -135,19 +143,24 @@ def CreatePurchase(request):
             # Replace total_amount with price*quantity
             purchase = PurchasedItem.objects.create(food_quantity=quantity,
                         total_amount=50, stocked_vegetable=stocked)
+            print(purchase.id)
             # Remove amount from StockedVegetable
             stocked.remove_quantity(quantity)
 
-            transaction = Transaction.objects.create(purchased_item=purchase,
-            user_id=request.user, is_complete=True, is_paid=True,
-            method_of_payment="credit")
+            # transaction = Transaction.objects.create(purchased_item=purchase,
+            # user_id=request.user, is_complete=True, is_paid=True,
+            # method_of_payment="credit")
 
         except ObjectDoesNotExist:
             print("There is no stocked " + veg["name"])
         except MultipleObjectsReturned:
             print("Multiple " + veg["name"] + " please select one to start.")
 
+    # https://docs.djangoproject.com/en/3.0/topics/db/models/
+    # create one transaction for multiple purchases
+
     return Response("Transaction recieved")
+    # create JSON response that gets returned, that includes transaction.id
 
     # postman body
 #     {
