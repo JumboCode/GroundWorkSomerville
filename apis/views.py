@@ -120,7 +120,6 @@ def CreatePurchase(request):
     # query from stocked vegetable (assume 1 stock contains enough veg)
     # algo for total_amount
     # which vegetable to give them (stock) - decider
-
     # get data, for each item, find which stock to use and then add that
     # to the purchase item table, decrease quantity in stocked vegetable
     # create one single entry in transaction table, link everything to this entry
@@ -133,16 +132,15 @@ def CreatePurchase(request):
             # Get the price from prices table, use in the create Purchase
             # price = Prices.objects.get()
             quantity = veg["amount"]
-            print(quantity)
             # Replace total_amount with price*quantity
             purchase = PurchasedItem.objects.create(food_quantity=quantity,
                         total_amount=50, stocked_vegetable=stocked)
             # Remove amount from StockedVegetable
             stocked.remove_quantity(quantity)
 
-            # transaction = Transaction.objects.create(purchased_item=purchase,
-            # user_id=request.user, is_complete=True, is_paid=True,
-            # method_of_payment="credit")
+            transaction = Transaction.objects.create(purchased_item=purchase,
+            user_id=request.user, is_complete=True, is_paid=True,
+            method_of_payment="credit")
 
         except ObjectDoesNotExist:
             print("There is no stocked " + veg["name"])
