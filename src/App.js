@@ -1,9 +1,10 @@
 import React from 'react';
-import VegetableList from './VegetableList';
+import SearchPage from './components/SearchPage';
+
 
 function App() {
     return (
-        <VegetableList />
+        <SearchPage />
     );
 };
 
