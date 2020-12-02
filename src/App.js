@@ -1,12 +1,10 @@
 import React from 'react';
-// import VegetableList from './components/VegetableList';
-import SearchBar from './components/SearchBar';
+import SearchPage from './components/SearchPage';
 
 
 function App() {
     return (
-        // <VegetableList />
-        <SearchBar />
+        <SearchPage />
     );
 };
 

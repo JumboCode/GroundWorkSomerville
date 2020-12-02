@@ -1,41 +1,38 @@
-//https://medium.com/@pradityadhitama/simple-search-bar-component-functionality-in-react-6589fda3385d
- import React, { useState, useEffect } from 'react';
- import SearchBar from './searchBar';//create later
- import VeggieList from './veggieList';//create later
+import React, { useState, useEffect } from 'react';
+import SearchBar from './SearchBar';//create later
 
- const SearchPage = (props) => {
-   const [input, setInput] = useState('');
-   const [veggieListDefault, setVeggieListDefault] = useState();
-   const [veggieList, setveggieList] = useState();
+const SearchPage = (props) => {
+	const [input, setInput] = useState();
+	const [filteredVegetables, setfilteredVegetables] = useState();
+	const [allVegetables, setallVegetables] = useState();
 
-   const fetchData = async () => {
-     return await fetch('${APIURL}/list-vegetables')//WHERE WE PUT PUR DATA BASE
-       .then(response => response.json())
-       .then(data => {
-          setveggieList(data)
-          setVeggieListDefault(data)
-        });}
+	const fetchData = async () => {
+		await fetch("list-vegetables")
+			.then(response => response.json())
+			.then(data => {
+				//perform any operation on data required
+				setallVegetables(data)
+				setfilteredVegetables(data) //when nothing is searched, show all the elements
+			});
+		}
+	
+	
+	const updateInput = async (input) => {
+		// call backend to fill the filtered array with the list of elements that matches the input
+		const filtered = []
+		
+		setInput(input);
+		setfilteredVegetables(filtered);}
 
-   const updateInput = async (input) => {
-      const filtered = veggieListDefault.filter(country => {
-       return country.name.toLowerCase().includes(input.toLowerCase())
-      })
-      setInput(input);
-      setveggieList(filtered);
-   }
+	useEffect( () => {fetchData()},[]);
 
-   useEffect( () => {fetchData()},[]);
-
-   return (
-     <div class="searchPage">
-      <h1>Vegtable List</h1>
-         <SearchBar
-          input={input}
-          setKeyword={this.updateInput}
-         />
-         <veggieList veggieList={veggieList}/>
-       </div>
-      );
-   }
+	return (
+		<div className = "searchPage">
+		<h1>Vegtable List</h1>
+				<SearchBar setKeyword={updateInput} />
+				
+			</div>
+		);
+	}
 
 export default SearchPage;
