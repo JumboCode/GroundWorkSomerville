@@ -4,7 +4,7 @@ h1 {
 
 .timeline {
 	margin: 50px 60px; /*temporary values*/
-	height: 4px;
+	height: 15px;
 	background-color: green;
 }
 
@@ -22,9 +22,21 @@ h1 {
 
 .timeline-item::before {
 	content: '';
-	width: 20px;
-	height: 20px;
-	background-color: #ccc;
+	width: 50px;
+	height: 50px;
+	background-color: green;
 	display: block;
 	border-radius: 100%;
+	margin-top: -20px;
+}
+
+.steps {
+	position: absolute;
+	top: 30px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 100px;
+	padding: 5px 10px;
+	border-radius: 5px;
+	text-align: center;
 }
