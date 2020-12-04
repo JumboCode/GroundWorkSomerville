@@ -2,7 +2,7 @@ import React from 'react';
 
 const Timeline = (props) => {
 	return (
-		<div>
+		<div className="timeline-component">
 			<h1> How it Works: </h1>
 			<div className="timeline">
 				<div className="timeline-items">

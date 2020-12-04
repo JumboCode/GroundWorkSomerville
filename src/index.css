@@ -1,11 +1,19 @@
 h1 {
 	color: green;
+	width: 450px;
+}
+
+.timeline-component {
+	margin: auto;
+	width: 90%;
+	margin-bottom: 100px;
+	padding: 50px;
 }
 
 .timeline {
 	margin: 50px 60px; /*temporary values*/
 	height: 15px;
-	background-color: green;
+	background-color: #27AE60;
 }
 
 .timeline-items {
@@ -24,7 +32,7 @@ h1 {
 	content: '';
 	width: 50px;
 	height: 50px;
-	background-color: green;
+	background-color: #27AE60;
 	display: block;
 	border-radius: 100%;
 	margin-top: -20px;
@@ -32,11 +40,26 @@ h1 {
 
 .steps {
 	position: absolute;
+	color: #27AE60;
+	font-size: 20px;
 	top: 30px;
 	left: 50%;
 	transform: translateX(-50%);
-	width: 100px;
+	width: 200px;
 	padding: 5px 10px;
-	border-radius: 5px;
 	text-align: center;
+}
+
+.pickup-component-box {
+	background-color: #f1f1f1;
+	width: 90%;
+	height: 500px;
+	border-radius: 25px;
+	padding: 50px;
+	margin-top: 150px;
+	margin: auto;
+}
+
+.pickup-info {
+	width: 50%;
 }
