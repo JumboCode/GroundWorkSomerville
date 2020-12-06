@@ -5,7 +5,7 @@ import PickupLocation from './PickupLocation';
 class InfoPage extends Component {
 	render () {
 		return (
-			<div>
+			<div className="page-container">
 			<Timeline/>
 			<PickupLocation/>
 			</div>

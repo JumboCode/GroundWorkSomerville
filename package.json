@@ -6,6 +6,7 @@
     "axios": "^0.21.0",
     "axios-hooks": "^2.1.0",
     "bootstrap": "^4.5.3",
+    "google-maps-react": "^2.0.6",
     "react": "^16.10.2",
     "react-bootstrap": "^1.4.0",
     "react-dom": "^16.10.2",
