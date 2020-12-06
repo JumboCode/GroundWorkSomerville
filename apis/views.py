@@ -85,17 +85,27 @@ def ListHarvests(request):
 #@authentication_classes([SessionAuthentication, BasicAuthentication])
 #@permission_classes([IsAuthenticated])
 def CreateHarvest(request):
+    # read the spreadsheet
     spreadsheet = request.FILES['file']
-    spreadsheet_data = pandas.read_excel(spreadsheet)
-    print("filename: ", spreadsheet)
-    print("data: ", spreadsheet_data)
-    return Response("uploaded data from spreadsheet")
-    # serializer = HarvestSerializer(data=request.data)
+    cols = pandas.read_excel(spreadsheet)
+    # create a dictionary representation of it
+    if validate_harvest_spreadsheet(cols):
+        harvest_dict = {'farm_name': cols['farm'][0]}
+        # then create and check the serializer
+        serializer = HarvestSerializer(data=harvest_dict)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data)
+    else:
+        # TODO: use an error response
+        return Response("invalid spreadsheet!")
 
-    # if serializer.is_valid():
-    #     serializer.save()
+def validate_harvest_spreadsheet(cols):
+    return (('farm' in cols) and ('item' in cols) and ('quantity' in cols) \
+            and len(cols['farm']) == len(cols['item']) \
+            and len(cols['item']) == len(cols['quantity']) \
+            and len(cols['quantity']) != 0)
 
-    # return Response(serializer.data)
 
 @api_view(['DELETE'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
