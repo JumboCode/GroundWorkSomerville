@@ -1,10 +1,11 @@
 import React from 'react';
 import SearchPage from './components/SearchPage';
+import VegetableDetail from './components/VegetableDetail';
 
 
 function App() {
     return (
-        <SearchPage />
+        <VegetableDetail /> 
     );
 };
 

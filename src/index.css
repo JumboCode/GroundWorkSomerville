@@ -1,0 +1,79 @@
+*{
+    margin:0;
+    padding:0;
+    position:relative;
+}
+
+#popup-box{
+    margin: auto;
+    width: 80%;
+    margin-top: 30px;
+    border: 1px solid #eee;
+    border-radius: 15px; 
+    box-sizing: border-box;
+    background-color:#eee;
+    height: 638px;
+
+    padding: 20px; 
+    position: relative;
+
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#popup-imgs{
+    width: 40%;
+    box-sizing: border-box;
+    float:left;
+}
+
+#popup-info{
+    width:40%;  
+    float: right;
+    box-sizing: border-box;
+}
+
+#popup-vegname{
+    font-size:35px;
+    color: #104E29;
+}
+
+#popup-tags{
+    font-size: 12px;
+    margin: 10px 0;
+
+    color:#1FB25A;
+}
+.popup-tag{
+    display:inline;
+    border: 1px solid #1FB25A; 
+    border-radius: 10px;
+    margin: 0 3px; 
+    padding: 1px 10px; 
+}
+
+#popup-desc{
+    font-size:15px;
+}
+
+#popup-qty{
+    color:#1FB25A;
+}
+#x-button{
+    position:absolute;
+    right: 5px; 
+    top: 5px;
+
+    background-color:none;
+    color:#1FB25A;
+    border: none;
+    font-size: 35px;
+}
+
+#popup-addtocart{
+    background-color:rgb(75, 170, 56);
+    color:#fff;
+    border: none; 
+    border-radius: 15px; 
+    font-size:14px;
+    padding: 3px 15px;
+}

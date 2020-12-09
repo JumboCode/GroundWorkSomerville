@@ -28,7 +28,7 @@ const SearchPage = (props) => {
 
 	return (
 		<div className = "searchPage">
-		<h1>Vegtable List</h1>
+		<h1>Vegetable List</h1>
 				<SearchBar setKeyword={updateInput} />
 				
 			</div>
