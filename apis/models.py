@@ -45,6 +45,9 @@ class StockedVegetable(models.Model):
     self.quantity -= removal_amount
     self.save()
 
+  def get_quantity(self):
+    return self.quantity
+
   def __str__(self):
     return self.name
 
@@ -56,24 +59,23 @@ class Price(models.Model):
   def __str__(self):
     return self.veg.name + '-' + str(price)
 
-# Does not include a user id since user not written
+# https://docs.djangoproject.com/en/3.0/topics/db/models/
+# implement to have multiple purchased_items in one transaction
+class Transaction(models.Model):
+  date = models.DateTimeField(default=timezone.now)
+  user_id = models.ForeignKey(User, on_delete=models.PROTECT)
+  is_complete = models.BooleanField(default=False)
+  is_paid = models.BooleanField(default=False)
+  method_of_payment = models.CharField(max_length=100)
+
+  def __str__(self):
+    return str(self.id)
+
 class PurchasedItem(models.Model):
+  transaction = models.ForeignKey(to=Transaction, on_delete=models.PROTECT)
   food_quantity = models.DecimalField(max_digits=10, decimal_places=2)
   total_amount = models.DecimalField(max_digits=10, decimal_places=2)
   stocked_vegetable = models.ForeignKey(to=StockedVegetable, on_delete=models.PROTECT)
 
   def __str__(self):
     return self.stocked_vegetable.name
-
-# https://docs.djangoproject.com/en/3.0/topics/db/models/
-# implement to have multiple purchased_items in one transaction
-class Transaction(models.Model):
-  purchased_item = models.ForeignKey(to=PurchasedItem, on_delete=models.PROTECT)
-  date = models.DateTimeField(default=timezone.now)
-  user_id = models.OneToOneField(to=User, on_delete=models.PROTECT)
-  is_complete = models.BooleanField(default=False)
-  is_paid = models.BooleanField(default=False)
-  method_of_payment = models.CharField(max_length=100)
-
-  def __str__(self):
-    return self.purchased_item.stocked_vegetable.name + ' - ' + str(self.date)
