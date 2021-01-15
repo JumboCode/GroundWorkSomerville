@@ -1,4 +1,4 @@
-@media all and (min-width: 480px) {
+/* @media all and (min-width: 480px) {
   .Login {
     margin: auto;
     width: 27%;
@@ -40,5 +40,21 @@
 
   input:focus {
     outline: none;
+  }
+} */
+
+@media all and (min-width: 480px) {
+  .Login {
+    padding: 60px 0;
+  }
+
+  .Login form {
+    margin: 0 auto;
+    max-width: 320px;
+  }
+
+  .errorContainer {
+    height:18px;
+    color: red;
   }
 }

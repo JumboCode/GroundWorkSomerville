@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Login-Page.css';
 import { API_BASE } from '../constants';
+import { Button, Form, Container } from 'react-bootstrap';
 
 class LoginPage extends Component {
     constructor(props) {
@@ -57,23 +58,34 @@ class LoginPage extends Component {
   }
 
     render() {
+        const { username, password, error } = this.state;
         return (
             <div className="Login">
-                <form onSubmit={this.handleSubmit}>
-                    <h1>Login</h1>
-                    <label>Username</label>
-                    <input class = "textinput" type="username" value={this.state.username} onChange={this.handleUserChange} />
-
-                    <label>Password</label>
-                    <input class = "textinput" type="password" value={this.state.password} onChange={this.handlePassChange} />
-                    <div id = "ErrorBox">
-                        {this.state.error &&
-                        <label onClick={this.dismissError}>{this.state.error}</label>}
-                    </div>
-                    <div id = "Signin">
-                        <input id = "LoginButton" type = "submit"  value = 'Login' onClick={this.handleSubmit}/>
-                    </div>
-                </form>
+                <h2 className="text-center">Login</h2>
+                <Form onSubmit={this.handleSubmit}>
+                    <Form.Group size="lg" controlId="email">
+                        <Form.Label>Username</Form.Label>
+                        <Form.Control
+                        autoFocus
+                        type="username"
+                        value={username}
+                        onChange={this.handleUserChange}/>
+                    </Form.Group>
+                    <Form.Group size="lg" controlId="password">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                        type="password"
+                        value={password}
+                        onChange={this.handlePassChange}/>
+                    </Form.Group>
+                    <Form.Group className="errorContainer">
+                        <Form.Text
+                        onClick={this.dismissError}>{error}</Form.Text>
+                    </Form.Group>
+                    <Form.Group className="text-center">
+                        <Button variant="success" type="submit">Login</Button>
+                    </Form.Group>
+                </Form>
             </div>
         );
     }
