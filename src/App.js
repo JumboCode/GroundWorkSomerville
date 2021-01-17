@@ -1,20 +1,19 @@
-import React from 'react';
-import SearchPage from './components/SearchPage';
-import LoginPage from './components/Login-Page.js';
+import React, { Component } from 'react';
+import Home from './components/Home.js';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-
-function App() {
-    return (
-        <div className = "App">
-            <BrowserRouter>
-                <Switch>
-                    <Route exact path='/login' component={LoginPage}></Route>
-                    <Route exact path='/search' component={SearchPage}></Route>
-                </Switch>
-            </BrowserRouter>
-        </div>
-    );
+class App extends Component {
+    render() {
+        return (
+            <div className = "App">
+                <BrowserRouter>
+                    <Switch>
+                        <Route exact path='/' component={Home}></Route>
+                    </Switch>
+                </BrowserRouter>
+            </div>
+        );
+    };
 };
 
 export default App;
