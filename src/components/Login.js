@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import './Login-Page.css';
+import './Login.css';
 import { API_BASE } from '../constants';
-import { Button, Form, Container } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 
-class LoginPage extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,27 +11,35 @@ class LoginPage extends Component {
             password: '',
             error: '',
         };
+        this.dismissError = this.dismissError.bind(this);
+        this.handleUserChange = this.handleUserChange.bind(this);
+        this.handlePassChange = this.handlePassChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this); 
+        this.innerRef = React.createRef(); 
     };
 
-    dismissError = (event) => {
+    componentDidMount() {
+        setTimeout(() => {
+          this.innerRef.current.focus();
+        }, 1);
+    }
+    
+    dismissError(event){
         this.setState({error: ''});
     }
 
-    handleUserChange = (event) => {
+    handleUserChange(event){
         this.setState({username: event.target.value});
     };
 
-    handlePassChange = (event) => {
+    handlePassChange(event){
         this.setState({password: event.target.value});
     };
-
-    setAuthToken = (token) => {
-        window.localStorage.setItem('auth-key', token);
-    }
   
-    handleSubmit = (event) => {
+    handleSubmit(event){
         event.preventDefault();
         const { username, password } = this.state;
+        const { setAuthToken } = this.props;
         var fetchOptions = {
             method: 'POST',
             headers: {
@@ -48,12 +56,9 @@ class LoginPage extends Component {
         .then(res => res.json())
         .then(res => {
             console.log(res);
-            this.props.history.push('/search');
-            this.setAuthToken(res['key']);
+            setAuthToken(res['key']);
         }).catch(err => {
-            console.log("Error");
             this.setState({error:"The username or password you entered is incorrect."});
-            console.log(err);
         });
   }
 
@@ -66,7 +71,7 @@ class LoginPage extends Component {
                     <Form.Group size="lg" controlId="email">
                         <Form.Label>Username</Form.Label>
                         <Form.Control
-                        autoFocus
+                        ref={this.innerRef}
                         type="username"
                         value={username}
                         onChange={this.handleUserChange}/>
@@ -91,4 +96,4 @@ class LoginPage extends Component {
     }
 }
 
-export default LoginPage;
+export default Login;
