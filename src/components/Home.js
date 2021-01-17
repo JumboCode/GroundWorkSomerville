@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Login from './Login.js';
 import NavBar from './NavBar.js';
 import { Modal } from 'react-bootstrap';
+import './Home.css';
 
 class Home extends Component {
     constructor(props) {
@@ -45,7 +46,8 @@ class Home extends Component {
                 <Modal 
                 show={showLogin} 
                 onHide={() => this.setLoginView(false)}
-                size="lg">
+                size="lg"
+                className="login-modal">
                     <Login setAuthToken={this.setAuthToken}/>
                 </Modal>
             </div>
