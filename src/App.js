@@ -1,11 +1,19 @@
-import React from 'react';
-import SearchPage from './components/SearchPage';
+import React, { Component } from 'react';
+import Home from './components/Home.js';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-
-function App() {
-    return (
-        <SearchPage />
-    );
+class App extends Component {
+    render() {
+        return (
+            <div className = "App">
+                <BrowserRouter>
+                    <Switch>
+                        <Route exact path='/' component={Home}></Route>
+                    </Switch>
+                </BrowserRouter>
+            </div>
+        );
+    };
 };
 
 export default App;
