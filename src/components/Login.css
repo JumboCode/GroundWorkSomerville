@@ -1,15 +1,12 @@
-@media all{
-  .Login {
-    padding: 60px 0;
-  }
+.Login {
+  padding: 15%;
+}
 
-  .Login form {
-    margin: 0 auto;
-    max-width: 320px;
-  }
+.Login form {
+  margin: auto;
+  max-width: 300px;
+}
 
-  .errorContainer {
-    height:18px;
-    color: red;
-  }
+.errorContainer {
+  height:18px;
 }

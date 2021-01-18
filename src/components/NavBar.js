@@ -19,21 +19,25 @@ class NavBar extends Component {
 
     render() {
         const { isAuth } = this.props;
+        const help = window.innerWidth < 580 ? "Help" : <Image src="/static/help.png" height="15"/>
         return(
-            <Navbar className="navContainer" variant="dark">
+            <Navbar collapseOnSelect className="navContainer" expand="sm">
                 <Navbar.Brand>
                     <Image src="/static/logo.png" height="100"/>
                 </Navbar.Brand>
-                <Nav className="button-container">
-                    <Image src="/static/help.png" height="35" className="nav-pad"/>
-                    <button className="nav-button nav-pad" onClick={this.handleLogButton}>
+                <Navbar.Toggle/>
+                <Navbar.Collapse>
+                <Nav className="ml-auto pr-5">
+                    <Nav.Link className="m-auto" >{help}</Nav.Link>
+                    <Nav.Link className="m-auto" onClick={this.handleLogButton}>
                         {isAuth ? "Logout": "Login"}
-                    </button>
-                    <button className="nav-button nav-pad">
-                        <Image src="/static/cart.png" height="15" className="cart-image"/>
+                    </Nav.Link>
+                    <Nav.Link className="m-auto" >
+                        <Image src="/static/cart.png" height="15" className="pr-1"/>
                         Cart
-                    </button>
+                    </Nav.Link>
                 </Nav>
+                </Navbar.Collapse>
             </Navbar>
         );
     }

@@ -7,7 +7,7 @@ import './Home.css';
 class Home extends Component {
     constructor(props) {
         super(props)
-        this.state = {showLogin: false, isAuth: false}
+        this.state = {loginShow: false, isAuth: false}
         this.setLoginView = this.setLoginView.bind(this);
         this.logOut = this.logOut.bind(this);
         this.setAuthToken = this.setAuthToken.bind(this);
@@ -20,7 +20,7 @@ class Home extends Component {
     };
 
     setLoginView(logBool){
-        this.setState({ showLogin: logBool })
+        this.setState({ loginShow: logBool })
     }
 
     logOut(){
@@ -35,19 +35,16 @@ class Home extends Component {
 
     setAuthToken(key){
         window.localStorage.setItem('auth-key', key);
-        this.setState({ isAuth: true, showLogin: false })
+        this.setState({ isAuth: true, loginShow: false })
     }
 
     render() {
-        const { showLogin, isAuth } = this.state;
+        const { loginShow, isAuth } = this.state;
+        const hideLogin = () => this.setLoginView(false);
         return (
             <div>
                 <NavBar setLoginView={this.setLoginView} isAuth={isAuth} logOut={this.logOut}/>
-                <Modal 
-                show={showLogin} 
-                onHide={() => this.setLoginView(false)}
-                size="lg"
-                className="login-modal">
+                <Modal show={loginShow} onHide={hideLogin} size="lg" className="login-modal" centered>
                     <Login setAuthToken={this.setAuthToken}/>
                 </Modal>
             </div>
@@ -55,4 +52,4 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default Home; 
