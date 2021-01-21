@@ -39,7 +39,7 @@ class Login extends Component {
     handleSubmit(event){
         event.preventDefault();
         const { username, password } = this.state;
-        const { setAuthToken } = this.props;
+        const { login } = this.props;
         var fetchOptions = {
             method: 'POST',
             headers: {
@@ -55,8 +55,7 @@ class Login extends Component {
         .then(res => res.ok ? res : Error)
         .then(res => res.json())
         .then(res => {
-            console.log(res);
-            setAuthToken(res['key']);
+            login(res['key']);
         }).catch(err => {
             this.setState({error:"The username or password you entered is incorrect."});
         });
