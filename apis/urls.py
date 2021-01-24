@@ -5,7 +5,7 @@ from django.conf import settings
 from django.views.static import serve
 
 urlpatterns = [
-    path('', views.apiOverview, name="api-overview"),
+    path('', views.index, name="Index"),
     path('list-vegetables', views.ListVegetables, name="list-vegetables"),
     path('create-vegetable', views.CreateVegetable, name="create-vegetable"),
     path('update-vegetable/<str:pk>', views.UpdateVegetable),
