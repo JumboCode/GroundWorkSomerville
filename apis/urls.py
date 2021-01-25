@@ -14,6 +14,8 @@ urlpatterns = [
     path('create-harvest', views.CreateHarvest, name="create-harvest"),
     path('delete-harvest/<str:pk>', views.DeleteHarvest, name="delete-harvest"),
     path('create-purchase', views.CreatePurchase, name='create-purchase'),
-    path('search-vegetables/<str:pk>', views.SearchVegetables, name="search-vegetables"),
-    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT,})
+    path('search-vegetables/<str:pk>', views.SearchVegetables, name="search-vegetables")
 ]
+
+if not settings.IS_HEROKU:
+    urlpatterns.append(url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT,}))
