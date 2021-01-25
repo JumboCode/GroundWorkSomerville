@@ -1,5 +1,6 @@
 
 import os
+import django_heroku
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -119,5 +120,5 @@ if IS_HEROKU:
     }
     AWS_LOCATION = 'media'
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    import django_heroku
-    django_heroku.settings(locals(), staticfiles=False)
+    
+django_heroku.settings(locals(), staticfiles=False)
