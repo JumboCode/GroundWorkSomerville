@@ -5,6 +5,9 @@ import './NavBar.css'
 import Login from './Login.js';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import logo from '../assets/logo.png';
+import helpIcon from '../assets/help.png';
+import cart from '../assets/cart.png';
 
 class NavBar extends Component {
     constructor(props) {
@@ -47,13 +50,13 @@ class NavBar extends Component {
     }
 
     render() {
-        const help = window.innerWidth < 580 ? "Help" : <Image src="/static/help.png" height="15"/>
+        const help = window.innerWidth < 580 ? "Help" : <Image src={helpIcon} height="15"/>
         const hideModal = () => this.setState({ loginShow: false });
         return(
                 <Navbar collapseOnSelect className="navContainer" expand="sm" sticky="top" bg="light">
                     <Navbar.Brand>
                         <Link to="/">
-                            <Image src="/static/logo.png" height="100"/>
+                            <Image src={logo} height="100"/>
                         </Link>
                     </Navbar.Brand>
                     <Navbar.Toggle/>
@@ -64,7 +67,7 @@ class NavBar extends Component {
                             {this.state.isAuth ? "Logout": "Login"}
                         </Nav.Link>
                         <Nav.Link className="m-auto" >
-                            <Image src="/static/cart.png" height="15" className="pr-1"/>
+                            <Image src={cart} height="15" className="pr-1"/>
                             Cart
                         </Nav.Link>
                     </Nav>
