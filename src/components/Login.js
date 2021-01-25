@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './Login.css';
-import { API_BASE } from '../constants';
 import { Button, Form } from 'react-bootstrap';
 
 class Login extends Component {
@@ -51,7 +50,7 @@ class Login extends Component {
             }),
         }
 
-        fetch(`${API_BASE}rest-auth/login/`, fetchOptions)
+        fetch('rest-auth/login/', fetchOptions)
         .then(res => res.ok ? res : Error)
         .then(res => res.json())
         .then(res => {

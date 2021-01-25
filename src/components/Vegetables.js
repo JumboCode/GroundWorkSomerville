@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {API_BASE} from '../constants';
 import VegGrid from './VegGrid';
 
 class Vegetables extends Component {
@@ -14,14 +13,14 @@ class Vegetables extends Component {
     };
 
     componentDidMount() {
-        axios.get(`${API_BASE}list-vegetables`)
+        axios.get('list-vegetables')
         .then((resp) => {
             this.setState({vegData:resp.data})
         })
     }
 
     getAllVegList() {
-        axios.get(`${API_BASE}list-vegetables`)
+        axios.get('list-vegetables')
         .then((resp) => {
             this.setState({vegData:resp.data})
         })
@@ -34,7 +33,7 @@ class Vegetables extends Component {
     search(event) {
         event.preventDefault()
         this.setState({ searched: true })
-        axios.get(`${API_BASE}search-vegetables/${this.state.searchText}`)
+        axios.get(`search-vegetables/${this.state.searchText}`)
         .then((resp) => {
             this.setState({vegData:resp.data})
         })
