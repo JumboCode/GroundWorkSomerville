@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, Image, Modal} from 'react-bootstrap';
-import {API_BASE} from '../constants';
 import './NavBar.css'
 import Login from './Login.js';
 import axios from 'axios';
@@ -36,7 +35,7 @@ class NavBar extends Component {
 
     logout(){
         const token = window.localStorage.getItem('auth-key')
-        axios.post(`${API_BASE}rest-auth/logout/`, null, {
+        axios.post('rest-auth/logout/', null, {
             headers: {'Authorization': `Token ${token}`}
         })
         window.localStorage.removeItem('auth-key')
