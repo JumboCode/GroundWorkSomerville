@@ -54,6 +54,7 @@
 9. Create and run the migrations using
 	`python3 manage.py makemigrations`
 	`python3 manage.py migrate`
+	`python3 manage.py migrate --run-syncdb`
 
 10. Install React and its dependencies with `yarn install`
 
