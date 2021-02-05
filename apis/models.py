@@ -1,25 +1,24 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+from django.contrib.auth.models import User
 from enum import Enum
+from multiselectfield import MultiSelectField
 
-class Category(Enum):
-  FRUIT = "FRUIT"
-  VEGETABLE = "VEGETABLE"
-  HERBS = "HERBS"
-  SEASONAL = "SEASONAL"
+# TODO: 1: figure out frontend authentication
+# TODO: 2: add endpoints for User, Group, CATEGORIES CRUD operations
+#           or figure out if Django supports them already
 
-  @classmethod
-  def choices(cls):
-    return tuple((i.name, i.value) for i in cls)
-  
+CATEGORIES = ((1, 'FRUIT'),
+              (2, 'VEGETABLE'),
+              (3, 'HERBS'),
+              (4, 'SEASONAL'))
+
 class Vegetable(models.Model):
   name = models.CharField(max_length=100)
-  # price = models.DecimalField(max_digits=5, decimal_places=2)
-  photo = models.ImageField(upload_to='images', default='/static/media/default.jpg')
+  photo = models.ImageField(upload_to='images', default='images/default.jpg')
   availability = models.BooleanField(default=False)
-  categories = models.CharField(max_length=180, choices=Category.choices(), default='VEGETABLE')
-  # quantity = models.CharField(max_length=100, default="units")
+  categories = MultiSelectField(choices=CATEGORIES)
 
   def __str__(self):
     return self.name
@@ -42,6 +41,13 @@ class StockedVegetable(models.Model):
   # on_delete might need to be changed to models.SET_NULL
   harvested_on = models.ForeignKey(to=Harvest, on_delete=models.PROTECT)
 
+  def remove_quantity(self, removal_amount):
+    self.quantity -= removal_amount
+    self.save()
+
+  def get_quantity(self):
+    return self.quantity
+
   def __str__(self):
     return self.name
 
@@ -52,3 +58,24 @@ class Price(models.Model):
 
   def __str__(self):
     return self.veg.name + '-' + str(price)
+
+# https://docs.djangoproject.com/en/3.0/topics/db/models/
+# implement to have multiple purchased_items in one transaction
+class Transaction(models.Model):
+  date = models.DateTimeField(default=timezone.now)
+  user_id = models.ForeignKey(User, on_delete=models.PROTECT)
+  is_complete = models.BooleanField(default=False)
+  is_paid = models.BooleanField(default=False)
+  method_of_payment = models.CharField(max_length=100)
+
+  def __str__(self):
+    return str(self.id)
+
+class PurchasedItem(models.Model):
+  transaction = models.ForeignKey(to=Transaction, on_delete=models.PROTECT)
+  food_quantity = models.DecimalField(max_digits=10, decimal_places=2)
+  total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+  stocked_vegetable = models.ForeignKey(to=StockedVegetable, on_delete=models.PROTECT)
+
+  def __str__(self):
+    return self.stocked_vegetable.name
