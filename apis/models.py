@@ -16,7 +16,7 @@ CATEGORIES = ((1, 'FRUIT'),
 
 class Vegetable(models.Model):
   name = models.CharField(max_length=100)
-  photo = models.ImageField(upload_to='images', default='default.jpg')
+  photo = models.ImageField(upload_to='images', default='images/default.jpg')
   availability = models.BooleanField(default=False)
   categories = MultiSelectField(choices=CATEGORIES)
 
