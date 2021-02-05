@@ -90,15 +90,27 @@ def CreateHarvest(request):
     cols = pandas.read_excel(spreadsheet)
     # create a dictionary representation of it
     if validate_harvest_spreadsheet(cols):
-        harvest_dict = {'farm_name': cols['farm'][0]}
-        # then create and check the serializer
-        serializer = HarvestSerializer(data=harvest_dict)
-        if serializer.is_valid():
-            serializer.save()
+        serializer = create_harvest(cols)
+        create_vegetables(cols)
         return Response(serializer.data)
     else:
         # TODO: use an error response
         return Response("invalid spreadsheet!")
+
+def create_vegetables(cols):
+    pass
+
+def create_harvest(cols):
+    harvest_dict = {'farm_name': cols['farm'][0]}
+    # make the harvest serializer
+    harvest_serializer = HarvestSerializer(data=harvest_dict)
+    if harvest_serializer.is_valid():
+        harvest_serializer.save()
+    print(harvest_serializer)
+    # serialize the vegetables types
+    # serialize the stocked vegetables
+    return harvest_serializer
+
 
 def validate_harvest_spreadsheet(cols):
     return (('farm' in cols) and ('item' in cols) and ('quantity' in cols) \
