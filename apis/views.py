@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.exceptions import MultipleObjectsReturned
 
+from django.contrib.auth.models import User
+
 import json
 
 def index(request):
@@ -118,50 +120,69 @@ def SearchVegetables(request, pk):
     serializer = VegetableSerializer(items, many=True)
     return Response(serializer.data)
 
+# CreatePurchase
+# Algorithm: Recieves transaction and list of vegetables. Creates
+#            a transaction and adds requested vegetables that are stocked.
+#            Decrease quantity in stocked vegetable
+#
+# Request parameters: transaction with is_complete, is_paid, method_payment
+#                     veggies (array) - name, amount
+#
+# Qualifications: Assumes that all stocks combined contains sufficient quantity.
+#                 Does not account for multiple vegetable stocks.
+#                 Does not calculate actual vegetable price for purchase
 @api_view(['POST'])
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
 # @permission_classes([IsAuthenticated])
 def CreatePurchase(request):
-    # recieve vegetable name and quantity
-    # query from stocked vegetable (assume 1 stock contains enough veg)
-    # algo for total_amount
-    # which vegetable to give them (stock) - decider
-    # get data, for each item, find which stock to use and then add that
-    # to the purchase item table, decrease quantity in stocked vegetable
-    # create one single entry in transaction table, link everything to this entry
     body = json.loads(request.body)
-    # for loop through the data
+    user = User.objects.get(username='theohenry')
+    # once authenticated users, change to -> user_id=request.user
+    transaction = Transaction.objects.create(
+                user_id=user,
+                is_complete=body["transaction"]["is_complete"],
+                is_paid=body["transaction"]["is_paid"],
+                method_of_payment=body["transaction"]["method_payment"])
+
+    valid_veg = []
+    print(body["veggies"])
     for veg in body["veggies"]:
-        print(veg)
-        try:
-            stocked = StockedVegetable.objects.get(name=veg["name"])
+        stocked = StockedVegetable.objects.filter(name=veg["name"]).order_by('-quantity')
+        print(stocked)
+        quantity = veg["amount"]
+        if stocked.exists():
+            done = False
+            for stock in stocked:
+                if not done:
+                    # remove requested amount if surplus. Remove all if deficit
+                    amount = quantity if stock.get_quantity() > quantity else stock.get_quantity()
+                    stock.remove_quantity(amount)
+                    quantity-=amount
+                    # stock has enough to complete transaction
+                    if quantity <= 0:
+                        done = True
+                    # if stock.get_quantity() == 0:
+                    #     stock.delete()
+
             # Get the price from prices table, use in the create Purchase
             # price = Prices.objects.get()
-            quantity = veg["amount"]
             # Replace total_amount with price*quantity
-            purchase = PurchasedItem.objects.create(food_quantity=quantity,
-                        total_amount=50, stocked_vegetable=stocked)
-            print(purchase.id)
-            # Remove amount from StockedVegetable
-            stocked.remove_quantity(quantity)
+            amount_purchased = veg["amount"] if done else veg["amount"]-quantity
+            purchase = PurchasedItem.objects.create(
+                transaction=transaction,
+                food_quantity=amount_purchased,
+                total_amount=10,
+                stocked_vegetable=stock)
 
-            # transaction = Transaction.objects.create(purchased_item=purchase,
-            # user_id=request.user, is_complete=True, is_paid=True,
-            # method_of_payment="credit")
+    return Response(transaction.id)
 
-        except ObjectDoesNotExist:
-            print("There is no stocked " + veg["name"])
-        except MultipleObjectsReturned:
-            print("Multiple " + veg["name"] + " please select one to start.")
-
-    # https://docs.djangoproject.com/en/3.0/topics/db/models/
-    # create one transaction for multiple purchases
-
-    return Response("Transaction recieved")
-    # create JSON response that gets returned, that includes transaction.id
-
-    # postman body
-#     {
+# sample request
+# {
+#     "transaction": {
+#         "is_complete": true,
+#         "is_paid": true,
+#         "method_payment": "credit"
+#     },
 #     "veggies": [
 #         {
 #             "name": "Celery",
