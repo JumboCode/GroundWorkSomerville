@@ -1,119 +1,72 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import useAxios from 'axios-hooks';
 
-function Square(props){
-    return(
-        <button 
-            className="square" 
-            onClick={  props.onClick } > 
-        {props.value} 
-        </button>
+
+function InventoryItem(props) {
+    return (
+        <div className="inventory-item">
+            {props.name}
+        </div>
+    );
+}
+
+function ItemTable(props) {
+    // TODO: get auth information from login form
+    var response = useAxios({
+        url: '/list-vegetables',
+        auth: {
+            username: '<placeholder>',
+            password: '<placeholder>',
+        }
+    })[0].data;
+
+    // responses usually come back "undefined" a few times,
+    // so this block handles that case
+    if (response !== undefined) {
+        console.log(response);
+
+        var veggies = response.map(function(v) {
+            return {name: v.name};
+        });
+        var items = veggies.map((item) => {
+            return <InventoryItem name={item.name} />;    
+        });
+
+        return (
+            <div className="inventory">
+                {items}
+            </div>
+        );
+    } else {
+        return <div className='inventory' />;
+    }
+}
+
+function FileUpload(props) {
+    return (
+        <form method="POST" action="/create-harvest" enctype="multipart/form-data">
+            <strong>Upload harvest spreadsheet:</strong>
+            <input type="file" name="file" />
+            <input type="submit" value="Upload" />
+        </form>
     );
 }
 
 
-class Board extends React.Component {
-
-    constructor(props){
-        super(props);
-        this.state = {
-            squares: Array(9).fill(null),
-            isNext: true
-        };
-    }
-
-    handleClick(i) {
-        const new_state = this.state.squares.slice()
-        if (calculateWinner(new_state) ||new_state[i] ){
-            return;
-        }
-        
-        new_state[i] = this.state.isNext? 'X' : 'O';
-        this.setState({ squares: new_state,
-                        isNext: !this.state.isNext});
-    }   
-
-    renderSquare(i) {
-      return < Square 
-                    value = { this.state.squares[i]}
-                    onClick = { () => { this.handleClick(i); } }  />;
-    }
-    
+class Inventory extends React.Component {
     render() {
-      let status; 
-      const winner = calculateWinner(this.state.squares);
-
-      if (winner){
-        status = "Winner " + winner;
-      } else {
-        status = 'Next player: ' + (this.state.isNext? 'X': 'O');
-      }
-
-      return (
-        <div>
-          <div className="status">{status}</div>
-          <div className="board-row">
-            {this.renderSquare(0)}
-            {this.renderSquare(1)}
-            {this.renderSquare(2)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(3)}
-            {this.renderSquare(4)}
-            {this.renderSquare(5)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(6)}
-            {this.renderSquare(7)}
-            {this.renderSquare(8)}
-          </div>
-        </div>
-      );
+        return (
+            <div>
+                <ItemTable />
+                <FileUpload />
+            </div>
+        );
     }
-  }
-  
-
-function calculateWinner(squares){
-    const lines = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6],
-      ];
-      for (let i = 0; i < lines.length; i++) {
-        const [a, b, c] = lines[i];
-        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-          return squares[a];
-        }
-      }
-      return null;
 }
 
-class Game extends React.Component {
-    render() {
-      return (
-        <div className="game">
-          <div className="game-board">
-            <Board />
-          </div>
-          <div className="game-info">
-            <div>{/* status */}</div>
-            <ol>{/* TODO */}</ol>
-          </div>
-        </div>
-      );
-    }
-  }
-  
-  // ========================================
-  // /* the difference between ()=> props.onClick(), props.onClick() and props.onClick */
-  ReactDOM.render(
-    <Game />,
+ReactDOM.render(
+    <Inventory />,
     document.getElementById('root')
-  );
-  
+);

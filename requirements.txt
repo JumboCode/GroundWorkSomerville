@@ -2,4 +2,4 @@ django
 djangorestframework
 whitenoise
 gunicorn
-django-heroku
+pillow
