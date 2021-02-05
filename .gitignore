@@ -6,3 +6,6 @@ db.sqlite3
 build
 *.pyc
 .env
+package-lock.json
+**/.DS_Store
+media/

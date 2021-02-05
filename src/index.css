@@ -1,37 +1,75 @@
-body {
-    font: 14px "Century Gothic", Futura, sans-serif;
-    margin: 20px;
+.page-container {
+	background-color: #FAF4F1;
+	height: 100%;
 }
 
-ol, ul {
-    padding-left: 30px;
+h1 {
+	color: #1B7A41;
+	width: 450px;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+	text-align: left;
 }
 
-.status {
-    margin-bottom: 10px;
+.timeline-component {
+	margin: auto;
+	width: 90%;
+	margin-bottom: 100px;
+	padding: 50px;
 }
 
-:root {
-    --rowNum: 4;
-    --colNum: 5;
-    --gridHeight: 120px;
+.timeline {
+	margin: 50px 60px; /*temporary values*/
+	height: 15px;
+	background-color: #1FB25A;
 }
 
-.inventory {
-    display: grid;
-    grid-template-rows: repeat(var(--rowNum), var(--gridHeight));
-    grid-template-columns: repeat(var(--colNum), auto);
+.timeline-items {
+	margin-left: -10px;
+	margin-right: -10px;
+	margin-top: -12px;
+	display: flex;
+	justify-content: space-between;
 }
 
-.inventory-item {
-    grid-column-start: auto;
-    grid-row-start: auto;
-    margin: 5px;
-    border: 1px solid gray;
-    border-radius: 5px;
-    padding: 3em;
+.timeline-item {
+	position: relative;
 }
 
-.container {
-    border: dashed 1px gray;
+.timeline-item::before {
+	content: '';
+	width: 50px;
+	height: 50px;
+	background-color: #1FB25A;
+	display: block;
+	border-radius: 100%;
+	margin-top: -20px;
 }
+
+.steps {
+	position: absolute;
+	color: #27AE60;
+	font-size: 20px;
+	top: 30px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 200px;
+	padding: 5px 10px;
+	text-align: center;
+}
+
+.pickup-container {
+	background-color: #FFFFFF;
+	width: 90%;
+	height: 500px;
+	border-radius: 25px;
+	padding: 50px;
+	margin-top: 150px;
+	margin: auto;
+}
+
+.pickup-child {
+	width: 50%;
+	float: left;
+	padding: 10px;
+}
+

@@ -40,35 +40,30 @@
 	* yarn
 
 5. Install venv using `pip3 install virtualenv`
-
-6. Setting up your postgres DB server
-	* installing postgres: `brew install postgres`
-	* locating your postgres data directory: `export PGDATA=/usr/local/var/postgres`
-	* running postgres server: `brew services start postgres`
-	* check if postgres is running: `pg_ctl status` 
-	* (extra) running postgres in terminal: `psql` and ending the process by typing `quit`
 	
-7. Now set up a virtual environment for the backend `python3 -m venv env`
+6. Now set up a virtual environment for the backend `python3 -m venv env`
 
-8. Activate the environment:
+7. Activate the environment:
 	* Linux/MacOS `source env/bin/activate`
 	* Windows `env\Scripts\activate`
 
-9. Install backend dependencies with `pip3 install -r requirements.txt`
+8. Install backend dependencies with `pip3 install -r requirementsDev.txt`
 
-10. Create and run the migrations using
+	*Make sure it is requirementsDev.txt and not requirements.txt*
+
+9. Create and run the migrations using
 	`python3 manage.py makemigrations`
 	`python3 manage.py migrate`
-	This should also be run after every change to the model
+	`python3 manage.py migrate --run-syncdb`
 
-11. Install React and its dependencies with `yarn install`
+10. Install React and its dependencies with `yarn install`
 
 ## Running the project locally ##
 ### Run frontend server ###
 
-- Build project: `yarn build`
+- Build project that django will serve: `yarn build`
 
-- Start server: `yarn start`
+- Start server for development: `yarn start`
 
 - If the website does not automatically open, go to the link shown in terminal to see a local version
 
@@ -81,7 +76,8 @@
 - Run the server: `python3 manage.py runserver`
 
 - Go to the link shown in terminal to see a local version of the backend
- - Quit with Control+C
+
+- Quit with Control+C
 
 ## Git Essentials ##
 
