@@ -33,6 +33,10 @@ class NavBar extends Component {
         }
     }
 
+    handleInfoPage(){
+        <Route component={InfoPage} path='/'></Route>
+    }
+
     logout(){
         const token = window.localStorage.getItem('auth-key')
         axios.post('rest-auth/logout/', null, {
@@ -48,8 +52,9 @@ class NavBar extends Component {
         this.setState({ isAuth: true, loginShow: false });
     }
 
+    //naavigaate to info page
     render() {
-        const help = window.innerWidth < 580 ? "Help" : <Image src={helpIcon} height="15"/>
+        const help = window.innerWidth < 580 ? "Help" : <Image src= {helpIcon} height="15"/>
         const hideModal = () => this.setState({ loginShow: false });
         return(
                 <Navbar collapseOnSelect className="navContainer" expand="sm" sticky="top" bg="light">
@@ -61,7 +66,7 @@ class NavBar extends Component {
                     <Navbar.Toggle/>
                     <Navbar.Collapse>
                     <Nav className="ml-auto pr-5">
-                        <Nav.Link className="m-auto" >{help}</Nav.Link>
+                        <Nav.Link className="m-auto" onClick={this.handleInfoPage}> {help} </Nav.Link>
                         <Nav.Link className="m-auto" onClick={this.handleLogButton}>
                             {this.state.isAuth ? "Logout": "Login"}
                         </Nav.Link>
