@@ -16,7 +16,7 @@ CATEGORIES = ((1, 'FRUIT'),
 
 class Vegetable(models.Model):
   name = models.CharField(max_length=100)
-  photo = models.ImageField(upload_to='images', default='default.jpg')
+  photo = models.ImageField(upload_to='images', default='images/default.jpg')
   availability = models.BooleanField(default=False)
   categories = MultiSelectField(choices=CATEGORIES)
 
@@ -70,7 +70,7 @@ class PurchasedItem(models.Model):
 class Transaction(models.Model):
   purchased_item = models.ForeignKey(to=PurchasedItem, on_delete=models.PROTECT)
   date = models.DateTimeField(default=timezone.now)
-  user_id = models.OneToOneField(to=User, on_delete=models.PROTECT)
+  user = models.ForeignKey(to=User, on_delete=models.PROTECT)
   is_complete = models.BooleanField(default=False)
   is_paid = models.BooleanField(default=False)
   method_of_payment = models.CharField(max_length=100)

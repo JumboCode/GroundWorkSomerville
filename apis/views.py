@@ -3,7 +3,7 @@ from .models import Vegetable, Harvest, Transaction, PurchasedItem, StockedVeget
 from .serializers import VegetableSerializer, HarvestSerializer, TransactionSerializer
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.response import Response
@@ -13,6 +13,8 @@ from django.core.exceptions import MultipleObjectsReturned
 
 import json
 
+def index(request):
+    return render(request, "index.html")
 
 @api_view(['GET'])
 def apiOverview(request):
@@ -32,8 +34,6 @@ def apiOverview(request):
 
 ### vegetable api
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
 def ListVegetables(request):
     items = Vegetable.objects.all()
     serializer = VegetableSerializer(items, many=True)
@@ -113,8 +113,6 @@ def UserTransactions(request, pk):
     return Response(serializer.data)
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
 def SearchVegetables(request, pk):
     items = Vegetable.objects.all().filter(name__icontains=pk)
     serializer = VegetableSerializer(items, many=True)
