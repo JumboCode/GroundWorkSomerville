@@ -61,7 +61,7 @@ class NavBar extends Component {
                     <Navbar.Toggle/>
                     <Navbar.Collapse>
                     <Nav className="ml-auto pr-5">
-                        <Nav.Link className="m-auto"><Link to="/info">{help} </Link></Nav.Link>
+                        <Nav.Item className="m-auto"><Link to="/info">{help} </Link></Nav.Item>
                         <Nav.Link className="m-auto" onClick={this.handleLogButton}>
                             {this.state.isAuth ? "Logout": "Login"}
                         </Nav.Link>
