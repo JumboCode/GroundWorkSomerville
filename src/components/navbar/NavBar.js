@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, Image, Modal} from 'react-bootstrap';
-import './NavBar.css'
-import Login from './Login.js';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.png';
-import helpIcon from '../assets/help.png';
-import cart from '../assets/cart.png';
+import './NavBar.css'
+import Login from '../login/Login.js';
+import logo from './logo.png';
+import helpIcon from './help.png';
+import cart from './cart.png';
 
 class NavBar extends Component {
     constructor(props) {

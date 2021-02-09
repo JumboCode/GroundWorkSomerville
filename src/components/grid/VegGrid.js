@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import './VegGrid.css';
-import VegDetail from './VegDetail';
+import VegDetail from '../detail/VegDetail';
 
 
 const VegGrid = (props) => {
