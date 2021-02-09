@@ -1,0 +1,75 @@
+.page-container {
+	background-color: #FAF4F1;
+	height: 100%;
+}
+
+h1 {
+	color: #1B7A41;
+	width: 450px;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+	text-align: left;
+}
+
+.timeline-component {
+	margin: auto;
+	width: 90%;
+	margin-bottom: 100px;
+	padding: 50px;
+}
+
+.timeline {
+	margin: 50px 60px; /*temporary values*/
+	height: 15px;
+	background-color: #1FB25A;
+}
+
+.timeline-items {
+	margin-left: -10px;
+	margin-right: -10px;
+	margin-top: -12px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.timeline-item {
+	position: relative;
+}
+
+.timeline-item::before {
+	content: '';
+	width: 50px;
+	height: 50px;
+	background-color: #1FB25A;
+	display: block;
+	border-radius: 100%;
+	margin-top: -20px;
+}
+
+.steps {
+	position: absolute;
+	color: #27AE60;
+	font-size: 20px;
+	top: 30px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 200px;
+	padding: 5px 10px;
+	text-align: center;
+}
+
+.pickup-container {
+	background-color: #FFFFFF;
+	width: 90%;
+	height: 500px;
+	border-radius: 25px;
+	padding: 50px;
+	margin-top: 150px;
+	margin: auto;
+}
+
+.pickup-child {
+	width: 50%;
+	float: left;
+	padding: 10px;
+}
+

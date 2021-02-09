@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import NavBar from './components/NavBar';
-import Vegetables from './components/Vegetables';
-import InfoPage from './components/InfoPage';
-
+import NavBar from './components/navbar/NavBar';
+import Vegetables from './components/home/Vegetables';
+import InfoPage from './components/info/InfoPage';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 class App extends Component {
