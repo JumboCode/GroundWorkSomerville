@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import VegGrid from '../grid/VegGrid';
+import VegGrid from '../../components/grid/VegGrid';
 
 class Vegetables extends Component {
     constructor(props) {
