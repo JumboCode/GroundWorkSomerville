@@ -1,12 +1,24 @@
-import React from 'react';
-import SearchPage from './components/SearchPage';
-import VegetableDetail from './components/VegetableDetail';
+import React, { Component } from 'react';
+import NavBar from './components/navbar/NavBar';
+import Vegetables from './components/home/Vegetables';
+import InfoPage from './components/info/InfoPage';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-
-function App() {
-    return (
-        <VegetableDetail /> 
-    );
+class App extends Component {
+    render() {
+        return (
+            <div className = "App">
+                <BrowserRouter>
+                    <Switch>
+                        <Route path='/' component={NavBar}></Route>
+                    </Switch>
+                    <Switch>
+                        <Route exact path='/' component={Vegetables}></Route>
+                        <Route exact path='/info' component={InfoPage}></Route>
+                    </Switch>
+                </BrowserRouter>
+            </div>
+        );
+    }
 };
-
 export default App;
