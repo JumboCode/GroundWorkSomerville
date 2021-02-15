@@ -30,10 +30,36 @@ def apiOverview(request):
         'Create harvest': '/create-harvest',
         'Delete harvest': '/delete-harvest/<str:pk>',
         'List user transactions': '/list-transactions/<str:pk>',
-        'Create purchase': '/create-purchase'
+        'Create purchase': '/create-purchase',
     }
 
     return Response(apiUrls)
+
+
+
+# adding a product
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def AddProduct(request):
+    body = json.loads(request.body)
+    ptype = body['type']
+
+    # would it be better to use numbers instead of strings
+    # to denote the produce type?
+    if ptype == "produce":
+        serializer = VegetableSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(data=serializer.data)
+    elif ptype == "merchandise":
+        serializer = VegetableSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(data=serializer.data)
+    else: # if product type is invalid
+        err_msg = "Invalid product type '%s'. Expected 'produce' or 'merchandise'." % ptype
+        return Response(err_msg)
 
 
 ### vegetable api
