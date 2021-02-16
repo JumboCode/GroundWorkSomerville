@@ -3,6 +3,7 @@ import NavBar from './components/navbar/NavBar';
 import Vegetables from './pages/home/Vegetables';
 import InfoPage from './pages/info/InfoPage';
 import Inventory from './pages/inventory';
+import Checkout from './pages/checkout/Checkout';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 class App extends Component {
@@ -17,6 +18,7 @@ class App extends Component {
                         <Route exact path='/' component={Vegetables}></Route>
                         <Route exact path='/info' component={InfoPage}></Route>
                         <Route exact path='/inventory' component={Inventory}></Route>
+                        <Route exact path='/checkout' component={Checkout}></Route>
                     </Switch>
                 </BrowserRouter>
             </div>
