@@ -1,17 +1,14 @@
 import React from 'react';
+import './styles.css';
 
 const Button = (props) => {
-    const {onClick, children} = props;
-    const style = {
-        backgroundColor: "#1fb25a", 
-        borderRadius: 20,
-        border: 0,
-        padding: "4px 15px 4px 15px",
-        color: "white",
-    };
-
+    const {onClick, children, className} = props;
     return (
-        <button style={style} onClick={onClick}>{children}</button>
+        <button 
+            onClick={onClick}
+            className = {"gs-button " + className}>
+            {children}
+        </button>
     )
 }
 
