@@ -1,97 +1,68 @@
-import React, { Component } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './Login.css';
-import { Button, Form } from 'react-bootstrap';
+import { Form, Modal } from 'react-bootstrap';
+import Button from '../button';
 
-class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            password: '',
-            error: '',
-        };
-        this.dismissError = this.dismissError.bind(this);
-        this.handleUserChange = this.handleUserChange.bind(this);
-        this.handlePassChange = this.handlePassChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this); 
-        this.innerRef = React.createRef(); 
-    };
-
-    componentDidMount() {
-        setTimeout(() => {
-          this.innerRef.current.focus();
-        }, 1);
-    }
+const Login = ({show, onHide, login}) => {
+    const [uname, setUname] = useState('');
+    const [paswd, setPaswd] = useState('');
+    const [showError, setShowError] = useState(false);
+    const txt = useRef();
+    useEffect(() => {
+        if (show){ txt.current.focus() }
+    }, [show]);
     
-    dismissError(event){
-        this.setState({error: ''});
-    }
-
-    handleUserChange(event){
-        this.setState({username: event.target.value});
-    };
-
-    handlePassChange(event){
-        this.setState({password: event.target.value});
-    };
-  
-    handleSubmit(event){
+    const handleSubmit = (event) => {
         event.preventDefault();
-        const { username, password } = this.state;
-        const { login } = this.props;
         var fetchOptions = {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                'username': username,
-                'password': password,
-            }),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 'username': uname, 'password': paswd})
         }
-
+        
         fetch('rest-auth/login/', fetchOptions)
         .then(res => res.ok ? res : Error)
         .then(res => res.json())
         .then(res => {
             login(res['key']);
         }).catch(err => {
-            this.setState({error:"The username or password you entered is incorrect."});
+            setShowError(true);
         });
-  }
+    }
 
-    render() {
-        const { username, password, error } = this.state;
-        return (
-            <div className="Login">
+    return (
+        <Modal show={show} size="lg" className="Login" centered onHide={onHide}>
+            <div>
                 <h2 className="text-center">Login</h2>
-                <Form onSubmit={this.handleSubmit}>
+                <Form onSubmit={handleSubmit}>
                     <Form.Group size="lg" controlId="email">
                         <Form.Label>Username</Form.Label>
                         <Form.Control
-                        ref={this.innerRef}
                         type="username"
-                        value={username}
-                        onChange={this.handleUserChange}/>
+                        value={uname}
+                        ref = {txt}
+                        onChange={(e)=>{setUname(e.target.value)}}/>
                     </Form.Group>
                     <Form.Group size="lg" controlId="password">
                         <Form.Label>Password</Form.Label>
                         <Form.Control
                         type="password"
-                        value={password}
-                        onChange={this.handlePassChange}/>
+                        value={paswd}
+                        onChange={(e)=>{setPaswd(e.target.value)}}/>
                     </Form.Group>
                     <Form.Group className="errorContainer">
-                        <Form.Text
-                        onClick={this.dismissError}>{error}</Form.Text>
+                        {showError && 
+                        <Form.Text onClick={()=>{setShowError(false)}}>
+                            The username or password you entered is incorrect.    
+                        </Form.Text>}
                     </Form.Group>
                     <Form.Group className="text-center">
                         <Button variant="success" type="submit">Login</Button>
                     </Form.Group>
                 </Form>
             </div>
-        );
-    }
+        </Modal>
+    );
 }
 
 export default Login;
