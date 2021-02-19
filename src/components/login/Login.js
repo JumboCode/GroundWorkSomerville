@@ -9,7 +9,12 @@ const Login = ({show, onHide, login}) => {
     const [showError, setShowError] = useState(false);
     const txt = useRef();
     useEffect(() => {
-        if (show){ txt.current.focus() }
+        if (show){
+            setUname('');
+            setPaswd('');
+            setShowError(false);
+            txt.current.focus();
+        }
     }, [show]);
     
     const handleSubmit = (event) => {

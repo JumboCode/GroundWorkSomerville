@@ -14,7 +14,7 @@ const NavBar = ({ isAuth, logout, showLogin }) => {
     const handleLog = isAuth ? ()=>{logout(); history.push('/')} : showLogin
     const help = window.innerWidth < 580 ? "Help" : <Image src= {helpIcon} height="15"/>
     return(
-        <Navbar collapseOnSelect className="navContainer" expand="sm" sticky="top" bg="light" style={style}>
+        <Navbar collapseOnSelect expand="sm" sticky="top" bg="light" style={style}>
             <Navbar.Brand>
                 <Link to="/">
                     <Image src={logo} height="100"/>
