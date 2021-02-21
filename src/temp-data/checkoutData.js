@@ -36,13 +36,20 @@ const checkoutData = [
     }, 
     {
         id: 6, 
-        type: "fruit",
+        type: "veg",
         name: "Spinach",
         price: 3.50, 
         unit: "ea"
     }, 
     {
         id: 7, 
+        type: "other",
+        name: "Cup",
+        price: 24.00, 
+        unit: "ea"
+    }, 
+    {
+        id: 8, 
         type: "other",
         name: "Cup",
         price: 24.00, 

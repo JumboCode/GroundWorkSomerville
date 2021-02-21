@@ -1,0 +1,19 @@
+.title-header {
+    width: 100%;
+    display:inline-block;
+    font-size: 45px;
+    padding: 24px; 
+}
+
+.button-header{
+    width: 50%;
+    display:inline-block;
+}
+
+.button-header-title{
+    width: 50%;
+    align-items: left;
+    display:inline-block;
+
+
+}
