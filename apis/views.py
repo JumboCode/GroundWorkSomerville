@@ -31,6 +31,7 @@ def apiOverview(request):
         'Delete harvest': '/delete-harvest/<str:pk>',
         'List user transactions': '/list-transactions/<str:pk>',
         'Create purchase': '/create-purchase',
+        'Add product': '/add-product',
     }
 
     return Response(apiUrls)
