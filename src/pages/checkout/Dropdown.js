@@ -10,6 +10,7 @@ class Dropdown extends Component {
             items: this.props.items, 
             showList: true,
         };
+  
         
     }
 
@@ -21,7 +22,13 @@ class Dropdown extends Component {
 
   
     render() {
-        const checkoutItems = this.state.items.map(item => <Item key={item.id} item={item}/>)
+        const checkoutItems = this.state.items.map(item => <Item key={item.id}
+                                                                 id={item.id}
+                                                                 item={item}
+                                                                 onAddItem={this.props.onAddItem}
+                                                                 onUpateItem={this.props.onUpateItem}
+                                                                 onRemoveItem={this.props.onRemoveItem}
+                                                                 />)
         const showList = this.state.showList;
 
         return(

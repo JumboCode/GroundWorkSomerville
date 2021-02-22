@@ -1,12 +1,18 @@
 import React, {Component} from 'react';
 import Item from './Item.js';
-import checkoutData from "../../temp-data/checkoutData";
+import itemData from "../../temp-data/checkoutData";
 import Dropdown from './Dropdown.js';
 
 class Checkout extends Component {
-    constructor() {
-        super()
-        this.state = {checkoutList: checkoutData}
+    constructor(props) {
+        super(props)
+        this.state = 
+            {itemListData: itemData, 
+             checkoutList: []}
+        this.onAddItem = this.onAddItem.bind(this);
+        this.onUpdateItem = this.onUpdateItem.bind(this);
+        this.onRemoveItem = this.onRemoveItem.bind(this);    
+
     }
 
     renderItem(i) {
@@ -16,7 +22,31 @@ class Checkout extends Component {
     renderDropDown(items, type) {
         return <Dropdown items={items} type={type}/>
     }
+
+    // manipulating the item array
+    onAddItem(newValue){
+        this.setState({
+        checkoutList: this.state.checkoutList.concat(newValue)
+      })
+    }
  
+    onRemoveItem(id){
+        this.setState({checkoutList: this.state.checkoutList.filter(item => item.id !== id)
+        })
+            
+    }
+    
+    onUpdateItem(id, i){
+        const list = this.state.checkoutList.map((item) => {
+            if (item.id === id) {
+              return item.price + 1;
+            } else {
+              return item;
+            }
+          });
+     
+        this.setState({checkoutList: list})
+      }
 
     render () {
 
@@ -24,10 +54,8 @@ class Checkout extends Component {
         //    { return (this.renderItem(item))});
         let category = "";
         let itemsList = [];
-        let createDropdown = this.state.checkoutList.map(item => {
-            console.log(item);
+        let createDropdown = this.state.itemListData.map(item => {
             if (item.type !== category) {
-                console.log("in not if here");
                 let tempList = [...itemsList]; 
                 let tempType = category;
 
@@ -35,26 +63,41 @@ class Checkout extends Component {
                 itemsList.push(item);
 
                 category = item.type;
-                console.log("creating dropdown");
-                console.log(tempList);
                 if (tempList.length !== 0)
-                    return <Dropdown items={tempList} type={tempType}/>
+                    return <Dropdown 
+                                items={tempList}
+                                type={tempType}
+                                onAddItem={this.onAddItem}
+                                onUpateItem={this.onUpdateItem}
+                                onRemoveItem={this.onRemoveItem}
+                                />
                 else 
                     return null;
             }
             else {
-                console.log("in  if here");
                 itemsList.push(item);
                 return null;
             }
            
          })
 
+         let summary = this.state.checkoutList.map(item => {
+             console.log("here")
+             return <Item key={item.id} item ={item}/>
+         })
+
         return(
             <div>
-                {createDropdown}
-                <Dropdown items={itemsList} type={category}/>
+                <div className="checkOrder">
+                    {createDropdown}
+                    <Dropdown items={itemsList} type={category}/>
+                </div>
+                <div>
+                    {summary}
+                </div>
+
             </div>
+
         )
     }
 }

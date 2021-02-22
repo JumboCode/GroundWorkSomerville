@@ -2,24 +2,6 @@ import React, {Component} from 'react';
 import './Item.css';
 import Quantity from '../../components/changeNumber/Quantity';
 
-// class Item extends Component() {
-//     constructor(props) {
-//         super(props);
-//         this.state = { name: props.name}
-//     }
-//     // console.log("in item");
-//     // console.log("props.name");
-//     render() {
-//         return(
-//             <div className="item-box">
-//                 <img src="../temp-data/placeholder.png" alt="placeholder" className="prod-image"></img>
-//                 {this.state.name}
-//                 {/* {this.props.price} */}
-//             </div> 
-//         )
-//     }
-
-// }
 
 class Item extends Component{
     constructor(props) {
@@ -28,14 +10,25 @@ class Item extends Component{
           quantity: 0,
         };
         this.onQuantChange = this.onQuantChange.bind(this);
+
     }
 
     onQuantChange(newData){
         this.setState({quantity : newData}, ()=>{
+            if (newData === 1) {
+                console.log("adding 1 item");
+                this.props.onAddItem(this.props.item)
+            } else if (newData === 0) {
+                console.log("removing 1 item");
+                this.props.onRemoveItem(this.props.id)
+            } else {
+                console.log("updating 1 item");
+                this.props.onUpdateItem(this.props.id, newData)
+            }
           console.log('Data 1 changed by Sidebar');
         })
-      }
-    
+    }
+
     toDecimal(num){
         return num.toFixed(2);
     }
@@ -43,7 +36,9 @@ class Item extends Component{
         return(
             <div className="itemContainer">
                 <div className="itemBlock">
-                    <img src='https://www.healthylifestylesliving.com/wp-content/uploads/2015/12/placeholder-256x256.gif' alt="placeholder" className="prod-image" />
+                    <div className="itemColumn-img">
+                        <img src='https://www.healthylifestylesliving.com/wp-content/uploads/2015/12/placeholder-256x256.gif' alt="placeholder" className="prod-image" />
+                    </div>
                     <div className="itemColumn itemColumnRight">
                         <p className="itemName">{this.props.item.name}</p>
                         <p>${this.toDecimal(this.props.item.price)}/{this.props.item.unit}</p>
@@ -53,7 +48,7 @@ class Item extends Component{
                             <p>Quantity</p>
                             <Quantity 
                                 quantity={this.state.quantity}
-                                onQuantChange={this.onQuantChange}    
+                                onQuantChange={this.onQuantChange} 
                             />
                         </div>
                         <div className="itemColumn-small">

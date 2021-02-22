@@ -2,20 +2,20 @@
 .itemContainer{
     display:inline-block;
     width:45%;
-    margin:2%;
-    align-items: center;
+    margin: 0.5% 2% 0.5% 2%;
     align-items: center;
 }
 
 .itemBlock{
     width: 100%;
-    height: 168px;
+    height: 145px;
     background: #FFFFFF 0% 0% no-repeat padding-box;
     box-shadow: 1px 3px 6px #00000029;
     border-radius: 30px;
     opacity: 1;
-    padding: 24px;
+    padding: 15px;
     align-items:center;
+
 }
 
 .itemColumn{
@@ -37,12 +37,21 @@
 }
 
 p.itemName {
-    font-size: 24px;
+    font-size: 18px;
+}
+
+.itemColumn-img{
+    display:inline-block;
+    width:20%; 
+    text-align:left;
+    padding:12px;
 }
 .prod-image {
-    width: 100px; 
-    height: 100px;
+    display: inline-block;
+    width: 80px; 
+    height: 80px;
     border-radius: 25px;
+    margin: auto;
 }
 
 @media screen and (max-width: 950px) {

@@ -37,18 +37,6 @@ class Quantity extends React.Component {
         }
     }
 
-
-    // DecreaseItem = () => {
-    //   this.setState(prevState => {
-    //     if(prevState.quantity > 0) {
-    //       return {
-    //         quantity: prevState.quantity - 1
-    //       }
-    //     } else {
-    //       return null;
-    //     }
-    //   });
-    // }
     ToggleClick = () => {
       this.setState({
         show: !this.state.show
