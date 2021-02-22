@@ -79,6 +79,8 @@ def CreateVegetable(request):
 
     if serializer.is_valid():
         serializer.save()
+    else:
+        print("invalid data")
 
     return Response(serializer.data)
 
