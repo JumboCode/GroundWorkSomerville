@@ -1,59 +1,87 @@
 import React, {Component} from 'react';
 import './Item.css';
 import Quantity from '../../components/changeNumber/Quantity';
+var classNames = require('classnames');
 
 
-class Item extends Component{
+class Item extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          quantity: 0,
+          quantity: this.props.quantity
         };
         this.onQuantChange = this.onQuantChange.bind(this);
 
     }
 
-    onQuantChange(newData){
+    onQuantChange(id, newData, indicator){
         this.setState({quantity : newData}, ()=>{
-            if (newData === 1) {
+            if (newData === 1 && indicator === "up") {
                 console.log("adding 1 item");
                 this.props.onAddItem(this.props.item)
-            } else if (newData === 0) {
+            } else if (newData === 0 && indicator === "down") {
                 console.log("removing 1 item");
                 this.props.onRemoveItem(this.props.id)
             } else {
                 console.log("updating 1 item");
+                console.log(this.props.id)
                 this.props.onUpdateItem(this.props.id, newData)
             }
-          console.log('Data 1 changed by Sidebar');
+  
         })
     }
 
     toDecimal(num){
         return num.toFixed(2);
     }
+    componentWillReceiveProps(nextProps){
+           this.setState({quantity: nextProps.quantity})
+      }
+
+
     render() {
+        var itemcol = classNames({
+            'itemColumn': !this.props.checkout,
+            'itemColumnRight': true,
+            'orderColumn': this.props.checkout
+          });
+
+        var itemblk = classNames({
+            'itemBlock': !this.props.checkout, 
+            'orderBlock': this.props.checkout
+        })
+
+        var itemcontainer = classNames({
+            'itemContainer': !this.props.checkout
+        })
+
+        // const quantityvar = !this.props.checkout? this.state.quantity : this.props.quantity;
+        const quantityvar = this.state.quantity;
+
         return(
-            <div className="itemContainer">
-                <div className="itemBlock">
-                    <div className="itemColumn-img">
+            <div className={itemcontainer}>
+                <div className={itemblk}>
+                    {!this.props.checkout && <div className="itemColumn-img">
                         <img src='https://www.healthylifestylesliving.com/wp-content/uploads/2015/12/placeholder-256x256.gif' alt="placeholder" className="prod-image" />
-                    </div>
-                    <div className="itemColumn itemColumnRight">
+                    </div>}
+                    <div className={itemcol}>
                         <p className="itemName">{this.props.item.name}</p>
-                        <p>${this.toDecimal(this.props.item.price)}/{this.props.item.unit}</p>
+                        {!this.props.checkout && <p>${this.toDecimal(this.props.item.price)}/{this.props.item.unit}</p>}
                     </div>
-                    <div className="itemColumn itemColumnRight">
+                    <div className={itemcol}>
                         <div className="itemColumn-small">
-                            <p>Quantity</p>
+                            {!this.props.checkout && <p>Quantity</p>}
                             <Quantity 
-                                quantity={this.state.quantity}
+                                id = {this.props.id}
+                                quantity={quantityvar}
                                 onQuantChange={this.onQuantChange} 
                             />
                         </div>
                         <div className="itemColumn-small">
-                            <p>Total</p>
-                            {this.toDecimal(this.state.quantity*this.props.item.price)}
+                            {!this.props.checkout && <p>Total</p>}
+                            {!this.props.checkout && this.toDecimal(quantityvar*this.props.item.price)}
+                            {this.props.checkout && <p>x {this.toDecimal(this.props.item.price)}</p>}
+
                         </div>
                     </div>
                    

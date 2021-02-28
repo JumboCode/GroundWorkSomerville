@@ -28,7 +28,7 @@
 .itemColumn-small{
     display:inline-block;
     width:50%; 
-    text-align:left;
+    text-align:right;
     padding-left:2%;
 }
 
@@ -37,7 +37,7 @@
 }
 
 p.itemName {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .itemColumn-img{
@@ -57,4 +57,18 @@ p.itemName {
 @media screen and (max-width: 950px) {
     .prod-image {display:none;}
     .itemContainer {width: 90%}
+}
+
+.orderColumn {
+    display:inline-block;
+    width:45%; 
+    text-align:left;
+    padding:0 15px 0 15px;
+}
+
+.orderBlock{
+    width: 100%;
+    opacity: 1;
+    /* padding: 5px; */
+    align-items:center;
 }

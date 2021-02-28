@@ -17,7 +17,10 @@ class Quantity extends React.Component {
   
     IncrementItem = () => {
         if(this.props.quantity < 9) {
-            this.props.onQuantChange(this.props.quantity + 1);
+            this.props.onQuantChange(this.props.id, this.props.quantity + 1, "up");
+            console.log("in increment item")
+            console.log(this.props.quantity)
+            console.log(this.props.quantity +1)
             return {
                 quantity: this.props.quantity + 1
             }
@@ -28,7 +31,7 @@ class Quantity extends React.Component {
 
     DecreaseItem = () => {
         if(this.props.quantity > 0) {
-            this.props.onQuantChange(this.props.quantity - 1);
+            this.props.onQuantChange(this.props.id, this.props.quantity - 1, "down");
             return {
                 quantity: this.props.quantity - 1
             }
@@ -44,7 +47,7 @@ class Quantity extends React.Component {
     }
     handleChange = (event) => {
     //   this.setState({quantity: event.target.value});
-        this.props.onQuantChange(event.target.value);
+        this.props.onQuantChange(event.target.value, "change");
     }
   
     render() {

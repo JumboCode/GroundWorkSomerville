@@ -1,0 +1,44 @@
+.orderSum{
+    width: 100%;
+    /* background: #FFFFFF 0% 0% no-repeat padding-box; */
+}
+.orderSummary{
+    display:inline-block;
+    width:60%;
+    margin: 0.5% 2% 0.5% 2%;
+    align-items: center;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 1px 3px 6px #00000029;
+    border-radius: 20px;
+}
+
+.orderTitle{
+    font-size: 45px;
+    padding: 24px;
+    width:100%;
+    
+}
+.theadCol {
+    display:inline-block;
+    width:45%; 
+    text-align:left;
+    padding:15px;
+}
+
+.thead{
+    font-weight: bold;
+}
+
+.orderHeader{
+    display:inline-block;
+    width:45%; 
+    text-align:left;
+    padding:15px;
+}
+
+.orderTotal{
+    display:inline-block;
+    width:30%;
+    align-items: center;
+    
+}
