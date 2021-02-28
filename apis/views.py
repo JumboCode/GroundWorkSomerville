@@ -15,6 +15,9 @@ from django.core.exceptions import MultipleObjectsReturned
 from django.contrib.auth.models import User
 
 import json
+import base64
+import uuid
+
 
 def index(request):
     return render(request, "index.html")
@@ -43,24 +46,48 @@ def apiOverview(request):
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def AddProduct(request):
-    body = json.loads(request.body)
+    body = json.loads(request.body, strict=False)
     ptype = body['type']
 
-    # would it be better to use numbers instead of strings
-    # to denote the produce type?
-    if ptype == "produce":
+    # decode the base64 image, and replace the 'image'
+    # field with its corresponding file name
+    img, file_name = decode_base64_image(body['photo'])
+    request.data.update({"photo": file_name})
+    
+    if ptype == 0: # type 0 = produce
         serializer = VegetableSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            fout = open(file_name, 'wb')
+            fout.write(img)
+            fout.close()
         return Response(data=serializer.data)
-    elif ptype == "merchandise":
+    elif ptype == 1: # type 1 = merchandise
         serializer = VegetableSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            fout = open(file_name, 'wb')
+            fout.write(img)
+            fout.close()
         return Response(data=serializer.data)
     else: # if product type is invalid
         err_msg = "Invalid product type '%s'. Expected 'produce' or 'merchandise'." % ptype
         return Response(err_msg)
+
+
+# Decodes a base64 image, creates a unique file name to save it under,
+# and returns a tuple that consists of (image, file name).
+#
+# Note that this doesn't create any files. In many scenarios, there's
+# some kind of data you need to validate before saving the image (e.g. serializing
+# request data), so it would be a waste to save images for invalid entries
+# that aren't saved in the database.
+def decode_base64_image(image64):
+    # image_decoded = base64.decodestring(image64)
+    image_decoded = base64.b64decode(image64)
+    file_name = 'public/static/images/' + uuid.uuid4().hex
+    return (image_decoded, file_name)
+
 
 
 ### vegetable api
