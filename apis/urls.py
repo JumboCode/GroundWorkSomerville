@@ -4,6 +4,7 @@ from django.conf.urls import include, url
 from django.conf import settings
 from django.views.static import serve
 
+
 urlpatterns = [
     path('list-vegetables', views.ListVegetables, name="list-vegetables"),
     path('create-vegetable', views.CreateVegetable, name="create-vegetable"),
@@ -14,7 +15,7 @@ urlpatterns = [
     path('delete-harvest/<str:pk>', views.DeleteHarvest, name="delete-harvest"),
     path('create-purchase', views.CreatePurchase, name='create-purchase'),
     path('search-vegetables/<str:pk>', views.SearchVegetables, name="search-vegetables"),
-    url(r'.*', views.index, name="Index")
+    url(r'.*', views.index, name="Index"),
 ]
 
 if not settings.IS_HEROKU:

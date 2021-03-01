@@ -9,16 +9,38 @@ from multiselectfield import MultiSelectField
 # TODO: 2: add endpoints for User, Group, CATEGORIES CRUD operations
 #           or figure out if Django supports them already
 
-CATEGORIES = ((1, 'FRUIT'),
-              (2, 'VEGETABLE'),
-              (3, 'HERBS'),
-              (4, 'SEASONAL'))
+#CATEGORIES = ((1, 'FRUIT'),
+#              (2, 'VEGETABLE'),
+#              (3, 'HERBS'),
+#              (4, 'SEASONAL'))
+
+#class YearInSchool(models.TextChoices):
+#        FRESHMAN = 'FR', _('Freshman')
+#        SOPHOMORE = 'SO', _('Sophomore')
+#        JUNIOR = 'JR', _('Junior')
+#        SENIOR = 'SR', _('Senior')
+#        GRADUATE = 'GR', _('Graduate')
+
+#TYPE = (('MER', 'Merchandise'),
+#        ('VEG', 'Vegetable'))
+
+#year_in_school = models.CharField(
+#        max_length=2,
+#        choices=YearInSchool.choices,
+#        default=YearInSchool.FRESHMAN,
+#    )
 
 class Vegetable(models.Model):
+
+#  class ProductType(models.TextChoices):
+#    VEGETABLE = 'VEG', _('Vegetable')
+#    MERCHANDISE = 'MER', _('Merchandise')
+
   name = models.CharField(max_length=100)
   photo = models.ImageField(upload_to='images', default='images/default.jpg')
   availability = models.BooleanField(default=False)
-  categories = MultiSelectField(choices=CATEGORIES)
+  #type = models.CharField(max_length=3, choices = ProductType.choices, default= ProductType.MERCHANDISE )
+  #categories = MultiSelectField(choices=CATEGORIES)
 
   def __str__(self):
     return self.name
