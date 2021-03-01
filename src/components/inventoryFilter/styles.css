@@ -1,0 +1,24 @@
+#inventory-filter{
+    margin-top: 25%;
+}
+
+.date-picker{
+    margin-top: 12%;
+}
+
+.sort-inventory {
+    margin-top:12%;
+}
+
+.add-buttons{
+    margin-top:12%;
+    display: grid;
+    float: left;
+}
+
+.saurav{
+    float:left;
+    margin-top:12%;
+    margin-left: 4%;
+    height: 70px;
+}
