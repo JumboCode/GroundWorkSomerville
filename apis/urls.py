@@ -17,7 +17,7 @@ urlpatterns = [
     path('user', views.GetUser, name="user-info"),
     path('add-user', views.AddUser, name="add-user"),
     path('changepass', views.ChangePassword, name="change-pass"),
-    path('login', views.login, name="login"),,
+    path('login', views.login, name="login"),
     path('add-product', views.AddProduct, name="add-product"),
     path('logout', views.logout, name="logout")
 ]
