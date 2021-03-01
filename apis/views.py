@@ -7,6 +7,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.response import Response
+from rest_framework.exceptions import ParseError, ValidationError
 import pandas as pandas
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -62,17 +63,17 @@ def AddProduct(request):
             fout.write(img)
             fout.close()
         return Response(data=serializer.data)
-    elif ptype == 1: # type 1 = merchandise
-        serializer = VegetableSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            fout = open(file_name, 'wb')
-            fout.write(img)
-            fout.close()
-        return Response(data=serializer.data)
+    # elif ptype == 1: # type 1 = merchandise
+    #     serializer = VegetableSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         fout = open(file_name, 'wb')
+    #         fout.write(img)
+    #         fout.close()
+    #     return Response(data=serializer.data)
     else: # if product type is invalid
         err_msg = "Invalid product type '%s'. Expected 'produce' or 'merchandise'." % ptype
-        return Response(err_msg)
+        return ParseError(err_msg)
 
 
 # Decodes a base64 image, creates a unique file name to save it under,
@@ -160,7 +161,7 @@ def CreateHarvest(request):
         return Response(serializer.data)
     else:
         # TODO: use an error response
-        return Response("invalid spreadsheet!")
+        return ValidationError("invalid spreadsheet!")
 
 def create_vegetables(cols):
     pass
