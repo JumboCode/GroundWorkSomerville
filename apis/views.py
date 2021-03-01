@@ -146,10 +146,8 @@ def ListHarvests(request):
     return Response(serializer.data)
 
 @api_view(['POST'])
-# TODO: once you get file uploads working, turn auth back on
-# and then figure out how to authenticate in the FE
-#@authentication_classes([SessionAuthentication, BasicAuthentication])
-#@permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def CreateHarvest(request):
     # read the spreadsheet
     spreadsheet = request.FILES['file']
@@ -160,11 +158,7 @@ def CreateHarvest(request):
         create_vegetables(cols)
         return Response(serializer.data)
     else:
-        # TODO: use an error response
         return ValidationError("invalid spreadsheet!")
-
-def create_vegetables(cols):
-    pass
 
 def create_harvest(cols):
     harvest_dict = {'farm_name': cols['farm'][0]}
@@ -172,10 +166,16 @@ def create_harvest(cols):
     harvest_serializer = HarvestSerializer(data=harvest_dict)
     if harvest_serializer.is_valid():
         harvest_serializer.save()
-    print(harvest_serializer)
-    # serialize the vegetables types
+    
     # serialize the stocked vegetables
     return harvest_serializer
+
+def create_vegetables(cols):
+    for vegetable_name in cols['item']:
+        vegetable_dict = {'name': vegetable_name}
+        serializer = VegetableSerializer(data=vegetable_dict)
+        if serializer.is_valid():
+            serializer.save()
 
 
 def validate_harvest_spreadsheet(cols):
