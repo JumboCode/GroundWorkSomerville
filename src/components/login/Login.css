@@ -1,12 +1,15 @@
-.Login {
-  padding: 15%;
-}
-
 .Login form {
-  margin: auto;
   max-width: 300px;
+  margin: auto;
 }
 
 .errorContainer {
-  height:18px;
+  min-height:19.5px;
+  margin: -10px 0 0 0;
+}
+
+.Login .modal-content {
+  background-image: url('/static/loginBackground.jpg');
+  color: white;
+  padding: 15%;
 }

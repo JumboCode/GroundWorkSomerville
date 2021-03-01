@@ -1,0 +1,15 @@
+.gs-button{
+    background-color: #1fb25a;
+    border: 0;
+    border-radius: 20px;
+    padding: 5px 20px 5px 20px;
+    color: white;
+}
+
+.gs-button:hover{
+    background-color: #1aa752;
+}
+
+.gs-button:active{
+    background-color: #7ad39d;
+}
