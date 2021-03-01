@@ -1,0 +1,53 @@
+#inventory-tab{
+    padding:2%;
+    padding-top: 5%;
+}
+.tab-button{
+    border-radius: 70px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    line-height: 1;
+    border: 2px solid transparent;
+    color: green;
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: large;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    transition: 0.3s;
+}
+
+.tab-button.active{
+    border:2px solid green;
+}
+
+.fixedHeader{
+    margin-top: 2%;
+    max-height: 480px;
+    overflow: auto;
+}
+
+.inventory-table{
+    width: 100%;
+}
+
+.inventory-table tr {
+    line-height: 40px;
+}
+
+.inventory-table thead th{
+    position: sticky;
+    top: 0;
+    background-color: #FAF4F1;
+}
+
+.inventory-table tbody tr + tr{
+    border-top: 2px solid #FAF4F1;
+}
+
+.inventory-table tbody{
+    background-color: white;
+}
+
+.inventory-table td, th{
+    padding-left: 1%;
+}
