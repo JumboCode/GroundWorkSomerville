@@ -4,7 +4,7 @@ import AddItem from '../addItem';
 import AddUser from '../addUser';
 import { Modal } from 'react-bootstrap';
 
-const InventoryFilter = (props) => {
+const InventoryFilter = ({token}) => {
     const [showAddItem, setShowAddItem] = useState(false);
     const [showAddUser, setShowAddUser] = useState(false);
     return (
@@ -15,7 +15,7 @@ const InventoryFilter = (props) => {
                 <AddItem/>
             </Modal>
 
-            <AddUser show={showAddUser} onHide={()=> setShowAddUser(false)}/>
+            <AddUser show={showAddUser} onHide={()=> setShowAddUser(false)} token={token}/>
 
         </div>
     )
