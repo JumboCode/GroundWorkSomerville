@@ -18,7 +18,7 @@ class Vegetable(models.Model):
   name = models.CharField(max_length=100)
   photo = models.ImageField(upload_to='images', default='images/default.jpg')
   availability = models.BooleanField(default=False)
-  categories = MultiSelectField(choices=CATEGORIES)
+  categories = MultiSelectField(choices=CATEGORIES, default=1)
 
   def __str__(self):
     return self.name

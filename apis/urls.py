@@ -14,6 +14,7 @@ urlpatterns = [
     path('delete-harvest/<str:pk>', views.DeleteHarvest, name="delete-harvest"),
     path('create-purchase', views.CreatePurchase, name='create-purchase'),
     path('search-vegetables/<str:pk>', views.SearchVegetables, name="search-vegetables"),
+    path('add-product', views.AddProduct, name="add-product"),
     url(r'.*', views.index, name="Index")
 ]
 

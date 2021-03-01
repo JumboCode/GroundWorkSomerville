@@ -7,6 +7,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.response import Response
+from rest_framework.exceptions import ParseError, ValidationError
 import pandas as pandas
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -15,6 +16,9 @@ from django.core.exceptions import MultipleObjectsReturned
 from django.contrib.auth.models import User
 
 import json
+import base64
+import uuid
+
 
 def index(request):
     return render(request, "index.html")
@@ -30,10 +34,61 @@ def apiOverview(request):
         'Create harvest': '/create-harvest',
         'Delete harvest': '/delete-harvest/<str:pk>',
         'List user transactions': '/list-transactions/<str:pk>',
-        'Create purchase': '/create-purchase'
+        'Create purchase': '/create-purchase',
+        'Add product': '/add-product',
     }
 
     return Response(apiUrls)
+
+
+
+# adding a product
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def AddProduct(request):
+    body = json.loads(request.body, strict=False)
+    ptype = body['type']
+
+    # decode the base64 image, and replace the 'image'
+    # field with its corresponding file name
+    img, file_name = decode_base64_image(body['photo'])
+    request.data.update({"photo": file_name})
+    
+    if ptype == 0: # type 0 = produce
+        serializer = VegetableSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            fout = open(file_name, 'wb')
+            fout.write(img)
+            fout.close()
+        return Response(data=serializer.data)
+    # elif ptype == 1: # type 1 = merchandise
+    #     serializer = VegetableSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         fout = open(file_name, 'wb')
+    #         fout.write(img)
+    #         fout.close()
+    #     return Response(data=serializer.data)
+    else: # if product type is invalid
+        err_msg = "Invalid product type '%s'. Expected 'produce' or 'merchandise'." % ptype
+        return ParseError(err_msg)
+
+
+# Decodes a base64 image, creates a unique file name to save it under,
+# and returns a tuple that consists of (image, file name).
+#
+# Note that this doesn't create any files. In many scenarios, there's
+# some kind of data you need to validate before saving the image (e.g. serializing
+# request data), so it would be a waste to save images for invalid entries
+# that aren't saved in the database.
+def decode_base64_image(image64):
+    # image_decoded = base64.decodestring(image64)
+    image_decoded = base64.b64decode(image64)
+    file_name = 'public/static/images/' + uuid.uuid4().hex
+    return (image_decoded, file_name)
+
 
 
 ### vegetable api
@@ -52,6 +107,8 @@ def CreateVegetable(request):
 
     if serializer.is_valid():
         serializer.save()
+    else:
+        print("invalid data")
 
     return Response(serializer.data)
 
@@ -89,10 +146,8 @@ def ListHarvests(request):
     return Response(serializer.data)
 
 @api_view(['POST'])
-# TODO: once you get file uploads working, turn auth back on
-# and then figure out how to authenticate in the FE
-#@authentication_classes([SessionAuthentication, BasicAuthentication])
-#@permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def CreateHarvest(request):
     # read the spreadsheet
     spreadsheet = request.FILES['file']
@@ -103,11 +158,7 @@ def CreateHarvest(request):
         create_vegetables(cols)
         return Response(serializer.data)
     else:
-        # TODO: use an error response
-        return Response("invalid spreadsheet!")
-
-def create_vegetables(cols):
-    pass
+        return ValidationError("invalid spreadsheet!")
 
 def create_harvest(cols):
     harvest_dict = {'farm_name': cols['farm'][0]}
@@ -115,10 +166,16 @@ def create_harvest(cols):
     harvest_serializer = HarvestSerializer(data=harvest_dict)
     if harvest_serializer.is_valid():
         harvest_serializer.save()
-    print(harvest_serializer)
-    # serialize the vegetables types
+    
     # serialize the stocked vegetables
     return harvest_serializer
+
+def create_vegetables(cols):
+    for vegetable_name in cols['item']:
+        vegetable_dict = {'name': vegetable_name}
+        serializer = VegetableSerializer(data=vegetable_dict)
+        if serializer.is_valid():
+            serializer.save()
 
 
 def validate_harvest_spreadsheet(cols):
