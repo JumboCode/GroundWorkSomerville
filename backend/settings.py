@@ -25,7 +25,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'multiselectfield',
     'rest_framework.authtoken',
-    'rest_auth',
     'storages'
 ]
 
@@ -36,7 +35,6 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -126,5 +124,10 @@ if IS_HEROKU:
     AWS_LOCATION = 'media'
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     
+    EMAIL_HOST = os.environ['EMAIL_HOST']
+    EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+    EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+    EMAIL_PORT = os.environ['EMAIL_PORT']
+
     import django_heroku
     django_heroku.settings(locals(), staticfiles=False)
