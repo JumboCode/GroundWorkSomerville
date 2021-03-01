@@ -8,7 +8,7 @@
 
 .itemBlock{
     width: 100%;
-    height: 145px;
+    height: 139px;
     background: #FFFFFF 0% 0% no-repeat padding-box;
     box-shadow: 1px 3px 6px #00000029;
     border-radius: 30px;
@@ -55,7 +55,7 @@ p.itemName {
 }
 
 @media screen and (max-width: 950px) {
-    .prod-image {display:none;}
+    .prod-image {width: 40px; height: 40px;}
     .itemContainer {width: 90%}
 }
 

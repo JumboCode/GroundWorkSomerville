@@ -40,5 +40,11 @@
     display:inline-block;
     width:30%;
     align-items: center;
+    margin: 0.5% 2% 0.5% 2%;
     
+}
+
+@media screen and (max-width: 950px) {
+    .orderTotal {width:90%;}
+    .orderSummary {width: 90%}
 }
