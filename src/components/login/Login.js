@@ -25,11 +25,11 @@ const Login = ({show, onHide, login}) => {
             body: JSON.stringify({ 'username': uname, 'password': paswd})
         }
         
-        fetch('rest-auth/login/', fetchOptions)
+        fetch('login', fetchOptions)
         .then(res => res.ok ? res : Error)
         .then(res => res.json())
         .then(res => {
-            login(res['key']);
+            login(res);
         }).catch(err => {
             setShowError(true);
         });

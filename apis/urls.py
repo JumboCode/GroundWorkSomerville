@@ -15,8 +15,17 @@ urlpatterns = [
     path('delete-harvest/<str:pk>', views.DeleteHarvest, name="delete-harvest"),
     path('create-purchase', views.CreatePurchase, name='create-purchase'),
     path('search-vegetables/<str:pk>', views.SearchVegetables, name="search-vegetables"),
+<<<<<<< HEAD
     url(r'.*', views.index, name="Index"),
+=======
+    path('user', views.GetUser, name="user-info"),
+    path('add-user', views.AddUser, name="add-user"),
+    path('changepass', views.ChangePassword, name="change-pass"),
+    path('login', views.login, name="login"),
+    path('add-product', views.AddProduct, name="add-product"),
+    path('logout', views.logout, name="logout")
+>>>>>>> 53eb6c1a96f8140dea8a2792d6cf513e82f0dc63
 ]
 
 if not settings.IS_HEROKU:
-    urlpatterns.insert(-1, url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT,}))
+    urlpatterns.append(url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT,}))
