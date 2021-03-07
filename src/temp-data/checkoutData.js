@@ -51,8 +51,8 @@ const checkoutData = [
     {
         id: 8, 
         type: "other",
-        name: "Cup",
-        price: 24.00, 
+        name: "T-Shirt",
+        price: 20.00, 
         unit: "ea"
     }, 
 
