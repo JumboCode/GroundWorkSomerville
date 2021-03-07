@@ -169,22 +169,42 @@ def UserTransactions(request, pk):
     return Response(serializer.data)
 
 ################################### INVENTORY VIEWS ###################################
+'''
+expects start and end date -- a week apart
+can only be one harvest during that week
+'''
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def StockedVegetable(request):
-    dates = request.data
-    startdate, enddate = dates
-    return request
-    '''
-    need to return name, current price, total sold, total available
-    '''
+    startdate, enddate = request.data
+    harvest = Harvest.objects.filter(date__range=[startdate, enddate]).first()
+    stockedvegetables = StockedVegetable.objects.filter(harvested_on=harvest)
+    return_list = []
+    for stocked in stockedvegetables:
+        item = PurchasedItem.objects.filter(stockedvegetables=stocked).first()
+        vegetable = stock.vegetable
+        price = VegetablePrice.objects.filter(vegetable=vegetable).latest('updated_on')
+        return_list.append( 
+        {   name: vegetable.name,
+            total_available: stocked.quantity,
+            unit: vegetable.unit,
+            total_sold: item.total_amount,
+            price: price.price
+        })
+
+    return json.dumps(return_list)
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def StockedMerchandise(request):
     return request
+''' need to reeturn name, current price, total sold, total available.
+--- for all the merch products
+'''
+
+
 
 ################################### HARVEST VIEWS ###################################
 @api_view(['GET'])

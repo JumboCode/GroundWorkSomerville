@@ -10,11 +10,17 @@ urlpatterns = [
     path('create-vegetable', views.CreateVegetable, name="create-vegetable"),
     path('update-vegetable/<str:pk>', views.UpdateVegetable),
     path('delete-vegetable/<str:pk>', views.DeleteVegetable, name="delete-vegetable"),
+    path('search-vegetables/<str:pk>', views.SearchVegetables, name="search-vegetables"),
+    
     path('list-harvests', views.ListHarvests, name="list-harvests"),
     path('create-harvest', views.CreateHarvest, name="create-harvest"),
     path('delete-harvest/<str:pk>', views.DeleteHarvest, name="delete-harvest"),
+    
     path('create-purchase', views.CreatePurchase, name='create-purchase'),
-    path('search-vegetables/<str:pk>', views.SearchVegetables, name="search-vegetables"),
+    
+    path('vegetable-stock', views.StockedVegetable, name='vegetable-stock'),
+    path('merch-stock', views.StockedMerchandise, name='merch-stock'),
+    
     path('user', views.GetUser, name="user-info"),
     path('add-user', views.AddUser, name="add-user"),
     path('changepass', views.ChangePassword, name="change-pass"),

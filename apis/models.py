@@ -22,6 +22,7 @@ class Harvest(models.Model):
   created_on = models.DateTimeField(default=timezone.now)
   updated_on = models.DateTimeField(default=timezone.now)
   active = models.BooleanField(default=True)
+
   def __str__(self):
     return self.farm_name + ' - ' + str(self.date)
 
@@ -45,7 +46,7 @@ class MerchandisePrice(models.Model):
 class Vegetable(models.Model):
   name = models.CharField(max_length=100)
   photo = models.ImageField(upload_to='images', default='images/default.jpg')
-  units = models.CharField(max_length=100)
+  unit = models.CharField(max_length=100)
   categories = MultiSelectField(choices=VEGETABLE_TYPE, default=1)
   def __str__(self):
     return self.name
@@ -88,8 +89,18 @@ class PurchasedItem(models.Model):
   total_price = models.DecimalField(max_digits=10, decimal_places=2)
   total_amount = models.DecimalField(max_digits=10, decimal_places=2)
   categories = MultiSelectField(choices=PRODUCT_TYPE, default=1)
-  stocked_vegetable = models.ForeignKey(to=StockedVegetable, on_delete=models.PROTECT) #change-this
+  stocked_vegetable = models.ForeignKey(to=StockedVegetable, on_delete=models.PROTECT, null=True)
+  merchandisee = models.ForeignKey(to=Merchandise, on_delete=models.PROTECT, null=True)
+  
+  class Meta:
+    constraints = [
+      models.CheckConstraint(
+        name  = "purchased item can be either vegeetable or merchandise"
+        check = 
+        models.Q(categories = 1, stocked_vegetable__isnull = False, merchandise__isnull = True ) | 
+        models.Q(categories = 2, merchandise_isnull = False, stocked_vegetable__isnull=True)
+      )
+    ]
 
   def __str__(self):
-    return self.stocked_vegetable.name
-
+    return str(self.id)
