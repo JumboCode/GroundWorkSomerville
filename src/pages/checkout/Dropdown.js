@@ -67,8 +67,9 @@ class Dropdown extends Component {
                     {showList? "-" : "+"}
                     </button>
                 </div>
-                
-                {showList && checkoutItems}
+                <div className="itemBig">
+                    {showList && checkoutItems}
+                </div>
 
             </div>
          

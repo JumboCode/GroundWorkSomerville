@@ -159,7 +159,7 @@ class Checkout extends Component {
                             {summary}
                         </div>
                         <div className="orderTotal">
-                            <OrderSummary total={totalvalue}/>
+                            <OrderSummary total={totalvalue} />
                         </div>
                     </div>
                     

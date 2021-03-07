@@ -1,13 +1,20 @@
 .title-header {
     width: 100%;
     display:inline-block;
-    font-size: 45px;
-    padding: 24px; 
+    font-size: 24px;
+    padding: 1% 5% 1% 5%;
+    color: #1FB25A;
 }
 
+/* .itemBig {
+    padding: 1% 5% 1% 5%;
+} */
+
 .button-header{
-    width: 50%;
-    display:inline-block;
+    width: 5%;
+    float: right;
+    /* display:inline-block; */
+    color: #1B7A41;
 }
 
 .button-header-title{

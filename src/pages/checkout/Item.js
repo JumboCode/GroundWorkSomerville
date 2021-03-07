@@ -42,9 +42,15 @@ class Item extends Component {
     render() {
         var itemcol = classNames({
             'itemColumn': !this.props.checkout,
+            'orderColumn': this.props.checkout,
             'itemColumnRight': true,
-            'orderColumn': this.props.checkout
           });
+
+        var itemcolQuant = classNames({
+            'itemColumnQuant': !this.props.checkout,
+            'orderColumnQuant': this.props.checkout,
+            'itemColumnRight': true,
+        });
 
         var itemblk = classNames({
             'itemBlock': !this.props.checkout, 
@@ -68,8 +74,8 @@ class Item extends Component {
                         <p className="itemName">{this.props.item.name}</p>
                         {!this.props.checkout && <p>${this.toDecimal(this.props.item.price)}/{this.props.item.unit}</p>}
                     </div>
-                    <div className={itemcol}>
-                        <div className="itemColumn-small">
+                    <div className={itemcolQuant}>
+                        <div className="itemColumn-small small-Quant">
                             {!this.props.checkout && <p>Quantity</p>}
                             <Quantity 
                                 id = {this.props.id}
@@ -77,10 +83,10 @@ class Item extends Component {
                                 onQuantChange={this.onQuantChange} 
                             />
                         </div>
-                        <div className="itemColumn-small">
+                        <div className="itemColumn-small small-Total">
                             {!this.props.checkout && <p>Total</p>}
                             {!this.props.checkout && this.toDecimal(quantityvar*this.props.item.price)}
-                            {this.props.checkout && <p>x {this.toDecimal(this.props.item.price)}</p>}
+                            {this.props.checkout && <p>/{this.toDecimal(this.props.item.price)}</p>}
 
                         </div>
                     </div>
