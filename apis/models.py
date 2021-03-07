@@ -28,13 +28,10 @@ class Harvest(models.Model):
 class Merchandise(models.Model):
   name = models.CharField(max_length=100)
   photo = models.ImageField(upload_to='images', default='images/default.jpg')
+  quantity = models.DecimalField(max_digits=10, decimal_places=2)
   categories = MultiSelectField(choices=MERCHANDISE_TYPE, default=1)
   def __str__(self):
     return self.name
-
-class StockedMerchandise(models.Model):
-  merchandise = models.ForeignKey(to=Merchandise, on_delete=models.SET_NULL)
-  quantity = models.DecimalField(max_digits=10, decimal_places=2)
 
 class MerchandisePrice(models.Model):
   Merchandise = models.ForeignKey(to=Merchandise, on_delete=models.SET_PROTECT)
@@ -91,7 +88,7 @@ class PurchasedItem(models.Model):
   total_price = models.DecimalField(max_digits=10, decimal_places=2)
   total_amount = models.DecimalField(max_digits=10, decimal_places=2)
   categories = MultiSelectField(choices=PRODUCT_TYPE, default=1)
-  stocked_vegetable = models.ForeignKey(to=StockedVegetable, on_delete=models.PROTECT)
+  stocked_vegetable = models.ForeignKey(to=StockedVegetable, on_delete=models.PROTECT) #change-this
 
   def __str__(self):
     return self.stocked_vegetable.name

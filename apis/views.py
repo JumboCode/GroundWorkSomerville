@@ -59,6 +59,15 @@ def validate_harvest_spreadsheet(cols):
             and len(cols['item']) == len(cols['quantity']) \
             and len(cols['quantity']) != 0)
 
+'''
+Decodes a base64 image, creates a unique file name to save it under, and returns a tuple that consists of (image, file name).
+Note that this doesn't create any files. In many scenarios, there's some kind of data you need to validate before saving the image 
+(e.g. serializing request data), so it would be a waste to save images for invalid entries that aren't saved in the database.
+'''
+def decode_base64_image(image64):
+    image_decoded = base64.b64decode(image64)
+    file_name = 'public/static/images/' + uuid.uuid4().hex
+    return (image_decoded, file_name)
 
 
 
@@ -159,9 +168,23 @@ def UserTransactions(request, pk):
     serializer = TransactionSerializer(transactions, many=True)
     return Response(serializer.data)
 
+################################### INVENTORY VIEWS ###################################
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def StockedVegetable(request):
+    dates = request.data
+    startdate, enddate = dates
+    return request
+    '''
+    need to return name, current price, total sold, total available
+    '''
 
-
-
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def StockedMerchandise(request):
+    return request
 
 ################################### HARVEST VIEWS ###################################
 @api_view(['GET'])
@@ -195,8 +218,6 @@ def DeleteHarvest(request, pk):
     itemToDelete.delete()
 
     return Response("Item deleted")
-
-
 
 
 
@@ -249,8 +270,6 @@ def SearchVegetables(request, pk):
 
 
 
-
-
 ################################### PRODUCT VIEWS ###################################
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -297,17 +316,4 @@ def AddProduct(request):
 # Qualifications: Assumes that all stocks combined contains sufficient quantity.
 #                 Does not account for multiple vegetable stocks.
 #                 Does not calculate actual vegetable price for purchase
-
-
-# Decodes a base64 image, creates a unique file name to save it under,
-# and returns a tuple that consists of (image, file name).
-# Note that this doesn't create any files. In many scenarios, there's
-# some kind of data you need to validate before saving the image (e.g. serializing
-# request data), so it would be a waste to save images for invalid entries
-# that aren't saved in the database.
-def decode_base64_image(image64):
-    # image_decoded = base64.decodestring(image64)
-    image_decoded = base64.b64decode(image64)
-    file_name = 'public/static/images/' + uuid.uuid4().hex
-    return (image_decoded, file_name)
 
