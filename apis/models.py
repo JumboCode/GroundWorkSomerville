@@ -5,18 +5,16 @@ from django.contrib.auth.models import User
 from enum import Enum
 from multiselectfield import MultiSelectField
 
+VEGETABLE_TYPE = ((1, 'FRUIT'), (2, 'VEGETABLE'), (3, 'HERBS'), (4, 'OTHERS'))
+MERCHANDISE_TYPE = ((1, 'APPAREL'), (2, 'STICKERS'), (3, 'OTHERS'))
+PRODUCT_TYPE = ((1, 'MERCHANDISE'), (2, 'VEGETABLE'))
 
-
-class Vegetable(models.Model):
-  name = models.CharField(max_length=100)
-  photo = models.ImageField(upload_to='images', default='images/default.jpg')
-  availability = models.BooleanField(default=False)
-  type = models.CharField(max_length=3, choices = ProductType.choices, default= ProductType.MERCHANDISE )
-  categories = MultiSelectField(choices=CATEGORIES)
-
+class UserProfile(models.Model):
+  user = models.OneToOneField(User, on_delete=models.CASCADE)
+  loggedInOnce = models.BooleanField(default=False)
+  isGSAdmin = models.BooleanField(default=False)
   def __str__(self):
-    return self.name
-
+    return self.user.username
 
 class Harvest(models.Model):
   date = models.DateTimeField(default=timezone.now)
@@ -24,17 +22,39 @@ class Harvest(models.Model):
   created_on = models.DateTimeField(default=timezone.now)
   updated_on = models.DateTimeField(default=timezone.now)
   active = models.BooleanField(default=True)
-
   def __str__(self):
     return self.farm_name + ' - ' + str(self.date)
 
-class StockedVegetable(models.Model):
+
+class Product(models.Model):
+  categories = MultiSelectField(choices=PRODUCT_TYPE, default=1)
+
+class Merchandise(models.Model):
   name = models.CharField(max_length=100)
+  photo = models.ImageField(upload_to='images', default='images/default.jpg')
+  categories = MultiSelectField(choices=MERCHANDISE_TYPE, default=1)
+  def __str__(self):
+    return self.name
+
+class StockedMerchandise(models.Model):
+  merchandise = models.ForeignKey(to=Merchandise, on_delete=models.SET_NULL)
+  quantity = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+
+class Vegetable(models.Model):
+  name = models.CharField(max_length=100)
+  photo = models.ImageField(upload_to='images', default='images/default.jpg')
+  units = models.CharField(max_length=100)
+  categories = MultiSelectField(choices=PRODUCT_TYPE, default=1)
+  def __str__(self):
+    return self.name
+
+class StockedVegetable(models.Model):
+  vegetable = models.ForeignKey(to=Vegetable, on_delete=models.SET_NULL)
   weight = models.DecimalField(max_digits=10, decimal_places=2)
   quantity = models.IntegerField()
-  # on_delete might need to be changed to models.SET_NULL
-  harvested_on = models.ForeignKey(to=Harvest, on_delete=models.PROTECT)
-
+  harvested_on = models.ForeignKey(to=Harvest, on_delete=models.SET_NULL) 
   def remove_quantity(self, removal_amount):
     self.quantity -= removal_amount
     self.save()
@@ -45,7 +65,7 @@ class StockedVegetable(models.Model):
   def __str__(self):
     return self.name
 
-class Price(models.Model):
+class VegetablePrice(models.Model):
   veg = models.ForeignKey(to=Vegetable, on_delete=models.PROTECT)
   price = models.DecimalField(max_digits=10, decimal_places=2)
   updated_on = models.DateTimeField(default=timezone.now)
@@ -74,9 +94,3 @@ class PurchasedItem(models.Model):
   def __str__(self):
     return self.stocked_vegetable.name
 
-class UserProfile(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE)
-  loggedInOnce = models.BooleanField(default=False)
-  isGSAdmin = models.BooleanField(default=False)
-  def __str__(self):
-    return self.user.username

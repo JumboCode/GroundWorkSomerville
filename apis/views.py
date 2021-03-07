@@ -35,129 +35,10 @@ def apiOverview(request):
         'Create purchase': '/create-purchase',
         'Add product': '/add-product',
     }
-
     return Response(apiUrls)
 
-# adding a product
-@api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def AddProduct(request):
-    body = json.loads(request.body, strict=False)
-    ptype = body['type']
 
-    # decode the base64 image, and replace the 'image'
-    # field with its corresponding file name
-    img, file_name = decode_base64_image(body['photo'])
-    request.data.update({"photo": file_name})
-    
-    if ptype == 0: # type 0 = produce
-        serializer = VegetableSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            fout = open(file_name, 'wb')
-            fout.write(img)
-            fout.close()
-        return Response(data=serializer.data)
-    # elif ptype == 1: # type 1 = merchandise
-    #     serializer = VegetableSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         fout = open(file_name, 'wb')
-    #         fout.write(img)
-    #         fout.close()
-    #     return Response(data=serializer.data)
-    else: # if product type is invalid
-        err_msg = "Invalid product type '%s'. Expected 'produce' or 'merchandise'." % ptype
-        return ParseError(err_msg)
-
-
-# Decodes a base64 image, creates a unique file name to save it under,
-# and returns a tuple that consists of (image, file name).
-#
-# Note that this doesn't create any files. In many scenarios, there's
-# some kind of data you need to validate before saving the image (e.g. serializing
-# request data), so it would be a waste to save images for invalid entries
-# that aren't saved in the database.
-def decode_base64_image(image64):
-    # image_decoded = base64.decodestring(image64)
-    image_decoded = base64.b64decode(image64)
-    file_name = 'public/static/images/' + uuid.uuid4().hex
-    return (image_decoded, file_name)
-
-
-
-### vegetable api
-@api_view(['GET'])
-def ListVegetables(request):
-    items = Vegetable.objects.all()
-    serializer = VegetableSerializer(items, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def CreateVegetable(request):
-    serializer = VegetableSerializer(data=request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-    else:
-        print("invalid data")
-
-    return Response(serializer.data)
-
-
-#TODO: This is not working.
-@api_view(['PUT'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def UpdateVegetable(request, pk):
-    itemToUpdate = Vegetable.objects.get(id=pk)
-    serializer = VegetableSerializer(instance=itemToUpdate, data=request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
-
-@api_view(['DELETE'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def DeleteVegetable(request, pk):
-    itemToDelete = Vegetable.objects.get(id=pk)
-    itemToDelete.delete()
-
-    return Response("Item deleted")
-
-
-### harvest api
-@api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def ListHarvests(request):
-    items = Harvest.objects.all()
-    serializer = HarvestSerializer(items, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def CreateHarvest(request):
-    # read the spreadsheet
-    spreadsheet = request.FILES['file']
-    cols = pandas.read_excel(spreadsheet)
-    # create a dictionary representation of it
-    if validate_harvest_spreadsheet(cols):
-        serializer = create_harvest(cols)
-        create_vegetables(cols)
-        return Response(serializer.data)
-    else:
-        return ValidationError("invalid spreadsheet!")
-
-
+################################### UTILITIES ###################################
 def create_harvest(cols):
     harvest_dict = {'farm_name': cols['farm'][0]}
     harvest_serializer = HarvestSerializer(data=harvest_dict)
@@ -172,7 +53,6 @@ def create_vegetables(cols):
         if serializer.is_valid():
             serializer.save()
 
-
 def validate_harvest_spreadsheet(cols):
     return (('farm' in cols) and ('item' in cols) and ('quantity' in cols) \
             and len(cols['farm']) == len(cols['item']) \
@@ -180,29 +60,10 @@ def validate_harvest_spreadsheet(cols):
             and len(cols['quantity']) != 0)
 
 
-@api_view(['DELETE'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def DeleteHarvest(request, pk):
-    itemToDelete = Harvest.objects.get(id=pk)
-    itemToDelete.delete()
 
-    return Response("Item deleted")
 
-@api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def UserTransactions(request, pk):
-    transactions = Transaction.objects.get(user_id=pk)
-    serializer = TransactionSerializer(transactions, many=True)
-    return Response(serializer.data)
 
-@api_view(['GET'])
-def SearchVegetables(request, pk):
-    items = Vegetable.objects.all().filter(name__icontains=pk)
-    serializer = VegetableSerializer(items, many=True)
-    return Response(serializer.data)
-
+################################### USER VIEWS ###################################
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 def GetUser(request):
@@ -250,20 +111,13 @@ class Login(ObtainAuthToken):
         return Response({'token': token.key, 
                         'isAdmin': user.userprofile.isGSAdmin,
                         'activated': user.userprofile.loggedInOnce})
-
 login = Login.as_view()
 
-# CreatePurchase
-# Algorithm: Recieves transaction and list of vegetables. Creates
-#            a transaction and adds requested vegetables that are stocked.
-#            Decrease quantity in stocked vegetable
-#
-# Request parameters: transaction with is_complete, is_paid, method_payment
-#                     veggies (array) - name, amount
-#
-# Qualifications: Assumes that all stocks combined contains sufficient quantity.
-#                 Does not account for multiple vegetable stocks.
-#                 Does not calculate actual vegetable price for purchase
+
+
+
+
+################################### TRANSACTION VIEWS ###################################
 @api_view(['POST'])
 def CreatePurchase(request):
     body = json.loads(request.body)
@@ -277,7 +131,7 @@ def CreatePurchase(request):
     valid_veg = []
 
     for veg in body["veggies"]:
-        stocked = StockedVegetable.objects.filter(name=veg["name"]).order_by('-quantity')
+        stocked = StockedVegetable.objects.filter(vegetable__name__contains=veg["name"]).order_by('-quantity')
         quantity = veg["amount"]
         if stocked.exists():
             done = False
@@ -296,3 +150,164 @@ def CreatePurchase(request):
                 stocked_vegetable=stock)
 
     return Response(transaction.id)
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def UserTransactions(request, pk):
+    transactions = Transaction.objects.get(user_id=pk)
+    serializer = TransactionSerializer(transactions, many=True)
+    return Response(serializer.data)
+
+
+
+
+
+################################### HARVEST VIEWS ###################################
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def ListHarvests(request):
+    items = Harvest.objects.all()
+    serializer = HarvestSerializer(items, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def CreateHarvest(request):
+    # read the spreadsheet
+    spreadsheet = request.FILES['file']
+    cols = pandas.read_excel(spreadsheet)
+    # create a dictionary representation of it
+    if validate_harvest_spreadsheet(cols):
+        serializer = create_harvest(cols)
+        create_vegetables(cols)
+        return Response(serializer.data)
+    else:
+        return ValidationError("invalid spreadsheet!")
+
+@api_view(['DELETE'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def DeleteHarvest(request, pk):
+    itemToDelete = Harvest.objects.get(id=pk)
+    itemToDelete.delete()
+
+    return Response("Item deleted")
+
+
+
+
+
+################################### VEGETABLE VIEWS ###################################
+@api_view(['GET'])
+def ListVegetables(request):
+    items = Vegetable.objects.all()
+    serializer = VegetableSerializer(items, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def CreateVegetable(request):
+    serializer = VegetableSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+    else:
+        print("invalid data")
+
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def UpdateVegetable(request, pk):
+    itemToUpdate = Vegetable.objects.get(id=pk)
+    serializer = VegetableSerializer(instance=itemToUpdate, data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
+
+@api_view(['DELETE'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def DeleteVegetable(request, pk):
+    itemToDelete = Vegetable.objects.get(id=pk)
+    itemToDelete.delete()
+
+    return Response("Item deleted")
+
+@api_view(['GET'])
+def SearchVegetables(request, pk):
+    items = Vegetable.objects.all().filter(name__icontains=pk)
+    serializer = VegetableSerializer(items, many=True)
+    return Response(serializer.data)
+
+
+
+
+
+################################### PRODUCT VIEWS ###################################
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def AddProduct(request):
+    body = json.loads(request.body, strict=False)
+    ptype = body['type']
+
+    # decode the base64 image, and replace the 'image'
+    # field with its corresponding file name
+    img, file_name = decode_base64_image(body['photo'])
+    request.data.update({"photo": file_name})
+    
+    if ptype == 0: # type 0 = produce
+        serializer = VegetableSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            fout = open(file_name, 'wb')
+            fout.write(img)
+            fout.close()
+        return Response(data=serializer.data)
+    # elif ptype == 1: # type 1 = merchandise
+    #     serializer = VegetableSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         fout = open(file_name, 'wb')
+    #         fout.write(img)
+    #         fout.close()
+    #     return Response(data=serializer.data)
+    else: # if product type is invalid
+        err_msg = "Invalid product type '%s'. Expected 'produce' or 'merchandise'." % ptype
+        return ParseError(err_msg)
+
+
+
+# CreatePurchase
+# Algorithm: Recieves transaction and list of vegetables. Creates
+#            a transaction and adds requested vegetables that are stocked.
+#            Decrease quantity in stocked vegetable
+#
+# Request parameters: transaction with is_complete, is_paid, method_payment
+#                     veggies (array) - name, amount
+#
+# Qualifications: Assumes that all stocks combined contains sufficient quantity.
+#                 Does not account for multiple vegetable stocks.
+#                 Does not calculate actual vegetable price for purchase
+
+
+# Decodes a base64 image, creates a unique file name to save it under,
+# and returns a tuple that consists of (image, file name).
+# Note that this doesn't create any files. In many scenarios, there's
+# some kind of data you need to validate before saving the image (e.g. serializing
+# request data), so it would be a waste to save images for invalid entries
+# that aren't saved in the database.
+def decode_base64_image(image64):
+    # image_decoded = base64.decodestring(image64)
+    image_decoded = base64.b64decode(image64)
+    file_name = 'public/static/images/' + uuid.uuid4().hex
+    return (image_decoded, file_name)
+
