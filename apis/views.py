@@ -38,10 +38,6 @@ def apiOverview(request):
 
     return Response(apiUrls)
 
-<<<<<<< HEAD
-=======
-
-
 # adding a product
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -92,7 +88,6 @@ def decode_base64_image(image64):
 
 
 ### vegetable api
->>>>>>> 53eb6c1a96f8140dea8a2792d6cf513e82f0dc63
 @api_view(['GET'])
 def ListVegetables(request):
     items = Vegetable.objects.all()
@@ -146,11 +141,7 @@ def ListHarvests(request):
     serializer = HarvestSerializer(items, many=True)
     return Response(serializer.data)
 
-<<<<<<< HEAD
 
-def create_vegetables(cols):
-    pass
-=======
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
@@ -165,18 +156,13 @@ def CreateHarvest(request):
         return Response(serializer.data)
     else:
         return ValidationError("invalid spreadsheet!")
->>>>>>> 53eb6c1a96f8140dea8a2792d6cf513e82f0dc63
+
 
 def create_harvest(cols):
     harvest_dict = {'farm_name': cols['farm'][0]}
     harvest_serializer = HarvestSerializer(data=harvest_dict)
     if harvest_serializer.is_valid():
         harvest_serializer.save()
-<<<<<<< HEAD
-=======
-    
-    # serialize the stocked vegetables
->>>>>>> 53eb6c1a96f8140dea8a2792d6cf513e82f0dc63
     return harvest_serializer
 
 def create_vegetables(cols):
@@ -217,9 +203,6 @@ def SearchVegetables(request, pk):
     serializer = VegetableSerializer(items, many=True)
     return Response(serializer.data)
 
-<<<<<<< HEAD
-
-=======
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 def GetUser(request):
@@ -281,7 +264,6 @@ login = Login.as_view()
 # Qualifications: Assumes that all stocks combined contains sufficient quantity.
 #                 Does not account for multiple vegetable stocks.
 #                 Does not calculate actual vegetable price for purchase
->>>>>>> 53eb6c1a96f8140dea8a2792d6cf513e82f0dc63
 @api_view(['POST'])
 def CreatePurchase(request):
     body = json.loads(request.body)
@@ -314,46 +296,3 @@ def CreatePurchase(request):
                 stocked_vegetable=stock)
 
     return Response(transaction.id)
-
-<<<<<<< HEAD
-@api_view(['POST'])
-# TODO: once you get file uploads working, turn auth back on
-# and then figure out how to authenticate in the FE
-#@authentication_classes([SessionAuthentication, BasicAuthentication])
-#@permission_classes([IsAuthenticated])
-def CreateHarvest(request):
-    # read the spreadsheet
-    spreadsheet = request.FILES['file']
-    cols = pandas.read_excel(spreadsheet)
-    # create a dictionary representation of it
-    if validate_harvest_spreadsheet(cols):
-        serializer = create_harvest(cols)
-        create_vegetables(cols)
-        return Response(serializer.data)
-    else:
-        # TODO: use an error response
-        return Response("invalid spreadsheet!")
-=======
-# sample request
-# {
-#     "transaction": {
-#         "is_complete": true,
-#         "is_paid": true,
-#         "method_payment": "credit"
-#     },
-#     "veggies": [
-#         {
-#             "name": "Celery",
-#             "amount": 1
-#         },
-#         {
-#             "name": "Cucumber",
-#             "amount": 2
-#         },
-#         {
-#             "name": "Kale",
-#             "amount": 5
-#         }
-#     ]
-# }
->>>>>>> 53eb6c1a96f8140dea8a2792d6cf513e82f0dc63
