@@ -145,8 +145,8 @@ def CreatePurchase(request):
             amount_purchased = veg["amount"] if done else veg["amount"]-quantity
             purchase = PurchasedItem.objects.create(
                 transaction=transaction,
-                food_quantity=amount_purchased,
-                total_amount=10,
+                total_quantity=amount_purchased,
+                total_price=10,
                 stocked_vegetable=stock)
 
     return Response(transaction.id)

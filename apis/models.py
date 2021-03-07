@@ -25,10 +25,6 @@ class Harvest(models.Model):
   def __str__(self):
     return self.farm_name + ' - ' + str(self.date)
 
-
-class Product(models.Model):
-  categories = MultiSelectField(choices=PRODUCT_TYPE, default=1)
-
 class Merchandise(models.Model):
   name = models.CharField(max_length=100)
   photo = models.ImageField(upload_to='images', default='images/default.jpg')
@@ -40,13 +36,20 @@ class StockedMerchandise(models.Model):
   merchandise = models.ForeignKey(to=Merchandise, on_delete=models.SET_NULL)
   quantity = models.DecimalField(max_digits=10, decimal_places=2)
 
+class MerchandisePrice(models.Model):
+  Merchandise = models.ForeignKey(to=Merchandise, on_delete=models.SET_PROTECT)
+  price = models.DecimalField(max_digits=10, decimal_places=2)
+  updated_on = models.DateTimeField(default=timezone.now)
+
+  def __str__(self):
+    return self.veg.name + '-' + str(price) 
 
 
 class Vegetable(models.Model):
   name = models.CharField(max_length=100)
   photo = models.ImageField(upload_to='images', default='images/default.jpg')
   units = models.CharField(max_length=100)
-  categories = MultiSelectField(choices=PRODUCT_TYPE, default=1)
+  categories = MultiSelectField(choices=VEGETABLE_TYPE, default=1)
   def __str__(self):
     return self.name
 
@@ -66,15 +69,13 @@ class StockedVegetable(models.Model):
     return self.name
 
 class VegetablePrice(models.Model):
-  veg = models.ForeignKey(to=Vegetable, on_delete=models.PROTECT)
+  vegetable = models.ForeignKey(to=Vegetable, on_delete=models.PROTECT)
   price = models.DecimalField(max_digits=10, decimal_places=2)
   updated_on = models.DateTimeField(default=timezone.now)
 
   def __str__(self):
     return self.veg.name + '-' + str(price)
 
-# https://docs.djangoproject.com/en/3.0/topics/db/models/
-# implement to have multiple purchased_items in one transaction
 class Transaction(models.Model):
   date = models.DateTimeField(default=timezone.now)
   user_id = models.ForeignKey(User, on_delete=models.PROTECT)
@@ -87,8 +88,9 @@ class Transaction(models.Model):
 
 class PurchasedItem(models.Model):
   transaction = models.ForeignKey(to=Transaction, on_delete=models.PROTECT)
-  food_quantity = models.DecimalField(max_digits=10, decimal_places=2)
+  total_price = models.DecimalField(max_digits=10, decimal_places=2)
   total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+  categories = MultiSelectField(choices=PRODUCT_TYPE, default=1)
   stocked_vegetable = models.ForeignKey(to=StockedVegetable, on_delete=models.PROTECT)
 
   def __str__(self):
