@@ -2,19 +2,18 @@
     width: 100%;
     display:inline-block;
     font-size: 24px;
-    padding: 1% 5% 1% 5%;
+    padding: 1% 5% 0% 5%;
     color: #1FB25A;
 }
 
-/* .itemBig {
-    padding: 1% 5% 1% 5%;
-} */
 
 .button-header{
     width: 5%;
     float: right;
     /* display:inline-block; */
     color: #1B7A41;
+    background-color: white;
+    border:none;
 }
 
 .button-header-title{
@@ -22,3 +21,4 @@
     align-items: left;
     display:inline-block;
 }
+

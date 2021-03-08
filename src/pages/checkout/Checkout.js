@@ -148,8 +148,11 @@ class Checkout extends Component {
                               />
                 </div>
                 <div >
-                    <div className="orderTitle">Order Summary</div> 
-                    <div className="orderSum">
+                    <div className="orderTitle">
+                        Order Summary
+                        <hr className="hr"/>
+                    </div> 
+                    <div className="itemBig">
                         <div className="orderSummary">
                             <div className= "theadCol itemColumnRight thead">Product</div>
                             <div className= "theadCol itemColumnRight">
