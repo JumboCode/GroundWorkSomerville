@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Vegetable, Harvest, Transaction, PurchasedItem, StockedVegetable, UserProfile, Merchandise
-from .serializers import VegetableSerializer, HarvestSerializer, TransactionSerializer
+from .models import *
+from .serializers import *
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
@@ -206,7 +206,7 @@ def StockedMerchandise(request):
         return_list.append(
             {
                 name: merch.name,
-                total_available = merch.quantity,
+                total_available : merch.quantity,
                 total_sold: item['total_sold'],
                 price: price.price
             }

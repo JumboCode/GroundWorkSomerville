@@ -3,11 +3,23 @@ from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth.models import User
 from enum import Enum
-from multiselectfield import MultiSelectField
 
 VEGETABLE_TYPE = ((1, 'FRUIT'), (2, 'VEGETABLE'), (3, 'HERBS'), (4, 'OTHERS'))
 MERCHANDISE_TYPE = ((1, 'APPAREL'), (2, 'STICKERS'), (3, 'OTHERS'))
-PRODUCT_TYPE = ((1, 'MERCHANDISE'), (2, 'VEGETABLE'))
+class ProductType(models.IntegerChoices):
+  VEGETABLE = 1, "Vegetable"
+  MERCHANDISE = 2, "Merchandise"
+
+class MerchandiseType(models.IntegerChoices):
+  APPAREL = 1, "Apparel"
+  STICKER = 2, "Sticker"
+  OTHERS = 3, "Others"
+
+class VegetableType(models.IntegerChoices):
+  FRUIT = 1, "Fruit"
+  VEGETABLE = 2, "Vegetable"
+  HERB = 3, "Herb"
+  OTHERS = 4, "Others"
 
 class UserProfile(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -30,12 +42,13 @@ class Merchandise(models.Model):
   name = models.CharField(max_length=100)
   photo = models.ImageField(upload_to='images', default='images/default.jpg')
   quantity = models.DecimalField(max_digits=10, decimal_places=2)
-  categories = MultiSelectField(choices=MERCHANDISE_TYPE, default=1)
+  categories = models.IntegerField(choices=MerchandiseType.choices)
+
   def __str__(self):
     return self.name
 
 class MerchandisePrice(models.Model):
-  merchandise = models.ForeignKey(to=Merchandise, on_delete=models.SET_PROTECT)
+  merchandise = models.ForeignKey(to=Merchandise, on_delete=models.PROTECT)
   price = models.DecimalField(max_digits=10, decimal_places=2)
   updated_on = models.DateTimeField(default=timezone.now)
 
@@ -47,15 +60,15 @@ class Vegetable(models.Model):
   name = models.CharField(max_length=100)
   photo = models.ImageField(upload_to='images', default='images/default.jpg')
   unit = models.CharField(max_length=100)
-  categories = MultiSelectField(choices=VEGETABLE_TYPE, default=1)
+  categories = models.IntegerField(choices=VegetableType.choices)
   def __str__(self):
     return self.name
 
 class StockedVegetable(models.Model):
-  vegetable = models.ForeignKey(to=Vegetable, on_delete=models.SET_NULL)
+  vegetable = models.ForeignKey(to=Vegetable, on_delete=models.SET_NULL, null=True)
   weight = models.DecimalField(max_digits=10, decimal_places=2)
   quantity = models.IntegerField()
-  harvested_on = models.ForeignKey(to=Harvest, on_delete=models.SET_NULL) 
+  harvested_on = models.ForeignKey(to=Harvest, on_delete=models.SET_NULL, null=True) 
   def remove_quantity(self, removal_amount):
     self.quantity -= removal_amount
     self.save()
@@ -84,19 +97,21 @@ class Transaction(models.Model):
   def __str__(self):
     return str(self.id)
 
+
+
 class PurchasedItem(models.Model):
   transaction = models.ForeignKey(to=Transaction, on_delete=models.PROTECT)
   total_price = models.DecimalField(max_digits=10, decimal_places=2)
   total_amount = models.DecimalField(max_digits=10, decimal_places=2)
-  categories = MultiSelectField(choices=PRODUCT_TYPE, default=1)
+  categories = models.IntegerField(choices=ProductType.choices)
   stocked_vegetable = models.ForeignKey(to=StockedVegetable, on_delete=models.PROTECT, null=True)
   merchandise = models.ForeignKey(to=Merchandise, on_delete=models.PROTECT, null=True)
   
   class Meta:
     constraints = [
       models.CheckConstraint(
-        name  = "purchased item can be either vegeetable or merchandise"
-        check = 
+        name  = "purchased item can be either vegeetable or merchandise",
+        check =  
         models.Q(categories = 1, stocked_vegetable__isnull = False, merchandise__isnull = True ) | 
         models.Q(categories = 2, merchandise_isnull = False, stocked_vegetable__isnull=True)
       )

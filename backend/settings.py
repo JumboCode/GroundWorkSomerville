@@ -23,9 +23,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'apis.apps.ApisConfig',
     'corsheaders',
-    'multiselectfield',
     'rest_framework.authtoken',
-    'storages'
+    'storages', 
 ]
 
 MIDDLEWARE = [
