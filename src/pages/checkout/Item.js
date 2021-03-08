@@ -54,7 +54,7 @@ class Item extends Component {
 
         var itemblk = classNames({
             'itemBlock': !this.props.checkout, 
-            'orderBlock': this.props.checkout
+            'orderBlock-Item': this.props.checkout
         })
 
         var itemcontainer = classNames({
@@ -76,7 +76,7 @@ class Item extends Component {
                     </div>
                     <div className={itemcolQuant}>
                         <div className="itemColumn-small small-Quant">
-                            {!this.props.checkout && <p>Quantity</p>}
+                            {!this.props.checkout && <p className="subhead">Quantity</p>}
                             <Quantity 
                                 id = {this.props.id}
                                 quantity={quantityvar}
@@ -84,9 +84,9 @@ class Item extends Component {
                             />
                         </div>
                         <div className="itemColumn-small small-Total">
-                            {!this.props.checkout && <p>Total</p>}
+                            {!this.props.checkout && <p className="subhead">Total</p>}
                             {!this.props.checkout && this.toDecimal(quantityvar*this.props.item.price)}
-                            {this.props.checkout && <p>/{this.toDecimal(quantityvar)}</p>}
+                            {this.props.checkout && <p>/{this.toDecimal(quantityvar*this.props.item.price)}</p>}
 
                         </div>
                     </div>

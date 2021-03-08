@@ -1,7 +1,7 @@
 import React, {Component} from "react"; 
 import Item from "./Item.js";
 import "./Dropdown.css";
-
+import "./Checkout.css";
 
 class Dropdown extends Component {
     constructor(props) {
@@ -66,6 +66,7 @@ class Dropdown extends Component {
                     >
                     {showList? "-" : "+"}
                     </button>
+                    <hr className="hr"/>
                 </div>
                 <div className="itemBig">
                     {showList && checkoutItems}
