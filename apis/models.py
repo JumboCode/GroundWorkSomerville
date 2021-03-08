@@ -2,10 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth.models import User
-from enum import Enum
 
-VEGETABLE_TYPE = ((1, 'FRUIT'), (2, 'VEGETABLE'), (3, 'HERBS'), (4, 'OTHERS'))
-MERCHANDISE_TYPE = ((1, 'APPAREL'), (2, 'STICKERS'), (3, 'OTHERS'))
 class ProductType(models.IntegerChoices):
   VEGETABLE = 1, "Vegetable"
   MERCHANDISE = 2, "Merchandise"
@@ -96,8 +93,6 @@ class Transaction(models.Model):
 
   def __str__(self):
     return str(self.id)
-
-
 
 class PurchasedItem(models.Model):
   transaction = models.ForeignKey(to=Transaction, on_delete=models.PROTECT)

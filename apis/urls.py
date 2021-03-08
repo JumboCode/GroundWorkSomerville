@@ -18,8 +18,8 @@ urlpatterns = [
     
     path('create-purchase', views.CreatePurchase, name='create-purchase'),
     
-    path('vegetable-stock', views.StockedVegetable, name='vegetable-stock'),
-    path('merch-stock', views.StockedMerchandise, name='merch-stock'),
+    path('vegetable-stock', views.StockVegetable, name='vegetable-stock'),
+    path('merch-stock', views.StockMerchandise, name='merch-stock'),
     
     path('user', views.GetUser, name="user-info"),
     path('add-user', views.AddUser, name="add-user"),

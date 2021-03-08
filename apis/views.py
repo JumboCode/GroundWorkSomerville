@@ -176,12 +176,14 @@ can only have one harvest per week
 @api_view(['GET'])
 #@authentication_classes([SessionAuthentication, BasicAuthentication])
 #@permission_classes([IsAuthenticated])
-def StockedVegetable(request):
+def StockVegetable(request):
     if not request.data:
         return Response("Missing information. The api requires start date and end date.")
     else:
-        startdate, enddate = request.data
-        
+        startdate = request.data['start_date']
+        enddate = request.data['end_date']
+        print("The request data: {}".format(request.data))
+        print("The current start date {} and end date {}".format(startdate, enddate))
         harvest = Harvest.objects.filter(date__range=[startdate, enddate]).first()
         stockedvegetables = StockedVegetable.objects.filter(harvested_on=harvest)
         return_list = []
@@ -197,12 +199,12 @@ def StockedVegetable(request):
                 price: price.price
             })
 
-        return json.dumps(return_list)
+        return Response(return_list)
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
-def StockedMerchandise(request):
+def StockMerchandise(request):
     return_list = []
     for merch in Merchandise.objects.all():
         item = PurchasedItem.objects.filter(merchandise=merch).aggregate(total_sold=Sum('total_amount'))
@@ -215,7 +217,7 @@ def StockedMerchandise(request):
                 price: price.price
             }
         )
-    return json.dumps(return_list)
+    return Response(return_list)
 
 
 
