@@ -68,7 +68,7 @@ class Item extends Component {
             <div className={itemcontainer}>
                 <div className={itemblk}>
                     {!this.props.checkout && <div className="itemColumn-img">
-                        <img src='https://www.healthylifestylesliving.com/wp-content/uploads/2015/12/placeholder-256x256.gif' alt="placeholder" className="prod-image" />
+                        <img src="https://image.shutterstock.com/image-illustration/simple-drawing-tree-beautiful-green-260nw-1676022487.jpg" alt="productpicture" className="prod-image"></img>
                     </div>}
                     <div className={itemcol}>
                         <p className="itemName">{this.props.item.name}</p>
@@ -86,7 +86,7 @@ class Item extends Component {
                         <div className="itemColumn-small small-Total">
                             {!this.props.checkout && <p>Total</p>}
                             {!this.props.checkout && this.toDecimal(quantityvar*this.props.item.price)}
-                            {this.props.checkout && <p>/{this.toDecimal(this.props.item.price)}</p>}
+                            {this.props.checkout && <p>/{this.toDecimal(quantityvar)}</p>}
 
                         </div>
                     </div>
