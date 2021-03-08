@@ -109,8 +109,7 @@ class PurchasedItem(models.Model):
         check =  
         models.Q(categories = 1, stocked_vegetable__isnull = False, merchandise__isnull = True ) | 
         models.Q(categories = 2, merchandise__isnull = False, stocked_vegetable__isnull=True)
-      )
-    ]
+      )]
 
   def __str__(self):
     return str(self.id)
