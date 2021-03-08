@@ -4,8 +4,6 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from enum import Enum
 
-VEGETABLE_TYPE = ((1, 'FRUIT'), (2, 'VEGETABLE'), (3, 'HERBS'), (4, 'OTHERS'))
-MERCHANDISE_TYPE = ((1, 'APPAREL'), (2, 'STICKERS'), (3, 'OTHERS'))
 class ProductType(models.IntegerChoices):
   VEGETABLE = 1, "Vegetable"
   MERCHANDISE = 2, "Merchandise"
