@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Vegetable, Harvest, Transaction, PurchasedItem, StockedVegetable, UserProfile
+from .models import Vegetable, Harvest, Transaction, PurchasedItem, StockedVegetable, UserProfile, Merchandise
 from .serializers import VegetableSerializer, HarvestSerializer, TransactionSerializer
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -171,7 +171,7 @@ def UserTransactions(request, pk):
 ################################### INVENTORY VIEWS ###################################
 '''
 expects start and end date -- a week apart
-can only be one harvest during that week
+can only have one harvest per week
 '''
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -199,10 +199,18 @@ def StockedVegetable(request):
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def StockedMerchandise(request):
-    return request
-''' need to reeturn name, current price, total sold, total available.
---- for all the merch products
-'''
+    return_list = []
+    for merch in Merchandise.objects.all():
+        item = PurchasedItem.objects.filter(merchandise=merch).aggregate(total_sold=Sum('total_amount'))
+        price = MerchandisePrice.objects.filter(merchandise=merch).latest('updated_on')
+        return_list.append(
+            {
+                name: merch.name,
+                total_available = merch.quantity,
+                total_sold: item['total_sold'],
+                price: price.price
+            }
+        )
 
 
 

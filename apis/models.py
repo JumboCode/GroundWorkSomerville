@@ -35,7 +35,7 @@ class Merchandise(models.Model):
     return self.name
 
 class MerchandisePrice(models.Model):
-  Merchandise = models.ForeignKey(to=Merchandise, on_delete=models.SET_PROTECT)
+  merchandise = models.ForeignKey(to=Merchandise, on_delete=models.SET_PROTECT)
   price = models.DecimalField(max_digits=10, decimal_places=2)
   updated_on = models.DateTimeField(default=timezone.now)
 
@@ -90,7 +90,7 @@ class PurchasedItem(models.Model):
   total_amount = models.DecimalField(max_digits=10, decimal_places=2)
   categories = MultiSelectField(choices=PRODUCT_TYPE, default=1)
   stocked_vegetable = models.ForeignKey(to=StockedVegetable, on_delete=models.PROTECT, null=True)
-  merchandisee = models.ForeignKey(to=Merchandise, on_delete=models.PROTECT, null=True)
+  merchandise = models.ForeignKey(to=Merchandise, on_delete=models.PROTECT, null=True)
   
   class Meta:
     constraints = [
