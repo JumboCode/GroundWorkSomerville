@@ -174,8 +174,8 @@ expects start and end date -- a week apart
 can only have one harvest per week
 '''
 @api_view(['GET'])
-#@authentication_classes([SessionAuthentication, BasicAuthentication])
-#@permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def StockVegetable(request):
     if not request.data:
         return Response("Missing information. The api requires start date and end date.")
