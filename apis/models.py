@@ -2,7 +2,6 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth.models import User
-from enum import Enum
 
 class ProductType(models.IntegerChoices):
   VEGETABLE = 1, "Vegetable"
@@ -112,8 +111,7 @@ class PurchasedItem(models.Model):
         check =  
         models.Q(categories = 1, stocked_vegetable__isnull = False, merchandise__isnull = True ) | 
         models.Q(categories = 2, merchandise__isnull = False, stocked_vegetable__isnull=True)
-      )
-    ]
+      )]
 
   def __str__(self):
     return str(self.id)
