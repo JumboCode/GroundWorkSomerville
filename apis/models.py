@@ -110,10 +110,10 @@ class PurchasedItem(models.Model):
   class Meta:
     constraints = [
       models.CheckConstraint(
-        name  = "purchased item can be either vegeetable or merchandise",
+        name  = "purchased item can be either vegetable or merchandise",
         check =  
         models.Q(categories = 1, stocked_vegetable__isnull = False, merchandise__isnull = True ) | 
-        models.Q(categories = 2, merchandise_isnull = False, stocked_vegetable__isnull=True)
+        models.Q(categories = 2, merchandise__isnull = False, stocked_vegetable__isnull=True)
       )
     ]
 
