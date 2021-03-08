@@ -174,26 +174,30 @@ expects start and end date -- a week apart
 can only have one harvest per week
 '''
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+#@authentication_classes([SessionAuthentication, BasicAuthentication])
+#@permission_classes([IsAuthenticated])
 def StockedVegetable(request):
-    startdate, enddate = request.data
-    harvest = Harvest.objects.filter(date__range=[startdate, enddate]).first()
-    stockedvegetables = StockedVegetable.objects.filter(harvested_on=harvest)
-    return_list = []
-    for stocked in stockedvegetables:
-        item = PurchasedItem.objects.filter(stockedvegetables=stocked).first()
-        vegetable = stock.vegetable
-        price = VegetablePrice.objects.filter(vegetable=vegetable).latest('updated_on')
-        return_list.append( 
-        {   name: vegetable.name,
-            total_available: stocked.quantity,
-            unit: vegetable.unit,
-            total_sold: item.total_amount,
-            price: price.price
-        })
+    if not request.data:
+        return Response("Missing information. The api requires start date and end date.")
+    else:
+        startdate, enddate = request.data
+        
+        harvest = Harvest.objects.filter(date__range=[startdate, enddate]).first()
+        stockedvegetables = StockedVegetable.objects.filter(harvested_on=harvest)
+        return_list = []
+        for stocked in stockedvegetables:
+            item = PurchasedItem.objects.filter(stockedvegetables=stocked).first()
+            vegetable = stock.vegetable
+            price = VegetablePrice.objects.filter(vegetable=vegetable).latest('updated_on')
+            return_list.append( 
+            {   name: vegetable.name,
+                total_available: stocked.quantity,
+                unit: vegetable.unit,
+                total_sold: item.total_amount,
+                price: price.price
+            })
 
-    return json.dumps(return_list)
+        return json.dumps(return_list)
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -211,6 +215,7 @@ def StockedMerchandise(request):
                 price: price.price
             }
         )
+    return json.dumps(return_list)
 
 
 
