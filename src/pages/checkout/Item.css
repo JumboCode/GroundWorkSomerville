@@ -1,0 +1,96 @@
+/* Source: https://github.com/JumboCode/Documentary-Songwriters/blob/master/client/src/creators/CreatorBlock.css */
+.itemContainer{
+    display:inline-block;
+    width:45%;
+    margin: 0.5% 2% 0.5% 2%;
+    align-items: center;
+    font-size: 12px;
+}
+
+.itemBlock{
+    width: 100%;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 1px 3px 6px #00000029;
+    border-radius: 30px;
+    opacity: 1;
+    padding: 2%;
+    align-items:center;
+
+}
+
+.itemColumn{
+    display:inline-block;
+    width:40%; 
+    text-align:left;
+    padding:0.5%;
+}
+
+.itemColumnQuant{
+    display:inline-block;
+    width:40%; 
+    text-align:left;
+    padding:12px;
+}
+
+.itemColumn-small{
+    display:inline-block;
+    width:50%; 
+    text-align:right;
+    padding-left:2%;
+}
+
+.itemColumnRight {
+    padding-left: 3%;
+}
+
+p.itemName {
+    font-size: 12px;
+}
+
+.itemColumn-img{
+    display:inline-block;
+    width:20%; 
+    text-align:left;
+    padding:2%;
+}
+
+.prod-image {
+    display: inline-block;
+    width: 70%; 
+    /* height: 100%; */
+    border-radius: 35%;
+    margin: auto;
+}
+
+.orderColumn {
+    display:inline-block;
+    width:45%; 
+    text-align:left;
+    padding:0 2% 0 2%;
+}
+
+.orderColumnQuant {
+    display:inline-block;
+    width:45%; 
+    text-align:left;
+    padding:12px;
+}
+
+
+.orderBlock{
+    width: 100%;
+    opacity: 1;
+    /* padding: 5px; */
+    align-items:center;
+}
+
+@media screen and (max-width: 750px) {
+    .prod-image {width: 40px; height: 40px;}
+    .itemContainer {width: 90%}
+    .itemColumn {width: 30%}
+    .itemColumnQuant {width: 50%}
+    .small-Quant {width:60%}
+    .small-Total {width:30%}
+    .orderColumn {width: 30%}
+    .orderColumnQuant {width: 60%}
+}

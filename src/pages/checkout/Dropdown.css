@@ -1,0 +1,24 @@
+.title-header {
+    width: 100%;
+    display:inline-block;
+    font-size: 24px;
+    padding: 1% 5% 1% 5%;
+    color: #1FB25A;
+}
+
+/* .itemBig {
+    padding: 1% 5% 1% 5%;
+} */
+
+.button-header{
+    width: 5%;
+    float: right;
+    /* display:inline-block; */
+    color: #1B7A41;
+}
+
+.button-header-title{
+    width: 50%;
+    align-items: left;
+    display:inline-block;
+}

@@ -1,0 +1,9 @@
+.inputbox {
+    width:30px;
+}
+
+button {
+    border:none; 
+    outline: black;
+    border-radius: 20px;
+}

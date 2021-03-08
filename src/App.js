@@ -4,6 +4,7 @@ import Login from './components/login/Login';
 import Vegetables from './pages/home/Vegetables';
 import InfoPage from './pages/info/InfoPage';
 import Inventory from './pages/inventory';
+import Checkout from './pages/checkout/Checkout';
 import EditAccount from './pages/editAccount';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import axios from 'axios';
@@ -77,6 +78,7 @@ class App extends Component {
                     <Switch>
                         <Route exact path='/'>{home}</Route>
                         <Route exact path='/info' component={InfoPage}></Route>
+                        <Route exact path='/checkout' component={Checkout}></Route>
                         <Route exact path='/edit-account'>
                             {isAuth ? <EditAccount token={token} activate={activate} activated={activated}/> : <Redirect to='/'/>}
                         </Route>
