@@ -11,12 +11,14 @@
     width: 5%;
     float: right;
     /* display:inline-block; */
+    font-weight: bold;
     color: #1B7A41;
-    background-color: white;
+    background-color: #FAF4F1;
     border:none;
 }
 
 .button-header-title{
+    color: #1B7A41;
     width: 50%;
     align-items: left;
     display:inline-block;
