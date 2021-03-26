@@ -17,7 +17,7 @@ const NavBar = ({ isAuth, logout, showLogin }) => {
         <Navbar collapseOnSelect expand="sm" sticky="top" bg="light" style={style}>
             <Navbar.Brand>
                 <Link to="/">
-                    <Image src={logo} height="100"/>
+                    <Image src={logo} height="80"/>
                 </Link>
             </Navbar.Brand>
             <Navbar.Toggle/>

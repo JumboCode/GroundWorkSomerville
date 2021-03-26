@@ -59,8 +59,7 @@ p.itemName {
 
 .prod-image {
     display: inline-block;
-    width: 100px;
-    height: 100px;
+    width: 100%;
     border-radius: 20%;
     margin: auto;
     background: 50% 50% no-repeat;
