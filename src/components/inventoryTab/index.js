@@ -3,12 +3,13 @@ import './styles.css';
 import EditItem from '../editItem';
 import { Modal, Tab, Nav } from 'react-bootstrap';
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
-
+import ProduceItem from "./ProduceItem";
 
 const InventoryTab = (props) => {
     const [showAddItem, setShowAddItem] = useState(false);
     const [produce, setProduce] = useState([]);
     const [merch, setMerch] = useState([]);
+    const [harvest, setHarvest] = useState([]);
     // const { url } = useRouteMatch();
     const [popupID, setPopUpId] = useState(0);
 
@@ -17,6 +18,7 @@ const InventoryTab = (props) => {
         async function test(){
             setProduce(testData)
             setMerch(testData)
+            setHarvest(testData)
         }
         test()
     }, [])
@@ -63,24 +65,76 @@ const InventoryTab = (props) => {
         )
     }
 
+
+    const getProduceRows = (items) => {
+        var i, j;
+        const maps = [];
+        for (i = 0; i < (items.length/3); i++){ //TODO: fix this
+            maps[i] =  [];
+            for (j = 0; j < 3; j++) {
+                maps[i][j] = items[(i*3+j)];
+            }
+        }
+        console.log("map is");
+        console.log(maps);
+        return (
+            <tbody>
+                {maps.map(getProduceRow)}
+            </tbody>
+        )
+       
+    }
+
+    const getProduceRow = (row) => {
+        console.log("hello")
+    
+        return (
+            <tr key={0}>
+                <td><ProduceItem item={row[0]} setShowAddItem={setShowAddItem} setPopUpId={setPopUpId}/></td>
+                <td>{<ProduceItem item={row[1]} setShowAddItem={setShowAddItem} setPopUpId={setPopUpId}/>}</td>
+                <td>{<ProduceItem item={row[2]} setShowAddItem={setShowAddItem} setPopUpId={setPopUpId}/>}</td>
+            </tr>
+        )
+        
+    }
+
+    const getProduceTable = (items) => {
+        return (
+            <div className="fixedHeader">
+                <table className="inventory-table">
+                    {getProduceRows(items)}
+                </table>
+            </div>
+        )
+    }
+
     return (
         <div id="inventory-tab">
-            <Tab.Container defaultActiveKey="produce">
+            <Tab.Container defaultActiveKey="harvest">
                 <Nav>
-                    <Nav.Link as="div" eventKey="produce" className="tab-button">
-                        Produce Inventory
+                    <Nav.Link as="div" eventKey="harvest" className="tab-button" onClick={(e)=> props.onQuantChange(true)}>
+                        Harvest Inventory
                     </Nav.Link>
-                    <Nav.Link as="div" eventKey="merch" className="tab-button">
+                    <Nav.Link as="div" eventKey="merch" className="tab-button" onClick={(e)=>props.onQuantChange(false)}>
                         Merchandise Inventory
                     </Nav.Link>
+                    <Nav.Link as="div" eventKey="produce" className="tab-button" onClick={(e)=>props.onQuantChange(false)}>
+                        Produce Inventory
+                    </Nav.Link>
+                    
                 </Nav>
                 <Tab.Content>
-                <Tab.Pane eventKey="produce" title="Produce Inventory">
-                    {getTable(produce)}
+                <Tab.Pane eventKey="harvest" title="Harvest Inventory">
+                    {getTable(harvest)}
                 </Tab.Pane>
                 <Tab.Pane eventKey="merch" title="Merchandise Inventory">
                     {getTable(merch)}
                 </Tab.Pane>
+                <Tab.Pane eventKey="produce" title="Produce Inventory">
+                    {getProduceTable(produce)}
+                    {/* <p>Produce Inventory</p> */}
+                </Tab.Pane>
+                
                 </Tab.Content>
             </Tab.Container>
             <EditItem show={showAddItem} onHide={()=> setShowAddItem(false)} id={popupID}/>

@@ -23,6 +23,7 @@ const EditItem = ({show, onHide, id}) => {
             {editData}
         </Modal.Body>
         <Button className="float-right">Save</Button>
+
         </Modal>
     )
 }
