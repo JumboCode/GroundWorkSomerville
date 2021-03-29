@@ -26,7 +26,7 @@ def apiOverview(request):
     apiUrls = {
         'List all vegetables': '/list-vegetables',
         'Create': '/create-vegetable',
-        'Update': '/update-vegetable/<str:pk>',
+        'Update': '/update-vegetable',
         'Delete': '/delete-vegetable/<str:pk>',
         'List all harvests': '/list-harvests',
         'Create harvest': '/create-harvest',
@@ -61,7 +61,7 @@ def validate_harvest_spreadsheet(cols):
 
 '''
 Decodes a base64 image, creates a unique file name to save it under, and returns a tuple that consists of (image, file name).
-Note that this doesn't create any files. In many scenarios, there's some kind of data you need to validate before saving the image 
+Note that this doesn't create any files. In many scenarios, there's some kind of data you need to validate before saving the image
 (e.g. serializing request data), so it would be a waste to save images for invalid entries that aren't saved in the database.
 '''
 def decode_base64_image(image64):
@@ -117,7 +117,7 @@ class Login(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key, 
+        return Response({'token': token.key,
                         'isAdmin': user.userprofile.isGSAdmin,
                         'activated': user.userprofile.loggedInOnce})
 login = Login.as_view()
@@ -206,8 +206,8 @@ def StockVegetable(request):
             item = PurchasedItem.objects.filter(stockedvegetables=stocked).first()
             vegetable = stock.vegetable
             price = VegetablePrice.objects.filter(vegetable=vegetable).latest('updated_on')
-            #instead of latest, needs to be betweem the range
-            return_list.append( 
+
+            return_list.append(
             {   name: vegetable.name,
                 total_available: stocked.quantity,
                 unit: vegetable.unit,
@@ -292,17 +292,40 @@ def CreateVegetable(request):
 
     return Response(serializer.data)
 
-@api_view(['PUT'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def UpdateVegetable(request, pk):
-    itemToUpdate = Vegetable.objects.get(id=pk)
-    serializer = VegetableSerializer(instance=itemToUpdate, data=request.data)
 
-    if serializer.is_valid():
-        serializer.save()
+@api_view(['POST','GET'])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
+def UpdateVegetable(request):
+    body = json.loads(request.body)
+    try:
+        if 'oldname' in body and isinstance(body["oldname"], str):
+            vegToUpdate = Vegetable.objects.filter(name=body["oldname"]).first()
+            # Vegetable price not yet implemented
+            # if 'price' in body and \
+            # (isinstance(body["price"], float) or
+            # isinstance(body["price"], int)):
+            #     try:
+            #         vegetablePrice = VegetablePrice.objects.get(vegetable=vegToUpdate)
+            #         vegetablePrice.price = body["price"]
+            #     except :
+            #         return Response("Vegetable Price does not exist")
+            if 'newname' in body and isinstance(body["newname"], str):
+                vegToUpdate.name = body["newname"]
+            # Consider ways to send file (image) frontend to backend
+            if 'photo' in body and isinstance(body["photo"], str):
+                img, file_name = decode_base64_image(body['photo'])
+                vegToUpdate.photo = img
+            if 'unit' in body and isinstance(body["unit"], str):
+                vegToUpdate.unit = body["unit"]
 
-    return Response(serializer.data)
+            vegToUpdate.save()
+            return Response(vegToUpdate.id)
+        else :
+            return Response("Vegetable name not specified")
+    except :
+        return Response("Vegetable does not exist")
+
 
 @api_view(['DELETE'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -320,7 +343,6 @@ def SearchVegetables(request, pk):
     return Response(serializer.data)
 
 
-
 ################################### PRODUCT VIEWS ###################################
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -333,7 +355,7 @@ def AddProduct(request):
     # field with its corresponding file name
     img, file_name = decode_base64_image(body['photo'])
     request.data.update({"photo": file_name})
-    
+
     if ptype == 0: # type 0 = produce
         serializer = VegetableSerializer(data=request.data)
         if serializer.is_valid():
