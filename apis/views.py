@@ -123,14 +123,31 @@ class Login(ObtainAuthToken):
 login = Login.as_view()
 
 
-
-
-
 ################################### TRANSACTION VIEWS ###################################
+@api_view(['POST'])
+def PurchaseMerchandise(request):
+    return request
+
+@api_view(['POST'])
+def PurchaseProduce(request):
+    body = json.loads(request.body)
+    if request.user.is_authenticated():
+        username = request.user.username
+        user = User.objects.get(username=username)
+        transaction = Transaction.objects.create(
+            user_id=user, is_complete=body["is_complete"], 
+            is_paid=body["is_paid"], method_of_payment=body["method_payment"])
+        
+        for produce in body["produces"]:
+            stocks = StockedVegetable.objects.filter(vegetable__name__contains=produce["name"]).order_by('-quantity')
+            quantity = produce["amount"]
+            
+    return request
+
 @api_view(['POST'])
 def CreatePurchase(request):
     body = json.loads(request.body)
-    user = User.objects.get(username='theohenry')
+    user = User.objects.get(username='theohenry') #reemove this
     transaction = Transaction.objects.create(
                 user_id=user,
                 is_complete=body["transaction"]["is_complete"],
@@ -140,7 +157,7 @@ def CreatePurchase(request):
     valid_veg = []
 
     for veg in body["veggies"]:
-        stocked = StockedVegetable.objects.filter(vegetable__name__contains=veg["name"]).order_by('-quantity')
+        stocked = StockedVegetable.objects.filter(vegetable__name__contains=veg["name"]).order_by('-quantity') #cheeck this
         quantity = veg["amount"]
         if stocked.exists():
             done = False
@@ -155,10 +172,10 @@ def CreatePurchase(request):
             purchase = PurchasedItem.objects.create(
                 transaction=transaction,
                 total_quantity=amount_purchased,
-                total_price=10,
+                total_price=10, #pricee is hardcoded
                 stocked_vegetable=stock)
 
-    return Response(transaction.id)
+    return Response(transaction.id) #return transaciton id in a json
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -182,8 +199,6 @@ def StockVegetable(request):
     else:
         startdate = request.data['start_date']
         enddate = request.data['end_date']
-        print("The request data: {}".format(request.data))
-        print("The current start date {} and end date {}".format(startdate, enddate))
         harvest = Harvest.objects.filter(date__range=[startdate, enddate]).first()
         stockedvegetables = StockedVegetable.objects.filter(harvested_on=harvest)
         return_list = []
@@ -191,6 +206,7 @@ def StockVegetable(request):
             item = PurchasedItem.objects.filter(stockedvegetables=stocked).first()
             vegetable = stock.vegetable
             price = VegetablePrice.objects.filter(vegetable=vegetable).latest('updated_on')
+            #instead of latest, needs to be betweem the range
             return_list.append( 
             {   name: vegetable.name,
                 total_available: stocked.quantity,
