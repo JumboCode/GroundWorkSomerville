@@ -43,7 +43,7 @@ class Dropdown extends Component {
             console.log("item's quantity is:")
             console.log(quant)
 
-             return <Item    key={item.id}
+             return <Item   key={item.id}
                             id={item.id}
                             item={item}
                             checkout={false}

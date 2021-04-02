@@ -52,11 +52,11 @@ class OrderSummary extends Component{
             {this.state.order &&  
             <div className="orderDone">
               <div className="doneButtons">
-                <Button 
+                <Button className="small-Btn" 
                   onClick={this.printReceipt}>
                     Print Receipt
                 </Button>
-                <Button 
+                <Button className="small-Btn" 
                   onClick={this.returnHome}>
                     Return to Market
                 </Button>
