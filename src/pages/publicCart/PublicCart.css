@@ -1,0 +1,39 @@
+.body {
+    width:90%;
+    margin: 1%;
+}
+
+.cartSection{
+    display: inline-block;
+    width: 60%;
+    margin: 2%;
+}
+
+.cartHeading {
+    display: inline-block;
+    width: 60%;
+    margin: 2% 2% 0% 2%;
+}
+.orderSection {
+    display:inline-block;
+    width: 30%;
+    float: right;
+    margin: 2%;
+
+}
+
+.itemContainer {
+    width: 100%;
+
+}
+
+.prod-image {
+    height: 60px;
+    width: 60px;
+}
+
+.heading {
+    font-weight: bold;
+    font-size: 18px;
+    margin-left: 15px;
+}

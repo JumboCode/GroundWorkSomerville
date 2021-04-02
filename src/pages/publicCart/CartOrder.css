@@ -1,0 +1,21 @@
+.cartContainer{
+    background-color: white;
+    border-radius: 10%;
+    box-shadow: white;
+    padding: 10%;
+    font-size: 14px;
+}
+
+.header {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.leftsub {
+    text-align: left;
+}
+
+.rightsub {
+    text-align: right;
+    float: right;
+}

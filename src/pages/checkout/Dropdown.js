@@ -1,5 +1,5 @@
 import React, {Component} from "react"; 
-import Item from "./Item.js";
+import Item from "../../components/checkoutItem/Item";
 import "./Dropdown.css";
 import "./Checkout.css";
 
