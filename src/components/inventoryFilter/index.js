@@ -43,7 +43,7 @@ const InventoryFilter = ({token}) => {
             </div>
             <BsButton onClick={()=> setShowAddUser(true)} variant="outline-success" className="saurav">Add New User</BsButton>
 
-            <Modal show={showAddItem} onHide={()=> setShowAddItem(false)} size="lg" centered>
+            <Modal show={showAddItem} onHide={()=> setShowAddItem(false)} size="lg" centered> 
                 <AddItem/>
             </Modal>
 
