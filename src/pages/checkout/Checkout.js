@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import Item from './Item.js';
+import Item from '../../components/checkoutItem/Item';
 import itemData from "../../temp-data/checkoutData";
 import Dropdown from './Dropdown.js';
-import OrderSummary from './OrderSummary.js';
+import OrderSummary from '../../components/orderSummary/OrderSummary';
 import "./Checkout.css";
-import "./Item.css";
+import "../../components/checkoutItem/Item.css";
 
 class Checkout extends Component {
     constructor(props) {

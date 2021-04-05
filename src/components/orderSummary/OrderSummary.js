@@ -1,5 +1,8 @@
 import React, {Component} from "react";
+import { ButtonGroup } from "react-bootstrap";
+import Button from '../button';
 import { withRouter } from "react-router-dom";
+
 // import Popup fr
 
 import "./OrderSummary.css"
@@ -8,7 +11,7 @@ class OrderSummary extends Component{
     constructor(props) {
         super(props);
         this.state = {
-          order: false, 
+          order: this.props.order? this.props.order : false, 
           orderNum: null
         };
 
@@ -49,17 +52,17 @@ class OrderSummary extends Component{
             {this.state.order &&  
             <div className="orderDone">
               <div className="doneButtons">
-                <button className="small-Btn" 
+                <Button className="small-Btn" 
                   onClick={this.printReceipt}>
                     Print Receipt
-                </button>
-                <button className="small-Btn" 
+                </Button>
+                <Button className="small-Btn" 
                   onClick={this.returnHome}>
                     Return to Market
-                </button>
+                </Button>
               </div>
               <p className="orderMsg">Your order is:</p>
-              <p className="orderNum">#{this.state.orderNum}</p>
+              <p className="orderNum">#{this.state.orderNum? this.state.orderNum : this.getRandomInt()}</p>
               <p className="orderMsg">We'll contact you when your produce is ready for pickup!</p>
             </div>
             }

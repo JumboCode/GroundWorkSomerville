@@ -5,6 +5,8 @@
     margin-right: auto;
     align-items:center;
     padding: 2%;
+    background-color: white;
+    border-radius:  10%;
 }
 
 .orderAbout {
@@ -53,9 +55,7 @@
 }
 
 .small-Btn {
-    width: 45%; 
     margin: 2%;
-    border-radius: 20%;
 }
 
 .orderNum {
