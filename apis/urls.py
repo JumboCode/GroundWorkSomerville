@@ -10,6 +10,7 @@ urlpatterns = [
     path('update-vegetable/<str:pk>', views.UpdateVegetable),
     path('delete-vegetable/<str:pk>', views.DeleteVegetable, name="delete-vegetable"),
     path('list-harvests', views.ListHarvests, name="list-harvests"),
+    path('list-harvests-weekly', views.ListHarvestsWeekly, name="list-harvests-weekly"),
     path('create-harvest', views.CreateHarvest, name="create-harvest"),
     path('delete-harvest/<str:pk>', views.DeleteHarvest, name="delete-harvest"),
     path('create-purchase', views.CreatePurchase, name='create-purchase'),
