@@ -43,7 +43,7 @@ const InventoryTab = (props) => {
                         }}
                         > edit </Link> */}
                     {/* <span data-target="#editModal" data-toggle="modal"><a href={"#"+ dat.id} role="button" onClick={()=> setShowAddItem(true)} class="btn btn-primary">edit</a></span> */}
-                <td> <a onClick={()=> {setShowAddItem(true); setPopUpId(dat.id);}} style={style}>edit</a> </td>
+                <td> <a onClick={()=> {setShowAddItem(true); setPopUpId(dat.id+1);}} style={style}>edit</a> </td>
             </tr>
         )
     }
