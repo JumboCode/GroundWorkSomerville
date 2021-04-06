@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import VegGrid from '../../components/grid/VegGrid';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Nav, Tab } from 'react-bootstrap';
 import Button from '../../components/button';
 import './styles.css';
 
 class PublicHome extends Component {
     constructor(props) {
         super(props);
-        this.state = {defaultData:[], vegData: [], searchText: "", searched: false, categories:new Set()};
+        this.state = {defaultData:[],
+                      vegData: [], 
+                      searchText: "",
+                      searched: false,
+                      categories:new Set()};
         this.handleSearch = this.handleSearch.bind(this)
         this.search = this.search.bind(this)
         this.clearSearch = this.clearSearch.bind(this)
@@ -59,12 +63,15 @@ class PublicHome extends Component {
         return(
             <div className="home-filter">
                 <h2 className="filter-header">Categories</h2>
-                <h5 className="cat-text" onClick={this.changeCat} id="bmVwYWw=">all merchandise</h5>
-                {cats.map((cat) => {
-                    return(
-                        <h5 key={cat} id={cat} className="cat-text" onClick={this.changeCat}>{cat}</h5>
-                    )
-                })}
+
+                <Tab.Container defaultActiveKey="bmVwYWw="><Nav className="flex-column">
+                    <Nav.Link as = "div" className="cat-text" onClick={this.changeCat} id="bmVwYWw=" eventKey="bmVwYWw=">all merchandise</Nav.Link>
+                    {cats.map((cat) => {
+                        return(
+                            <Nav.Link as="div" key={cat} id={cat} className="cat-text" onClick={this.changeCat} eventKey={cat}>{cat}</Nav.Link>
+                        )
+                    })}
+                </Nav></Tab.Container>
             </div>
         ) 
     }

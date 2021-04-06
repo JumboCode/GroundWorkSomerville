@@ -15,9 +15,16 @@
 
 .cat-text {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: normal;
     color: #1FB25A;
     padding-top: 10px;
-    cursor: pointer;;
+    cursor: pointer;
+    font-size: larger;
+    padding-left:0 !important;
+}
+
+.cat-text.active{
+    font-weight: bold;
 }
 
 .filter-header{
@@ -33,4 +40,8 @@
 .clear-search {
     color: #1FB25A;
     padding-left: 30px;
+}
+
+.selected-cat{
+    font-weight: bold;
 }
