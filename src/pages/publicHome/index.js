@@ -8,25 +8,20 @@ import './styles.css';
 class PublicHome extends Component {
     constructor(props) {
         super(props);
-        this.state = {vegData: [], searchText: "", searched: false};
+        this.state = {defaultData:[], vegData: [], searchText: "", searched: false, categories:new Set()};
         this.handleSearch = this.handleSearch.bind(this)
         this.search = this.search.bind(this)
         this.clearSearch = this.clearSearch.bind(this)
-        this.getAllVegList = this.getAllVegList.bind(this)
         this.filterComp = this.filterComp.bind(this)
     };
 
     componentDidMount() {
         axios.get('list-vegetables')
         .then((resp) => {
-            this.setState({vegData:resp.data})
-        })
-    }
-
-    getAllVegList() {
-        axios.get('list-vegetables')
-        .then((resp) => {
-            this.setState({vegData:resp.data})
+            this.setState({vegData:resp.data, defaultData:resp.data})
+            this.state.vegData.map((dat)=>{
+                this.setState({categories: this.state.categories.add(...dat['categories'])})
+            })
         })
     }
 
@@ -41,18 +36,24 @@ class PublicHome extends Component {
         .then((resp) => {
             this.setState({vegData:resp.data})
         })
+        
     }
 
     clearSearch() {
-        this.getAllVegList()
-        this.setState({ searched: false, searchText: ""})
+        this.setState({ vegData: this.state.defaultData, searchText: ""})
     }
 
     filterComp(){
+        const cats = Array.from(this.state.categories)
         return(
             <div className="home-filter">
                 <h2 className="filter-header">Categories</h2>
-                <h3 className="home-text">all merchandise</h3>
+                <h5 className="home-text">all merchandise</h5>
+                {cats.map((cat) => {
+                    return(
+                        <h5 className="home-text">{cat}</h5>
+                    )
+                })}
             </div>
         ) 
     }
@@ -65,7 +66,7 @@ class PublicHome extends Component {
                     {this.filterComp()}
                 </Col>
                 <Col>
-                    <form class="home-search">
+                    <form className="home-search">
                         <input type="text" onChange={this.handleSearch} placeholder="Search" value={searchText} className="home-search-text"/>
                         <Button onClick={this.search}>Search</Button>
                     </form>
