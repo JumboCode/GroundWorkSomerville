@@ -13,6 +13,7 @@ class PublicHome extends Component {
         this.search = this.search.bind(this)
         this.clearSearch = this.clearSearch.bind(this)
         this.filterComp = this.filterComp.bind(this)
+        this.changeCat = this.changeCat.bind(this)
     };
 
     componentDidMount() {
@@ -36,11 +37,21 @@ class PublicHome extends Component {
         .then((resp) => {
             this.setState({vegData:resp.data})
         })
-        
     }
 
     clearSearch() {
-        this.setState({ vegData: this.state.defaultData, searchText: ""})
+        this.setState({ vegData: this.state.defaultData, searchText: "", searched: false})
+    }
+
+    changeCat(event){
+        const id = event.target.id
+        if (id == "bmVwYWw=") {
+            this.setState({vegData:this.state.defaultData})
+        } else {
+            this.setState({vegData:this.state.defaultData.filter(dat => {
+                return(dat['categories'].includes(id))
+            })})
+        }
     }
 
     filterComp(){
@@ -48,10 +59,10 @@ class PublicHome extends Component {
         return(
             <div className="home-filter">
                 <h2 className="filter-header">Categories</h2>
-                <h5 className="home-text">all merchandise</h5>
+                <h5 className="cat-text" onClick={this.changeCat} id="bmVwYWw=">all merchandise</h5>
                 {cats.map((cat) => {
                     return(
-                        <h5 className="home-text">{cat}</h5>
+                        <h5 key={cat} id={cat} className="cat-text" onClick={this.changeCat}>{cat}</h5>
                     )
                 })}
             </div>

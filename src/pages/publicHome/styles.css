@@ -13,10 +13,11 @@
     padding-left: 20px;
 }
 
-.home-text {
+.cat-text {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #1FB25A;
     padding-top: 10px;
+    cursor: pointer;;
 }
 
 .filter-header{
