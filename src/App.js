@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NavBar from './components/navbar/NavBar';
 import Login from './components/login/Login';
-import Vegetables from './pages/home/Vegetables';
+import PublicHome from './pages/publicHome';
 import InfoPage from './pages/info/InfoPage';
 import Inventory from './pages/inventory';
 import Checkout from './pages/checkout/Checkout';
@@ -70,7 +70,7 @@ class App extends Component {
         if (isAuth) {
             if (!activated) { home = <Redirect to='/edit-account'/> }
                 else { home = isAdmin ? <Inventory token={token}/> : "MM Placeholder" }}
-        else { home = <Vegetables/> }
+        else { home = <PublicHome/> }
 
         return (
             <div className = "App">

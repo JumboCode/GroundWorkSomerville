@@ -1,0 +1,35 @@
+.home-search{
+    padding:10px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.home-search-text{
+    width:50%;
+    height: 35px;
+    border-radius: 20px;
+    margin-right: 10px;
+    outline-style:inherit;
+    padding-left: 20px;
+}
+
+.home-text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #1FB25A;
+    padding-top: 10px;
+}
+
+.filter-header{
+    color:#1B7A41;
+    font-weight: bold;
+}
+
+.home-filter {
+    padding-top: 50px;
+    padding-left: 40px;
+}
+
+.clear-search {
+    color: #1FB25A;
+    padding-left: 30px;
+}
