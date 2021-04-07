@@ -6,25 +6,25 @@
 
 2. Saurav Gyawali
 
-3. Julia Lober
+3. Anne Lau
 
-4. Alyssa Vargas-Levine
+4. Angela Wei 
 
-5. Henry Li
+5. Genki Kadomatsu 
 
 6. Theo Henry
 
-7. Benjamin Duchild
+7. Rujen Amatya
 
-8. Rujen Amatya
+8. Benjamin Duchild 
 
 9. Erena Inoue
 
-10. Genki Kadomatsu
+10. Henry Li
 
-11. Angela Wei
+11. Julia Lober
 
-12. Anne Lau
+12. Alyssa Vargas-Levine
 
 
 ## Setting up Repository

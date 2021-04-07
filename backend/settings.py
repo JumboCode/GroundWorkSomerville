@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'apis.apps.ApisConfig',
     'corsheaders',
     'rest_framework.authtoken',
-    'storages', 
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -48,7 +48,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ os.path.join(BASE_DIR, 'build') ],
+        'DIRS': [os.path.join(BASE_DIR, 'build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,7 +122,6 @@ if IS_HEROKU:
     }
     AWS_LOCATION = 'media'
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    
     EMAIL_HOST = os.environ['EMAIL_HOST']
     EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']

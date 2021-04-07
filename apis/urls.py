@@ -1,34 +1,41 @@
 from django.urls import path
-from . import views
-from django.conf.urls import include, url
+from apis.views import transactions, inventory, landing, authentication
+from django.conf.urls import url
 from django.conf import settings
 from django.views.static import serve
 
 
 urlpatterns = [
-    path('list-vegetables', views.ListVegetables, name="list-vegetables"),
-    path('create-vegetable', views.CreateVegetable, name="create-vegetable"),
-    path('update-vegetable', views.UpdateVegetable, name="update-vegetable"),
-    path('delete-vegetable/<str:pk>', views.DeleteVegetable, name="delete-vegetable"),
-    path('search-vegetables/<str:pk>', views.SearchVegetables, name="search-vegetables"),
-
-
-    path('list-harvests', views.ListHarvests, name="list-harvests"),
-    path('create-harvest', views.CreateHarvest, name="create-harvest"),
-    path('delete-harvest/<str:pk>', views.DeleteHarvest, name="delete-harvest"),
-
-    path('create-purchase', views.CreatePurchase, name='create-purchase'),
-
-    path('vegetable-stock', views.StockVegetable, name='vegetable-stock'),
-    path('merch-stock', views.StockMerchandise, name='merch-stock'),
-
-    path('user', views.GetUser, name="user-info"),
-    path('add-user', views.AddUser, name="add-user"),
-    path('changepass', views.ChangePassword, name="change-pass"),
-    path('login', views.login, name="login"),
-    path('add-product', views.AddProduct, name="add-product"),
-    path('logout', views.logout, name="logout")
+    path('list-vegetables', inventory.ListVegetables, name="list-vegetables"),
+    path('create-vegetable', inventory.CreateVegetable, name="create-vegetable"),
+    path('update-vegetable', inventory.UpdateVegetable, name="update-vegetable"),
+    path('delete-vegetable/<str:pk>',
+         inventory.DeleteVegetable, name="delete-vegetable"),
+    path('search-vegetables/<str:pk>',
+         inventory.SearchVegetables, name="search-vegetables"),
+    path('list-harvests', inventory.ListHarvests, name="list-harvests"),
+    path('create-harvest', inventory.CreateHarvest, name="create-harvest"),
+    path('delete-harvest/<str:pk>',
+         inventory.DeleteHarvest, name="delete-harvest"),
+    path('create-purchase', transactions.CreatePurchase, name='create-purchase'),
+    path('vegetable-stock', inventory.StockVegetable, name='vegetable-stock'),
+    path('merch-stock', inventory.StockMerchandise, name='merch-stock'),
+    
+    path('user', authentication.GetUser, name="user-info"),
+    path('add-user', authentication.AddUser, name="add-user"),
+    path('changepass', authentication.ChangePassword, name="change-pass"),
+    path('login', authentication.login, name="login"),
+    path('add-product', inventory.AddProduct, name="add-product"),
+    path('logout', authentication.logout, name="logout")
+    
+    path('merch-summary', landing.MerchSummary, name="merch-summary"),
+    path('merch-detail/<str:pk>', landing.MerchDetail, name="merch-detail"),
+    path('public-checkout', transactions.PurchaseMerchandise, name="merch-purchase"),
+    
+    path('all-produce', landing.AllProduce, name="all-produce"),
+    path('mm-checkout', transactions.PurchaseProduce, name="mm-checkout")
 ]
 
 if not settings.IS_HEROKU:
-    urlpatterns.append(url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT,}))
+    urlpatterns.append(url(r'^media/(?P<path>.*)$', serve, 
+    {'document_root': settings.MEDIA_ROOT, }))
