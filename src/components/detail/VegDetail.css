@@ -37,11 +37,11 @@
     margin: 3%;
 }
 
-h2 {
-    font-size: 16px;
+.h2sub {
+    font-size: 30px;
     color: #104E29
 }
 
-p {
-    font-size: 12px;
+.psub {
+    font-size: 14px;
 }

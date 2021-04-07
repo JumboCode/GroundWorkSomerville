@@ -60,12 +60,12 @@ const VegetableDetail = ({show, onHide, detailID}) => {
                         <img src={selectedImage} alt="main product" className="big-image"></img>
                     </div>
                     <div className="detail-description">
-                        <h2>{detail.name}</h2>
-                        <p>{detail.description}</p>
-                        <h2>${detail.price.toFixed(2)}</h2>
+                        <div className="h2sub">{detail.name}</div>
+                        <div className="psub">{detail.description}</div>
+                        <div className="h2sub">${detail.price.toFixed(2)}</div>
                         <div> 
                         <div className="buttons">
-                            <p >select quantity:</p>
+                        <div className="psub">select quantity:</div>
                             <Quantity 
                                 id = {detail.id}
                                 quantity={quantity}
