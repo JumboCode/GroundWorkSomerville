@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './styles.css';
 import EditItem from '../editItem';
-import VegetableDetail from '../detail/VegDetail';
 import { Modal, Tab, Nav } from 'react-bootstrap';
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
 import ProduceItem from "./ProduceItem";
-import inventoryData from "../../temp-data/inventoryData";
 
 
 const InventoryTab = (props) => {
@@ -140,8 +138,7 @@ const InventoryTab = (props) => {
                 
                 </Tab.Content>
             </Tab.Container>
-            {/* <EditItem show={showAddItem} onHide={()=> setShowAddItem(false)} id={popupID}/> */}
-            <VegetableDetail show={showAddItem} onHide={()=> setShowAddItem(false)} detail={inventoryData[popupID]}/>
+            <EditItem show={showAddItem} onHide={()=> setShowAddItem(false)} id={popupID}/>
 
         </div>
     )
