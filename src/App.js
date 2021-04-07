@@ -18,7 +18,8 @@ class App extends Component {
                       isAuth: false, 
                       isAdmin: false, 
                       token: '',
-                      activated: false}
+                      activated: false,
+                      showMiniCart: false}
         this.logout = this.logout.bind(this);
         this.login = this.login.bind(this);
     };
@@ -62,20 +63,20 @@ class App extends Component {
     }
 
     render() {
-        const {loginShow, isAuth, isAdmin, token, activated} = this.state;
+        const {loginShow, isAuth, isAdmin, token, activated, showMiniCart} = this.state;
         const hideLogin = () => {this.setState({loginShow: false})}
         const showLogin = () => {this.setState({loginShow: true})}
         const activate = () => {this.setState({activated: true})}
+        const showCart = () => {console.log("yoo"); this.setState({showMiniCart: true})}
         let home;
         if (isAuth) {
             if (!activated) { home = <Redirect to='/edit-account'/> }
                 else { home = isAdmin ? <Inventory token={token}/> : "MM Placeholder" }}
-        else { home = <PublicHome showCart={false}/> }
-
+        else { home = <PublicHome showCart={showMiniCart}/> }
         return (
             <div className = "App">
                 <BrowserRouter>
-                    <NavBar isAuth={isAuth} logout={this.logout} showLogin={showLogin}/>
+                    <NavBar isAuth={isAuth} logout={this.logout} showLogin={showLogin} showCart={showCart}/>
                     <Login show={loginShow} onHide={hideLogin} login={this.login}/>
                     <Switch>
                         <Route exact path='/'>{home}</Route>

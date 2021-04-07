@@ -22,6 +22,7 @@ class PublicHome extends Component {
         this.filterComp = this.filterComp.bind(this)
         this.changeCat = this.changeCat.bind(this)
         this.filter = this.filter.bind(this)
+        this.minicart = this.minicart.bind(this)
     };
 
     componentDidMount() {
@@ -108,15 +109,33 @@ class PublicHome extends Component {
         ) 
     }
 
+    minicart(){
+        return(
+            <div className="mini-cart">
+                cart
+            </div>
+        )
+    }
+
     render() {
         const {showCart} = this.props;
         const {vegData, searched, searchText} = this.state;
         if (showCart){
-            return (
-                <div>
-                    Better show a cart here
-                </div>
-            )
+        return (
+            <Container id="public-home" fluid><Row>
+                <Col>
+                    <form className="home-search">
+                        <input type="text" onChange={this.handleSearch} placeholder="Search" value={searchText} className="home-search-text"/>
+                        <Button onClick={this.search}>Search</Button>
+                    </form>
+                    {searched && <div onClick={this.clearSearch} className="clear-search">Clear Search Results</div>}
+                    <VegGrid vegData={vegData}/>
+                </Col>
+                <Col sm={3}>
+                    {this.minicart()}
+                </Col>
+            </Row></Container>
+        )
         } else {
         return (
             <Container id="public-home" fluid><Row>
