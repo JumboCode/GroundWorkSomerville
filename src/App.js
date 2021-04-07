@@ -76,7 +76,7 @@ class App extends Component {
         let home;
         if (isAuth) {
             if (!activated) { home = <Redirect to='/edit-account'/> }
-                else { home = isAdmin ? <Inventory token={token}/> : </Checkout> }}
+                else { home = isAdmin ? <Inventory token={token}/> : <Checkout/> }}
         else { home = <PublicHome showCart={showMiniCart}/> }
         return (
             <div className = "App">
