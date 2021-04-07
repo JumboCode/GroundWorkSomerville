@@ -1,8 +1,8 @@
 /* NOTES 
  * 
- * Note 1: Not sure how to handle image saving, add to state somehow? (line 16, 31)
+ * Note 1: Not sure how to handle image saving, add to state somehow? (line 16, 30)
  * 
- * Note 2: Not sure how to use onHide to hide component with button, currently only have closeButton from modal header (line 64)
+ * Note 2: Not sure how to use onHide to hide component with button, currently only have closeButton from modal header (line 71, 74)
  */ 
 import React from 'react';
 import './styles.module.css';
@@ -68,10 +68,10 @@ class AddItem extends React.Component {
 
                 <Row style={{'padding': '20px'}}> 
 
-                    {/* See Note 2  */}
+                    {/* Got stuck when trying to use onHide to hide onClick for this button and onClock for save button */}
                     {/* <Col>  <Button closeButton> Cancel </Button> </Col>  */}
 
-                    <Col>  <Button onClick={this.printProducts} className="float-right">Save</Button> </Col>
+                    <Col>  <Button onClick={this.printProducts} className="float-right">Save</Button> </Col> 
 
                 </Row>
 
