@@ -4,21 +4,21 @@ const checkoutData = [
         type: "fruit",
         name: "Grape Tomatoes",
         price: 4.99, 
-        unit: "ea"
+        unit: "lbs"
     }, 
     {
         id: 2, 
         type: "fruit",
         name: "Blueberries",
         price: 4.99, 
-        unit: "ea"
+        unit: "lbs"
     }, 
     {
         id: 3, 
         type: "fruit",
         name: "Strawberries",
         price: 3.50, 
-        unit: "ea"
+        unit: "lbs"
     }, 
     {
         id: 4, 
@@ -32,31 +32,15 @@ const checkoutData = [
         type: "veg",
         name: "Kale",
         price: 4.99, 
-        unit: "ea"
+        unit: "bunches"
     }, 
     {
         id: 6, 
         type: "veg",
         name: "Spinach",
         price: 3.50, 
-        unit: "ea"
+        unit: "bunches"
     }, 
-    {
-        id: 7, 
-        type: "other",
-        name: "Cup",
-        price: 24.00, 
-        unit: "ea"
-    }, 
-    {
-        id: 8, 
-        type: "other",
-        name: "T-Shirt",
-        price: 20.00, 
-        unit: "ea"
-    }, 
-
-
 ]
 
 export default checkoutData

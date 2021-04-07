@@ -91,7 +91,7 @@ class PublicHome extends Component {
                     <Nav.Link as = "div" className="cat-text" onClick={this.changeCat} id="bmVwYWw=" eventKey="bmVwYWw=">all merchandise</Nav.Link>
                     {cats.map((cat) => {
                         return(
-                            <Nav.Link as="div" key={cat} id={cat} className="cat-text" onClick={this.changeCat} eventKey={cat}>{cat}</Nav.Link>
+                            <Nav.Link as="div" key={cat} id={cat} className="cat-text" onClick={this.changeCat} eventKey={cat}>{cat == "1" ? "apparel":"miscellaneous"}</Nav.Link>
                         )
                     })}
                 </Nav></Tab.Container>
