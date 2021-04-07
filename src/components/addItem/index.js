@@ -1,19 +1,21 @@
-//TODO: add image to products state array
-//TODO: something with json
-//TODO: what to do on cancel button and save button? (currently save just prints state to console)
-
+/* NOTES 
+ * 
+ * Note 1: Not sure how to handle image saving, add to state somehow? (line 16, 31)
+ * 
+ * Note 2: Not sure how to use onHide to hide component with button, currently only have closeButton from modal header (line 64)
+ */ 
 import React from 'react';
 import './styles.module.css';
 import Entries from './components/Entries.js'
 import Button from '../button/index.js'
-import { Container, Col, Row, Modal } from 'react-bootstrap'
+import { Col, Row, Modal } from 'react-bootstrap'
 
 class AddItem extends React.Component {
 
     state = {
-        products: [{name:"", units:"", price:""}]
+        products: [{name:"", units:"", price:"",image:null}]  //See Note 1
     }
-
+    
     handleChange = (e) => {
         if(["name","units","price"].includes(e.target.className)) {
             let products = [...this.state.products]
@@ -25,9 +27,7 @@ class AddItem extends React.Component {
     }
 
     addProduct = (e) => {
-        this.setState((prevState) => ({
-            products: [...prevState.products, {name:"", units:"", price: ""}],
-        }));
+        this.setState((prevState) => ({ products: [...prevState.products, {name:"", units:"", price: "", file:null}]})); //See Note 1 
     }
 
     printProducts = (e) =>  {
@@ -37,7 +37,7 @@ class AddItem extends React.Component {
             }
         })    
         console.log('On Save:', this.state)
-        }
+    }
     
 
     handleSubmit = (e) => { e.preventDefault() }
@@ -46,32 +46,39 @@ class AddItem extends React.Component {
         let {products} = this.state
         return (
             <div> 
-            {/* <Modal.Header closeButton>
-                <Modal.Title as="title">Add Item</Modal.Title>
-            </Modal.Header> */}
-            <Modal.Body  style={{'maxHeight': 'calc(100vh - 210px)', 'overflowY': 'auto'}}>
-                <Entries entries={products}/> 
-            </Modal.Body>
-            
-            <Row>   
-            <Col> </Col>              
-                <Col style={{'content-align': 'center'}}> 
-                <Button onClick={this.addProduct}> Add A New Item </Button>
-                </Col>
-            <Col></Col> 
-            </Row>
-            <Row style={{'padding': '20px'}}> 
-                <Col>  <Button onClick={this.hide}> Cancel </Button> </Col>
-                <Col>  <Button onClick={this.printProducts} className="float-right">Save</Button> </Col>
-            </Row>
+                <Modal.Header closeButton style={{'border-bottom':'none 0'}}/> 
+                
+                <Modal.Body  style={{'maxHeight': 'calc(100vh - 210px)', 'overflowY': 'auto'}}>
+
+                    <Entries entries={products}/> 
+    
+                </Modal.Body>
+                
+                <Row>   
+
+                    <Col/>  
+
+                    <Col style={{'content-align': 'center'}}> 
+                        <Button onClick={this.addProduct}> Add A New Item </Button>
+                    </Col>
+
+                    <Col/> 
+
+                </Row>
+
+                <Row style={{'padding': '20px'}}> 
+
+                    {/* See Note 2  */}
+                    {/* <Col>  <Button closeButton> Cancel </Button> </Col>  */}
+
+                    <Col>  <Button onClick={this.printProducts} className="float-right">Save</Button> </Col>
+
+                </Row>
+
             </div>
         )
     }
-
 }
-
 export default AddItem;
 
-//TODO upload image thing
-//Bug where first empty part is not showing
 
