@@ -6,7 +6,9 @@ import Quantity from "../changeNumber/Quantity";
 import Button from "../button";
 import "./VegDetail.css";
 
-const VegetableDetail = ({show, onHide, detail}) => {
+const VegetableDetail = ({show, onHide, detailID}) => {
+    console.log(detailID)
+    const detail = inventoryData[parseInt(detailID)]
 
     // TO-DO: Fix this to access pics from the backend
     var imgArray = new Array(3);
@@ -24,7 +26,7 @@ const VegetableDetail = ({show, onHide, detail}) => {
 
     const getImage = (img) => {
         return (
-            <a onClick={(e) => setSelectedImage(img)}>
+            <a onClick={(e) => setSelectedImage(img)} key={img}>
                  <img src={img} alt="close up of product" className="small-img"></img>
             </a>
         )
@@ -50,11 +52,7 @@ const VegetableDetail = ({show, onHide, detail}) => {
     }
     
     return (
-        <Modal id="detailModal" show={show} onHide={onHide} size="lg" scrollable={true} centered>
-            <Modal.Header closeButton>
-                {/* <Modal.Title as="h5">{detail.name}</Modal.Title>/ */}
-            </Modal.Header>
-            <Modal.Body  style={{'maxHeight': 'calc(100vh - 210px)', 'overflowY': 'auto'}}>
+            <div className = "veg-detail">
                 <div className="container">
                     <div className="images">
                         {getImages(imgArray)}
@@ -81,10 +79,7 @@ const VegetableDetail = ({show, onHide, detail}) => {
                         </div>
                     </div>
                 </div>
-            </Modal.Body>
-            {/* <Button className="float-right" >Save</Button> */}
-
-        </Modal>
+                </div>
     )
 }
 
