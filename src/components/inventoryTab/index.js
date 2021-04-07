@@ -5,6 +5,7 @@ import { Modal, Tab, Nav } from 'react-bootstrap';
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
 import ProduceItem from "./ProduceItem";
 
+
 const InventoryTab = (props) => {
     const [showAddItem, setShowAddItem] = useState(false);
     const [produce, setProduce] = useState([]);
@@ -138,6 +139,7 @@ const InventoryTab = (props) => {
                 </Tab.Content>
             </Tab.Container>
             <EditItem show={showAddItem} onHide={()=> setShowAddItem(false)} id={popupID}/>
+
         </div>
     )
 }

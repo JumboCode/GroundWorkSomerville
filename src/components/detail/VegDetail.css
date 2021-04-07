@@ -1,74 +1,47 @@
-#popup-box{
-    margin: auto;
-    width: 80%;
-    margin-top: 30px;
-    border: 1px solid #eee;
-    border-radius: 15px; 
-    box-sizing: border-box;
-    background-color:#eee;
-    height: 638px;
+.container {
+    width: 100%;
+}
+.images{
+    width: 15%;
+    margin: 1%;
+    display: inline-block;
 
-    padding: 20px; 
-    position: relative;
-
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#popup-imgs{
-    width: 40%;
-    box-sizing: border-box;
-    float:left;
+.small-img{
+    width: 90%; 
+    display:inline-block;
 }
 
-#popup-info{
-    width:40%;  
-    float: right;
-    box-sizing: border-box;
+.central { 
+    width:35%;
+    margin: 1%;
+    display:inline-block;
 }
 
-#popup-vegname{
-    font-size:35px;
-    color: #104E29;
+.big-image {
+    width: 100%;
+    display: block;
+    margin:auto;
+
 }
 
-#popup-tags{
+.detail-description{
+    width:40%;
+    margin: 3%;
+    display:inline-block;
+}
+
+.buttons{
+    display: inline-block;
+    margin: 3%;
+}
+
+h2 {
+    font-size: 16px;
+    color: #104E29
+}
+
+p {
     font-size: 12px;
-    margin: 10px 0;
-
-    color:#1FB25A;
 }
-.popup-tag{
-    display:inline;
-    border: 1px solid #1FB25A; 
-    border-radius: 10px;
-    margin: 0 3px; 
-    padding: 1px 10px; 
-}
-
-#popup-desc{
-    font-size:15px;
-}
-
-#popup-qty{
-    color:#1FB25A;
-}
-#x-button{
-    position:absolute;
-    right: 5px; 
-    top: 5px;
-
-    background-color:none;
-    color:#1FB25A;
-    border: none;
-    font-size: 35px;
-}
-
-#popup-addtocart{
-    background-color:rgb(75, 170, 56);
-    color:#fff;
-    border: none; 
-    border-radius: 15px; 
-    font-size:14px;
-    padding: 3px 15px;
-}
-

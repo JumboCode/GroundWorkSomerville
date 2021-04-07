@@ -6,7 +6,6 @@ import helpIcon from './help.png';
 import cart from './cart.png';
 
 const NavBar = ({ isAuth, logout, showLogin, showCart}) => {
-    console.log(showCart)
     const history = useHistory()
     const style = {
         borderRadius: "0 0 25px 25px",

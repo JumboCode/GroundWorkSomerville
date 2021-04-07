@@ -22,7 +22,7 @@ const EditItem = ({show, onHide, id}) => {
         <Modal.Body  style={{'maxHeight': 'calc(100vh - 210px)', 'overflowY': 'auto'}}>
             {editData}
         </Modal.Body>
-        <Button className="float-right">Save</Button>
+        <Button className="float-right" >Save</Button>
 
         </Modal>
     )
