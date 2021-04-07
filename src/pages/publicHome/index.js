@@ -63,7 +63,6 @@ class PublicHome extends Component {
         return(
             <div className="home-filter">
                 <h2 className="filter-header">Categories</h2>
-
                 <Tab.Container defaultActiveKey="bmVwYWw="><Nav className="flex-column">
                     <Nav.Link as = "div" className="cat-text" onClick={this.changeCat} id="bmVwYWw=" eventKey="bmVwYWw=">all merchandise</Nav.Link>
                     {cats.map((cat) => {

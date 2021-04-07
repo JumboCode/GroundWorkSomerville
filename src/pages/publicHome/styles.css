@@ -19,7 +19,7 @@
     color: #1FB25A;
     padding-top: 10px;
     cursor: pointer;
-    font-size: larger;
+    font-size:x-large;
     padding-left:0 !important;
 }
 
@@ -33,6 +33,7 @@
 }
 
 .home-filter {
+    position:fixed;
     padding-top: 36px;
     padding-left: 40px;
 }
