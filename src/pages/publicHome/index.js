@@ -9,10 +9,12 @@ class PublicHome extends Component {
     constructor(props) {
         super(props);
         this.state = {defaultData:[],
+                      searchedData: [],
                       vegData: [], 
                       searchText: "",
                       searched: false,
-                      categories:new Set()};
+                      categories:new Set(),
+                      currentCat:"bmVwYWw="};
         this.handleSearch = this.handleSearch.bind(this)
         this.search = this.search.bind(this)
         this.clearSearch = this.clearSearch.bind(this)
@@ -23,7 +25,7 @@ class PublicHome extends Component {
     componentDidMount() {
         axios.get('list-vegetables')
         .then((resp) => {
-            this.setState({vegData:resp.data, defaultData:resp.data})
+            this.setState({vegData:resp.data, defaultData:resp.data, searchedData:resp.data})
             this.state.vegData.map((dat)=>{
                 this.setState({categories: this.state.categories.add(...dat['categories'])})
             })
@@ -39,20 +41,23 @@ class PublicHome extends Component {
         this.setState({ searched: true })
         axios.get(`search-vegetables/${this.state.searchText}`)
         .then((resp) => {
-            this.setState({vegData:resp.data})
+            this.setState({searchedData:resp.data, vegData:resp.data})
+            this.changeCat({target:{id: this.state.currentCat}})
         })
+        
     }
 
     clearSearch() {
-        this.setState({ vegData: this.state.defaultData, searchText: "", searched: false})
+        this.setState({ vegData: this.state.defaultData, searchText: "", searched: false, searchedData: this.state.defaultData})
     }
 
     changeCat(event){
         const id = event.target.id
+        this.setState({currentCat:id})
         if (id == "bmVwYWw=") {
-            this.setState({vegData:this.state.defaultData})
+            this.setState({vegData:this.state.searchedData})
         } else {
-            this.setState({vegData:this.state.defaultData.filter(dat => {
+            this.setState({vegData:this.state.searchedData.filter(dat => {
                 return(dat['categories'].includes(id))
             })})
         }
