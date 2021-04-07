@@ -14,12 +14,14 @@ class PublicHome extends Component {
                       searchText: "",
                       searched: false,
                       categories:new Set(),
-                      currentCat:"bmVwYWw="};
+                      currentCat:"bmVwYWw=",
+                      currentFilter: "rel"};
         this.handleSearch = this.handleSearch.bind(this)
         this.search = this.search.bind(this)
         this.clearSearch = this.clearSearch.bind(this)
         this.filterComp = this.filterComp.bind(this)
         this.changeCat = this.changeCat.bind(this)
+        this.filter = this.filter.bind(this)
     };
 
     componentDidMount() {
@@ -43,6 +45,7 @@ class PublicHome extends Component {
         .then((resp) => {
             this.setState({searchedData:resp.data, vegData:resp.data})
             this.changeCat({target:{id: this.state.currentCat}})
+            this.filter({target:{id: this.state.currentFilter}})
         })
         
     }
@@ -63,10 +66,25 @@ class PublicHome extends Component {
         }
     }
 
+    filter(event){
+        const id = event.target.id
+        this.setState({currentFilter: id})
+        const merchCmpl = (a,b) => {return (a.id < b.id ? -1 : 1)}
+        const merchCmpg = (a,b) => {return (a.id < b.id ? 1: -1)}
+        if (id == "rel"){
+            this.setState({vegData: this.state.searchedData})
+        } else if (id == "lh"){
+            this.setState({vegData: this.state.vegData.sort(merchCmpl)})
+        } else {
+            this.setState({vegData: this.state.vegData.sort(merchCmpg)})
+        }
+    }
+
     filterComp(){
         const cats = Array.from(this.state.categories)
         return(
             <div className="home-filter">
+                <div className="filter-comp">
                 <h2 className="filter-header">Categories</h2>
                 <Tab.Container defaultActiveKey="bmVwYWw="><Nav className="flex-column">
                     <Nav.Link as = "div" className="cat-text" onClick={this.changeCat} id="bmVwYWw=" eventKey="bmVwYWw=">all merchandise</Nav.Link>
@@ -76,12 +94,30 @@ class PublicHome extends Component {
                         )
                     })}
                 </Nav></Tab.Container>
+                </div>
+                <div className="filter-comp">
+                <h2 className="filter-header">&#9776; Filter</h2>
+                <Tab.Container defaultActiveKey="relevance"><Nav className="flex-column">
+                    <Nav.Link as="div" eventKey="relevance" className="cat-text" onClick={this.filter} id="rel">relevance</Nav.Link>
+                    <Nav.Link as="div" eventKey="lohigh" className="cat-text" onClick={this.filter} id="lh">price: low to high</Nav.Link>
+                    <Nav.Link as="div" eventKey="highlo" className="cat-text" onClick={this.filter} id="hl">price: high to low</Nav.Link>
+
+                </Nav></Tab.Container>
+                </div>
             </div>
         ) 
     }
 
     render() {
+        const {showCart} = this.props;
         const {vegData, searched, searchText} = this.state;
+        if (showCart){
+            return (
+                <div>
+                    Better show a cart here
+                </div>
+            )
+        } else {
         return (
             <Container id="public-home" fluid><Row>
                 <Col sm={3}>
@@ -96,7 +132,7 @@ class PublicHome extends Component {
                     <VegGrid vegData={vegData}/>
                 </Col>
             </Row></Container>
-        );
+        )}
     }
 }
 

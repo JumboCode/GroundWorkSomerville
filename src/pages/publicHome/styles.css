@@ -19,7 +19,7 @@
     color: #1FB25A;
     padding-top: 10px;
     cursor: pointer;
-    font-size:x-large;
+    font-size:larger;
     padding-left:0 !important;
 }
 
@@ -45,4 +45,8 @@
 
 .selected-cat{
     font-weight: bold;
+}
+
+.filter-comp + .filter-comp{
+    margin-top: 40px;
 }
