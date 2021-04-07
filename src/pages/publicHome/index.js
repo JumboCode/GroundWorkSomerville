@@ -4,6 +4,7 @@ import VegGrid from '../../components/grid/VegGrid';
 import { Container, Row, Col, Nav, Tab } from 'react-bootstrap';
 import Button from '../../components/button';
 import './styles.css';
+import {Link} from 'react-router-dom';
 
 class PublicHome extends Component {
     constructor(props) {
@@ -115,7 +116,7 @@ class PublicHome extends Component {
                 <h4 className="filter-header">My Cart: 4 items</h4>
                 <div className="mini-checkout-center">
                 {/* TODO: get items in cart */}
-                <Button className="mini-checkout-button">Checkout</Button>
+                <Link to="cart"><Button>Checkout</Button></Link>
                 </div>
             </div>
         )
