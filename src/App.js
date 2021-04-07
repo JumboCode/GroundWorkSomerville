@@ -67,7 +67,12 @@ class App extends Component {
         const hideLogin = () => {this.setState({loginShow: false})}
         const showLogin = () => {this.setState({loginShow: true})}
         const activate = () => {this.setState({activated: true})}
-        const showCart = () => {console.log("yoo"); this.setState({showMiniCart: true})}
+        const showCart = (bv) => {
+            if (bv == "toggle"){
+                this.setState({showMiniCart: !showMiniCart})
+            } else{
+                this.setState({showMiniCart: bv})
+            }}
         let home;
         if (isAuth) {
             if (!activated) { home = <Redirect to='/edit-account'/> }

@@ -17,7 +17,7 @@ const NavBar = ({ isAuth, logout, showLogin, showCart}) => {
     return(
         <Navbar collapseOnSelect expand="sm" sticky="top" bg="light" style={style}>
             <Navbar.Brand>
-                <Link to="/">
+                <Link to="/" onClick={(e) => showCart(false)}>
                     <Image src={logo} height="80"/>
                 </Link>
             </Navbar.Brand>
@@ -28,7 +28,7 @@ const NavBar = ({ isAuth, logout, showLogin, showCart}) => {
                 <Nav.Link className="m-auto" onClick={handleLog}>
                     {isAuth ? "Logout": "Login"}
                 </Nav.Link>
-                <Nav.Link className="m-auto" onClick={showCart}>
+                <Nav.Link className="m-auto" onClick={(e) => showCart("toggle")}>
                     <Image src={cart} height="15" className="pr-1" />
                     Cart
                 </Nav.Link>
