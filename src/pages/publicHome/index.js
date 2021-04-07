@@ -102,7 +102,6 @@ class PublicHome extends Component {
                     <Nav.Link as="div" eventKey="relevance" className="cat-text" onClick={this.filter} id="rel">relevance</Nav.Link>
                     <Nav.Link as="div" eventKey="lohigh" className="cat-text" onClick={this.filter} id="lh">price: low to high</Nav.Link>
                     <Nav.Link as="div" eventKey="highlo" className="cat-text" onClick={this.filter} id="hl">price: high to low</Nav.Link>
-
                 </Nav></Tab.Container>
                 </div>
             </div>
@@ -112,7 +111,12 @@ class PublicHome extends Component {
     minicart(){
         return(
             <div className="mini-cart">
-                cart
+                {/* TODO: get number of items in cart */}
+                <h4 className="filter-header">My Cart: 4 items</h4>
+                <div className="mini-checkout-center">
+                {/* TODO: get items in cart */}
+                <Button className="mini-checkout-button">Checkout</Button>
+                </div>
             </div>
         )
     }
