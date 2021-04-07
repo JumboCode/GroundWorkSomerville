@@ -7,8 +7,7 @@ import Button from "../button";
 import "./VegDetail.css";
 
 const VegetableDetail = ({show, onHide, detailID}) => {
-    console.log(detailID)
-    const detail = inventoryData[parseInt(detailID)]
+    const detail = inventoryData[0]
 
     // TO-DO: Fix this to access pics from the backend
     var imgArray = new Array(3);
