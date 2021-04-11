@@ -18,7 +18,3 @@ class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         fields = '__all__'
-
-class MerchandiseSummarySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Merchandise

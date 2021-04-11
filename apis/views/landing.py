@@ -1,6 +1,5 @@
 from apis.models import Vegetable, Harvest, Merchandise, MerchandisePrice
 from apis.models import PurchasedItem, VegetablePrice, StockedVegetable
-
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -11,38 +10,22 @@ import pandas as pandas
 import json
 
 
-
-#class Merchandise(models.Model):
-#     name = models.CharField(max_length=100)
-#     photo = models.ImageField(upload_to='images', default='images/default.jpg')
-#     quantity = models.DecimalField(max_digits=10, decimal_places=2)
-#     categories = models.IntegerField(choices=MerchandiseType.choices)
-#     deescription = moels.TextField()
-
-#     def __str__(self):
-#         return self.name
-
-# def DeleteVegetable(request, pk):
-#     itemToDelete = Vegetable.objects.get(id=pk)
-#     itemToDelete.delete()
-
-# class MerchandisePrice(models.Model):
-#     merchandise = models.ForeignKey(to=Merchandise, on_delete=models.PROTECT)
-#     price = models.DecimalField(max_digits=10, decimal_places=2)
-#     updated_on = models.DateTimeField(default=timezone.now)
-
-#     def __str__(self):
-#         return self.vegetable.name + '-' + str(self.price)
-#
-#
-#
-
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def MerchSummary(request):
-    all_merchandise = merch.objects.all()
-    return Response([ ])
+    summary = []
+    merchs = Merchandise.objects.all()
+    for merch in merchs:
+        price = MerchandisePrice.objects.filteer(merchandise=merch.id).latest('updated_on')
+        summary.append([{
+            'name': merch.name,
+            'id': merch.id,
+            'photo_url': merch.photo,
+            'category': merch.categories,
+            'price': price
+        }])
+    return Response(summary)
 
 
 @api_view(['GET'])
@@ -53,15 +36,49 @@ def MerchDetail(request, pk):
     price = MerchandisePrice.objects.filter(merchandise=pk).latest('updated_on')
     return Response({
         'name': merch.name,
-        'id': pk,
+        'id': merch.id,
         'description': merch.description,
         'price': price,
         'photo_urls': [merch.photo]})
 
+# {Categories: [
+# { 	Name, 
+# Produces:[{ID, Name, Photo_URL, Unit, Price, Available amount}] 
+# } ]}
+
+# class VegetableType(models.IntegerChoices):
+#     FRUIT = 1, "Fruit"
+#     VEGETABLE = 2, "Vegetable"
+#     HERB = 3, "Herb"
+#     OTHERS = 4, "Others"
+
+# class Vegetable(models.Model):
+#     name = models.CharField(max_length=100)
+#     photo = models.ImageField(upload_to='images', default='images/default.jpg')
+#     unit = models.CharField(max_length=100)
+#     categories = models.IntegerField(choices=VegetableType.choices)
+
+#     def __str__(self):
+#         return self.name
+
+
+# class StockedVegetable(models.Model):
+#     vegetable = models.ForeignKey(
+#         to=Vegetable, on_delete=models.SET_NULL, null=True)
+#     weight = models.DecimalField(max_digits=10, decimal_places=2)
+#     quantity = models.IntegerField()
+#     harvested_on = models.ForeignKey(
+#         to=Harvest, on_delete=models.SET_NULL, null=True)
+
+#     def remove_quantity(self, removal_amount):
+#         self.quantity -= removal_amount
+#         self.save()
+
+#     def get_quantity(self):
+#         return self.quantity
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def AllProduce(request):
-    return request
-
+    produces = StockedVegetable.objects.all.

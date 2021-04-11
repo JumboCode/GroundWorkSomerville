@@ -77,22 +77,6 @@ def ListHarvests(request):
     return Response(serializer.data)
 
 
-@api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def CreateHarvest(request):
-    # read the spreadsheet
-    spreadsheet = request.FILES['file']
-    cols = pandas.read_excel(spreadsheet)
-    # create a dictionary representation of it
-    if validate_harvest_spreadsheet(cols):
-        serializer = create_harvest(cols)
-        create_vegetables(cols)
-        return Response(serializer.data)
-    else:
-        return ValidationError("invalid spreadsheet!")
-
-
 @api_view(['DELETE'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
@@ -174,36 +158,3 @@ def SearchVegetables(request, pk):
     items = Vegetable.objects.all().filter(name__icontains=pk)
     serializer = VegetableSerializer(items, many=True)
     return Response(serializer.data)
-
-
-@api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def AddProduct(request):
-    body = json.loads(request.body, strict=False)
-    ptype = body['type']
-
-    # decode the base64 image, and replace the 'image'
-    # field with its corresponding file name
-    img, file_name = decode_base64_image(body['photo'])
-    request.data.update({"photo": file_name})
-
-    if ptype == 0:  # type 0 = produce
-        serializer = VegetableSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            fout = open(file_name, 'wb')
-            fout.write(img)
-            fout.close()
-        return Response(data=serializer.data)
-    # elif ptype == 1: # type 1 = merchandise
-    #     serializer = VegetableSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         fout = open(file_name, 'wb')
-    #         fout.write(img)
-    #         fout.close()
-    #     return Response(data=serializer.data)
-    else:  # if product type is invalid
-        err_msg = "Invalid product type '%s'. Expected 'produce' or 'merchandise'." % ptype
-        return ParseError(err_msg)
