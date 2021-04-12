@@ -34,7 +34,7 @@ class CartOrder extends Component {
                 <p><span className="leftsub">Estimated Sales Tax: </span> <span className="rightsub">${this.toDecimal(this.salesTax(this.props.total))}</span> </p>
                 <hr/>
                 <p><span className="leftsub">Total: </span> <span className="rightsub">${this.toDecimal(this.props.total + this.salesTax(this.props.total))}</span></p>
-                <Button onClick={(e)=>this.props.onCheckoutChange(true)}>Checkout</Button>
+                <div className = "checkoutContainer"> <Button onClick={(e)=>this.props.onCheckoutChange(true)}>Checkout</Button></div>
             </div>
         )
     }

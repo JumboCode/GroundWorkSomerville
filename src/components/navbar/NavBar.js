@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 import logo from './logo.png';
 import helpIcon from './help.png';
 import cart from './cart.png';
+import Button from '../button';
 
 const NavBar = ({ isAuth, logout, showLogin }) => {
     const history = useHistory()
@@ -12,9 +13,9 @@ const NavBar = ({ isAuth, logout, showLogin }) => {
         boxShadow: "0px 1px 6px 0px rgba(62, 78, 65, 0.5)"
     }
     const handleLog = isAuth ? ()=>{logout(); history.push('/')} : showLogin
-    const help = window.innerWidth < 580 ? "Help" : <Image src= {helpIcon} height="15"/>
+    const help = window.innerWidth < 580 ? "Help" : <Image src= {helpIcon} height="20"/>
     return(
-        <Navbar collapseOnSelect expand="sm" sticky="top" bg="light" style={style}>
+        <Navbar collapseOnSelect expand="sm" sticky="top" bg="white" style={style}>
             <Navbar.Brand>
                 <Link to="/">
                     <Image src={logo} height="80"/>
@@ -25,11 +26,11 @@ const NavBar = ({ isAuth, logout, showLogin }) => {
             <Nav className="ml-auto pr-5">
                 <Nav.Item className="m-auto"><Link to="/info">{help} </Link></Nav.Item>
                 <Nav.Link className="m-auto" onClick={handleLog}>
-                    {isAuth ? "Logout": "Login"}
+                    <Button>{isAuth ? "Logout": "Login"}</Button>
                 </Nav.Link>
                 <Nav.Link className="m-auto" >
-                    <Image src={cart} height="15" className="pr-1"/>
-                    Cart
+                    <Button><Image src={cart} height="20" className="pr-1"/>
+                    Cart</Button>
                 </Nav.Link>
             </Nav>
             </Navbar.Collapse>

@@ -6,6 +6,12 @@
     font-size: 14px;
 }
 
+.checkoutContainer {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
 .header {
     font-weight: bold;
     font-size: 18px;

@@ -38,7 +38,8 @@
 .itemColumn-small{
     display:inline-block;
     width:50%; 
-    text-align:right;
+    height: 50%;
+    text-align:center;
     padding-left:2%;
 }
 
@@ -93,6 +94,7 @@ p.itemName {
     font-weight: regular;
     color: #707070;
 }
+
 @media screen and (max-width: 750px) {
     .prod-image {width: 50px; height: 50px;}
     .itemContainer {width: 100%; font-size:14px;}
