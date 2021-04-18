@@ -7,28 +7,22 @@ import FileUploader from './fileUploader/index.js';
 import './Entries.css'
 
 const Entries = (props) => {
-
-    
     
     function handleChange(key, e) { //Note: How to handle image change? Do something in this function? 
-
         let value = e.target.value
         
         if(e.target.className == 'name') {
             props.entries[key].name = value
-        } else if (e.target.className == 'units') {
-            props.entries[key].units = value
-        } else if (e.target.className == 'price') {
-            props.entries[key].price = value
+        } else if (e.target.className == 'quantity') {
+            props.entries[key].quantity = value
         }
-
         //console.log(props.entries)
     }
 
 
     return (
         props.entries.map((val, idx)=> {
-            let entryId = 'name-$(idx}', unitsId = 'units-$(idx}', priceId = 'price-$(idx}'
+            let entryId = 'name-$(idx}', unitsId = 'quantity-$(idx}'
             return (                
                 <Container style={{'padding': '1rem'}} key={idx}> 
                     <Row>
@@ -36,8 +30,8 @@ const Entries = (props) => {
                         <Col> <FileUploader/> </Col>
                     </Row> 
                     <Row>
-                        <Col xs="3"> Units: <input type='number' size='5' placeholder='0' class='units' onChange={(e) => handleChange(idx, e)} /> </Col>
-                        <Col xs="4"> Price: $<input type='text' placeholder='   0.00' class='price' onChange={(e) => handleChange(idx, e)} /> </Col>
+                        <Col> Quantity: <input type='number' size='5' placeholder='0' class='quantity' onChange={(e) => handleChange(idx, e)} /> </Col>
+                        
                     </Row>
                 </Container> 
             )

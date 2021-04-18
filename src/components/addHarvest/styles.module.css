@@ -1,0 +1,12 @@
+.dropdown-item-button {
+    border-radius: 20px; 
+}
+
+.entry {
+    padding: 2rem;
+}
+
+.title {
+    text-align: center;
+    color: gray;
+}

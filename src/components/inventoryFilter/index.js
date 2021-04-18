@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './styles.css';
 import AddItem from '../addItem';
+import AddHarvest from '../addHarvest';
 import AddUser from '../addUser';
 import { Modal, Form, Col, Dropdown, Button as BsButton} from 'react-bootstrap';
 import Button from '../button';
@@ -10,6 +11,8 @@ import "react-datepicker/dist/react-datepicker.css";
 const InventoryFilter = ({token}) => {
     const [showAddItem, setShowAddItem] = useState(false);
     const [showAddUser, setShowAddUser] = useState(false);
+    const [showAddHarvest, setShowAddHarvest] = useState(false);
+
 
     return (
         <div id="inventory-filter">
@@ -39,12 +42,16 @@ const InventoryFilter = ({token}) => {
             </div>
             <div className="add-buttons">
                 <Button onClick={()=> setShowAddItem(true)} className="mb-2">Add New Item</Button>
-                <Button>Add New Harvest</Button>
+                <Button onClick={()=> setShowAddHarvest(true)} className="mb-2">Add New Harvest</Button>
             </div>
             <BsButton onClick={()=> setShowAddUser(true)} variant="outline-success" className="saurav">Add New User</BsButton>
 
             <Modal show={showAddItem} onHide={()=> setShowAddItem(false)} size="lg" centered> 
                 <AddItem/>
+            </Modal>
+
+            <Modal show={showAddHarvest} onHide={()=> setShowAddHarvest(false)} size="lg" centered> 
+                <AddHarvest/>
             </Modal>
 
             <AddUser show={showAddUser} onHide={()=> setShowAddUser(false)} token={token}/>
