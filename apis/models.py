@@ -76,8 +76,7 @@ class StockedVegetable(models.Model):
         to=Vegetable, on_delete=models.SET_NULL, null=True)
     weight = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.IntegerField()
-    harvested_on = models.ForeignKey(
-        to=Harvest, on_delete=models.SET_NULL, null=True)
+    harvested_on = models.DateTimeField(default=timezone.now)
 
     def remove_quantity(self, removal_amount):
         self.quantity -= removal_amount

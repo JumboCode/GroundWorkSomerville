@@ -40,14 +40,6 @@ import json
 
 #     def __str__(self):
 #         return str(self.id)
-
-
-
-@api_view(['POST'])
-def PurchaseMerchandise(request):
-    body = json.loads(request.body)
-    return Response(body)
-
 '''
 items: [{
     name:
@@ -82,6 +74,7 @@ def PurchaseProduce(request):
         purchased_item.save()
     return Response(transaction)
 
+
 @api_view(['POST'])
 def PurchaseMerchandise(request):
     body = json.loads(request.body)
@@ -105,6 +98,7 @@ def PurchaseMerchandise(request):
             stocked_vegetable = None, merchandise= merchandise)
         purchased_item.save()
     return Response(transaction)
+
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])

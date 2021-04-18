@@ -7,7 +7,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError, ParseError
 from apis.views.utilities import decode_base64_image
-import pandas as pandas
 import json
 
 '''
