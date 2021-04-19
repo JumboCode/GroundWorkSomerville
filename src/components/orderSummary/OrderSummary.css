@@ -1,0 +1,68 @@
+.orderBlock {
+    display: block;
+    min-height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    align-items:center;
+    padding: 2%;
+    background-color: white;
+    border-radius:  10%;
+}
+
+.orderAbout {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.total {
+    width: 45%;
+    font-size: 24px;
+    font-weight:bold;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:20px;
+    color: #085025;
+}
+
+.orderButton {
+    font-size: 16px;
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 20%;
+    background-color: #1FB25A;
+    color: white;
+}
+
+.orderMsg {
+    width:80%;
+    font-size: 12px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:2%;
+    text-align:center;
+    color: #085025;
+}
+
+.doneButtons {
+    width: 90%; 
+    font-size: 14px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.small-Btn {
+    margin: 2%;
+}
+
+.orderNum {
+    font-size: 24px;
+    font-weight:bold;
+    width:30%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}

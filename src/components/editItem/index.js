@@ -1,11 +1,30 @@
 import React from 'react';
-import './styles.module.css';
+import './styles.css';
+import { Modal, Form, Button } from 'react-bootstrap';
+import ModalDialog from 'react-bootstrap/ModalDialog'
+import inventoryData from "../../temp-data/inventoryData";
+import EditUnit from "./EditUnit";
+ 
+const EditItem = ({show, onHide, id}) => {
 
-const EditItem = (props) => {
+    const editData = inventoryData.map(data =>  {
+        if (data.id === id) {
+            return (
+                <EditUnit key={data.id} item={data} />
+            )
+        }
+    })
     return (
-        <div id="edit-item">
-            edit placeholder
-        </div>
+        <Modal id="editModal" show={show} onHide={onHide} size="lg" scrollable={true} centered>
+        <Modal.Header closeButton>
+            <Modal.Title as="h5">Edit Item</Modal.Title>
+        </Modal.Header>
+        <Modal.Body  style={{'maxHeight': 'calc(100vh - 210px)', 'overflowY': 'auto'}}>
+            {editData}
+        </Modal.Body>
+        <Button className="float-right" >Save</Button>
+
+        </Modal>
     )
 }
 

@@ -1,0 +1,25 @@
+.title-header {
+    width: 100%;
+    display:inline-block;
+    font-size: 24px;
+    padding: 1% 5% 0% 5%;
+    color: #1FB25A;
+}
+
+
+.button-header{
+    float: right;
+    /* display:inline-block; */
+    font-weight: bold;
+    color: #1B7A41;
+    background-color: #FAF4F1;
+    border:none;
+}
+
+.button-header-title{
+    color: #1B7A41;
+    width: 50%;
+    align-items: left;
+    display:inline-block;
+}
+

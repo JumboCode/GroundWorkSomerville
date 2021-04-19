@@ -78,6 +78,8 @@ class Vegetable(models.Model):
         return self.name
 
 
+
+  
 class StockedVegetable(models.Model):
     vegetable = models.ForeignKey(
         to=Vegetable, on_delete=models.SET_NULL, null=True)

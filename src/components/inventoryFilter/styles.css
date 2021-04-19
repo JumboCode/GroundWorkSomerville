@@ -1,3 +1,8 @@
+.button{
+    background-color: white;
+    color: #1B7A41;
+}
+
 #inventory-filter{
     margin-top: 25%;
 }
@@ -22,3 +27,4 @@
     margin-left: 4%;
     height: 70px;
 }
+

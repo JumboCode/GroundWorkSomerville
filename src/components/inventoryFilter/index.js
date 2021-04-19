@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import './styles.css';
 import AddItem from '../addItem';
+import AddHarvest from '../addHarvest';
 import AddUser from '../addUser';
 import { Modal, Form, Col, Dropdown, Button as BsButton} from 'react-bootstrap';
 import Button from '../button';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import './styles.css';
 
-const InventoryFilter = ({token}) => {
+const InventoryFilter = ({token, harvest}) => {
     const [showAddItem, setShowAddItem] = useState(false);
     const [showAddUser, setShowAddUser] = useState(false);
+    const [showAddHarvest, setShowAddHarvest] = useState(false);
+
 
     return (
         <div id="inventory-filter">
@@ -19,10 +22,10 @@ const InventoryFilter = ({token}) => {
                     <Col xs={4}><Button>Search</Button></Col>
                 </Form.Row>
             </Form>
-            <div className="date-picker">
+            {harvest && <div className="date-picker">
                 <div>Date viewing:</div>
                 <DatePicker/>
-            </div>
+            </div>}
             <div className="sort-inventory">
                 <div>Sort by:</div>
                 <Dropdown>
@@ -38,13 +41,19 @@ const InventoryFilter = ({token}) => {
                 </Dropdown>
             </div>
             <div className="add-buttons">
-                <Button onClick={()=> setShowAddItem(true)} className="mb-2">Add New Item</Button>
+                <Button onClick={()=> setShowAddItem(true)} className="mb-2">Add Merchandise</Button>
+                <Button onClick={()=> setShowAddItem(true)} className="mb-2">Add Produce</Button>
                 <Button>Add New Harvest</Button>
             </div>
             <BsButton onClick={()=> setShowAddUser(true)} variant="outline-success" className="saurav">Add New User</BsButton>
 
-            <Modal show={showAddItem} onHide={()=> setShowAddItem(false)} size="lg" centered>
+            <Modal show={showAddItem} onHide={()=> setShowAddItem(false)} size="lg" centered> 
                 <AddItem/>
+            </Modal>
+        
+
+            <Modal show={showAddHarvest} onHide={()=> setShowAddHarvest(false)} size="lg" centered> 
+                <AddHarvest/>
             </Modal>
 
             <AddUser show={showAddUser} onHide={()=> setShowAddUser(false)} token={token}/>
