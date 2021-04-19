@@ -30,12 +30,18 @@ class UserProfile(models.Model):
         return self.user.username
 
 
+class MerchandisePhotos(models.Model):
+    image1 = models.ImageField(upload_to='images', default='images/default.jpg')
+    image2 = models.ImageField(upload_to='images', default='images/default.jpg')
+    image3 = models.ImageField(upload_to='images', default='images/default.jpg')
+    image4 = models.ImageField(upload_to='images', default='images/default.jpg')
+
 class Harvest(models.Model):
     date = models.DateTimeField(default=timezone.now)
     farm_name = models.CharField(max_length=20)
     created_on = models.DateTimeField(default=timezone.now)
     updated_on = models.DateTimeField(default=timezone.now)
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=True) 
 
     def __str__(self):
         return self.farm_name + ' - ' + str(self.date)
@@ -44,6 +50,7 @@ class Harvest(models.Model):
 class Merchandise(models.Model):
     name = models.CharField(max_length=100)
     photo = models.ImageField(upload_to='images', default='images/default.jpg')
+    photos = models.ForeignKey(to=MerchandisePhotos, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     categories = models.IntegerField(choices=MerchandiseType.choices)
     description = models.TextField()

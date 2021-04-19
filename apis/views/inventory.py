@@ -11,6 +11,10 @@ from apis.views.utilities import decode_base64_image
 import json
 
 
+def dummy_view(request):
+    return Response({"empty": []})
+
+
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
