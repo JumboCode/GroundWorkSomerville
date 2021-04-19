@@ -2,7 +2,7 @@
  * 
  * Note 1: Not sure how to handle image saving, add to state somehow? (line 16, 30)
  * 
- * Note 2: Not sure how to use onHide to hide component with button, currently only have closeButton from modal header (line 71, 74)
+ * Note 2: Not sure how to use onHide to hide component with button, currently only have closeButton from modal header (line 62, 63)
  */ 
 import React from 'react';
 import './styles.module.css';
@@ -13,7 +13,7 @@ import { Col, Row, Modal } from 'react-bootstrap'
 class AddItem extends React.Component {
 
     state = {
-        products: [{name:"", units:"", price:"",image:null}]  //See Note 1
+        products: [{name:"", quantity:"", image:null}]  //See Note 1
     }
     
     handleChange = (e) => {
@@ -27,13 +27,14 @@ class AddItem extends React.Component {
     }
 
     addProduct = (e) => {
-        this.setState((prevState) => ({ products: [...prevState.products, {name:"", units:"", price: "", file:null}]})); //See Note 1 
+        this.setState((prevState) => ({ products: [...prevState.products, {name:"", quantity:"", file:null}]})); //See Note 1 
     }
 
     printProducts = (e) =>  {
         console.log('Printing Current State of addItem')
+        console.log(this.state)
         this.state.products.map((product, idx) => {
-            if (product.name == "" && product.units == "" && product.price == "") {
+            if (product.name == "" && product.quantity == "" && product.file == null) {
                 this.state.products.splice(idx,1)
             }
         })    
@@ -47,34 +48,22 @@ class AddItem extends React.Component {
         return (
             <div> 
                 <Modal.Header closeButton style={{'border-bottom':'none 0'}}/> 
-                
                 <Modal.Body  style={{'maxHeight': 'calc(100vh - 210px)', 'overflowY': 'auto'}}>
-
                     <Entries entries={products}/> 
-    
                 </Modal.Body>
                 
                 <Row>   
-
                     <Col/>  
-
                     <Col style={{'content-align': 'center'}}> 
-                        <Button onClick={this.addProduct}> Add A New Item </Button>
+                        <Button onClick={this.addProduct}> Add another entry </Button>
                     </Col>
-
                     <Col/> 
-
                 </Row>
-
                 <Row style={{'padding': '20px'}}> 
-
                     {/* Got stuck when trying to use onHide to hide onClick for this button and onClock for save button */}
                     {/* <Col>  <Button closeButton> Cancel </Button> </Col>  */}
-
                     <Col>  <Button onClick={this.printProducts} className="float-right">Save</Button> </Col> 
-
                 </Row>
-
             </div>
         )
     }

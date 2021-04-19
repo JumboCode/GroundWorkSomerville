@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AddItem from '../addItem';
+import AddHarvest from '../addHarvest';
 import AddUser from '../addUser';
 import { Modal, Form, Col, Dropdown, Button as BsButton} from 'react-bootstrap';
 import Button from '../button';
@@ -10,6 +11,8 @@ import './styles.css';
 const InventoryFilter = ({token, harvest}) => {
     const [showAddItem, setShowAddItem] = useState(false);
     const [showAddUser, setShowAddUser] = useState(false);
+    const [showAddHarvest, setShowAddHarvest] = useState(false);
+
 
     return (
         <div id="inventory-filter">
@@ -44,10 +47,14 @@ const InventoryFilter = ({token, harvest}) => {
             </div>
             <BsButton onClick={()=> setShowAddUser(true)} variant="outline-success" className="saurav">Add New User</BsButton>
 
-            <Modal show={showAddItem} onHide={()=> setShowAddItem(false)} size="lg" centered>
+            <Modal show={showAddItem} onHide={()=> setShowAddItem(false)} size="lg" centered> 
                 <AddItem/>
             </Modal>
         
+
+            <Modal show={showAddHarvest} onHide={()=> setShowAddHarvest(false)} size="lg" centered> 
+                <AddHarvest/>
+            </Modal>
 
             <AddUser show={showAddUser} onHide={()=> setShowAddUser(false)} token={token}/>
 
