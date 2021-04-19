@@ -1,17 +1,25 @@
+#veg-grid {
+    padding-left:20px;
+    margin-right:50px;
+    padding:20px;
+    width: 100%;
+}
+
 .veg-cards {
-    padding: 10px;
+    /* padding: 10px; */
     margin: 1 auto;
     display: grid;
     grid-gap: 1.5rem;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    /* grid-template-columns: 1fr 1fr 1fr; */
 }
 
 .veg-card {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
     border-radius: 30px;
-    height: 175px;
-    width: 175px;
+    height: 290px;
+    width: 290px;
     background-color: white;
 }
   

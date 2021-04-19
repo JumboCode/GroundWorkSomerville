@@ -5,7 +5,7 @@ import logo from './logo.png';
 import helpIcon from './help.png';
 import cart from './cart.png';
 
-const NavBar = ({ isAuth, logout, showLogin }) => {
+const NavBar = ({ isAuth, logout, showLogin, showCart}) => {
     const history = useHistory()
     const style = {
         borderRadius: "0 0 25px 25px",
@@ -16,8 +16,8 @@ const NavBar = ({ isAuth, logout, showLogin }) => {
     return(
         <Navbar collapseOnSelect expand="sm" sticky="top" bg="light" style={style}>
             <Navbar.Brand>
-                <Link to="/">
-                    <Image src={logo} height="100"/>
+                <Link to="/" onClick={(e) => showCart(false)}>
+                    <Image src={logo} height="80"/>
                 </Link>
             </Navbar.Brand>
             <Navbar.Toggle/>
@@ -27,8 +27,8 @@ const NavBar = ({ isAuth, logout, showLogin }) => {
                 <Nav.Link className="m-auto" onClick={handleLog}>
                     {isAuth ? "Logout": "Login"}
                 </Nav.Link>
-                <Nav.Link className="m-auto" >
-                    <Image src={cart} height="15" className="pr-1"/>
+                <Nav.Link className="m-auto" onClick={(e) => showCart("toggle")}>
+                    <Image src={cart} height="15" className="pr-1" />
                     Cart
                 </Nav.Link>
             </Nav>

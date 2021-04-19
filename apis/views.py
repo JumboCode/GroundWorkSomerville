@@ -20,6 +20,8 @@ import json
 from django.utils.crypto import get_random_string
 import base64
 import uuid
+from datetime import datetime, timedelta #, parse_datetime
+
 
 @api_view(['GET'])
 def apiOverview(request):
@@ -29,6 +31,7 @@ def apiOverview(request):
         'Update': '/update-vegetable/<str:pk>',
         'Delete': '/delete-vegetable/<str:pk>',
         'List all harvests': '/list-harvests',
+        'List harvests by week': '/list-harvests-weekly',
         'Create harvest': '/create-harvest',
         'Delete harvest': '/delete-harvest/<str:pk>',
         'List user transactions': '/list-transactions/<str:pk>',
@@ -142,6 +145,25 @@ def ListHarvests(request):
     items = Harvest.objects.all()
     serializer = HarvestSerializer(items, many=True)
     return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def ListHarvestsWeekly(request):
+    body = json.loads(request.body, strict=False)
+    target_date = datetime.strptime(body['date'], "%Y-%m-%dT%H:%M:%S.%fZ")
+    items = [h for h in Harvest.objects.all()
+             if dates_within_week(h.date.replace(tzinfo=None), target_date)]
+    serializer = HarvestSerializer(items, many=True)
+    return Response(serializer.data)
+
+# return whether two dates are within a week of one another
+def dates_within_week(date1, date2):
+    delta = date1 - date2
+    return (delta.days <= 7)
+
 
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])

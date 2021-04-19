@@ -1,5 +1,5 @@
 import React, {Component} from "react"; 
-import Item from "./Item.js";
+import Item from "../../components/checkoutItem/Item";
 import "./Dropdown.css";
 import "./Checkout.css";
 
@@ -43,7 +43,7 @@ class Dropdown extends Component {
             console.log("item's quantity is:")
             console.log(quant)
 
-             return <Item    key={item.id}
+             return <Item   key={item.id}
                             id={item.id}
                             item={item}
                             checkout={false}
