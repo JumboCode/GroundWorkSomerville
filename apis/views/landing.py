@@ -14,7 +14,7 @@ def MerchSummary(request):
     summary = []
     merchs = Merchandise.objects.all()
     for merch in merchs:
-        price = MerchandisePrice.objects.filteer(
+        price = MerchandisePrice.objects.filter(
             merchandise=merch.id).latest('updated_on')
         summary.append([{
             'name': merch.name,
