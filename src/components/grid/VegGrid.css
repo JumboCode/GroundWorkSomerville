@@ -29,6 +29,14 @@
 
 .text-container {
     padding: 2px 36px;
+    margin-top: 10px;
+    float:left;
+}
+
+.price-container {
+    padding: 2px 36px;
+    margin-top: 10px;
+    float:right;
 }
 
 .veg-img {

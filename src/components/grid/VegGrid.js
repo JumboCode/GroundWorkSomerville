@@ -24,11 +24,15 @@ const VegGrid = (props) => {
         return (
             <div className="veg-card" key={dat["id"]} onClick={openDetail} id={dat["id"]}>
                 <div className="img-container" id={dat["id"]}>
-                    <img src={dat['photo']} alt={dat['name']} className="veg-img" id={dat["id"]} />
+                    <img src={dat['photo_url']} alt={dat['name']} className="veg-img" id={dat["id"]} />
                 </div>
                 <div className="text-container" data={dat["id"]}>
                     {dat['name']}
                 </div>
+                <div className="price-container" data={dat["id"]}>
+                    ${dat['price']}
+                </div>
+
             </div>
         );
     }

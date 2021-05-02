@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import Vegetable, Harvest, Transaction, Merchandise, MerchandisePrice
 from .models import PurchasedItem, UserProfile, VegetablePrice, StockedVegetable
+from .models import MerchandisePhotos
 
 admin.site.register(Vegetable)
 admin.site.register(StockedVegetable)
@@ -12,3 +13,4 @@ admin.site.register(Transaction)
 admin.site.register(UserProfile)
 admin.site.register(Merchandise)
 admin.site.register(MerchandisePrice)
+admin.site.register(MerchandisePhotos)

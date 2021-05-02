@@ -65,7 +65,7 @@ class MerchandisePrice(models.Model):
     updated_on = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.vegetable.name + '-' + str(self.price)
+        return self.merchandise.name + '-' + str(self.price)
 
 
 class Vegetable(models.Model):
