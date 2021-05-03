@@ -22,9 +22,9 @@ urlpatterns = [
     path('harvest-detail/<str:pk>', inventory.HarvestDetail, name='harvest-detail'),
     path('produce-detail/<str:pk>', inventory.ProduceDetail, name='produce-detail'),
 
-    path('add-merchandise', inventory.dummy_view, name='add-merchandise'),
-    path('add-produce', inventory.dummy_view, name='add-produce'),
-    path('add-harvest', inventory.dummy_view, name='add-harvest'),
+    path('add-merchandise', inventory.AddMerchandise, name='add-merchandise'),
+    path('add-produce', inventory.AddProduce, name='add-produce'),
+    path('add-harvest', inventory.AddHarvest, name='add-harvest'),
 
     path('update-produce', inventory.UpdateVegetable, name="update-vegetable"),
     path('update-merchandise', inventory.dummy_view, name='update-merchandise'),

@@ -1,5 +1,5 @@
 from apis.models import Vegetable, Harvest, Merchandise, MerchandisePrice, StockedVegetable
-from apis.models import PurchasedItem, VegetablePrice, StockedVegetable
+from apis.models import PurchasedItem, VegetablePrice, StockedVegetable, MerchandisePhotos
 from apis.models import VegetableType
 from apis.serializers import HarvestSerializer, VegetableSerializer
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -18,7 +18,42 @@ def dummy_view(request):
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
+def AddHarvest(request):
+    items = request.data["harvests"]
+    for item in items:
+        name = item["name"]
+        quantity = item["quantity"]
+        weight = item["weight"]
+        veg = Vegetable.objects.filter(name=name).first()
+        new_harvest = StockedVegetable(vegetable=veg, quantity=quantity,
+                                       weight=weight)
+        new_harvest.save()
+    return Response("Added to the table.")
+
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def AddMerchandise(request):
+    photo1 = request.FILES["photo1"]
+    photo2 = request.FILES["photo2"]
+    photo3 = request.FILES["photo3"]
+    item = json.loads(request.data['info'])
+    name = item["name"]
+    quantity = item["quantity"]
+    category = item["category"]
+    description = item["description"]
+    price = item["price"]
+    all_photo = MerchandisePhotos(image1=photo1, image2=photo2, image3=photo3)
+    all_photo.save()
+    new_merch = Merchandise(name=name, quantity=quantity,
+                            categories=category,
+                            description=description,
+                            photos=all_photo)
+    new_merch.save()
+    new_price = MerchandisePrice(merchandise=new_merch, price=price)
+    new_price.save()
+    return Response("Added to the table.")
     return Response("Added to the table.")
 
 
@@ -26,13 +61,16 @@ def AddMerchandise(request):
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def AddProduce(request):
-    return Response("Added to the table.")
-
-
-@api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def AddHarvest(request):
+    photo = request.FILES["photo"]
+    item = json.loads(request.data['info'])
+    name = item["name"]
+    unit = item["unit"]
+    category = item["category"]
+    price = item["price"]
+    new_veg = Vegetable(name=name, photo=photo, unit=unit, categories=category)
+    new_veg.save()
+    new_price = VegetablePrice(vegetable=new_veg, price=price)
+    new_price.save()
     return Response("Added to the table.")
 
 
@@ -42,8 +80,9 @@ def AddHarvest(request):
 def HarvestDetail(request, pk):
     item = StockedVegetable.objects.get(id=pk)
     vegetable = Vegetable.objects.get(id=item.vegetable.id)
-    price = VegetablePrice.objects.get(id=item.vegetable.id).latest("updated_on") 
-    #should be the latest or according to the date?
+    price = VegetablePrice.objects.get(
+        id=item.vegetable.id).latest("updated_on")
+    # should be the latest or according to the date?
     return Response(
         {
             "name":  vegetable.name,
@@ -52,13 +91,15 @@ def HarvestDetail(request, pk):
             "photo_URL-list": [vegetable.photo.url]
         })
 
+
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def ProduceDetail(request, pk):
     item = StockedVegetable.objects.get(id=pk)
     vegetable = Vegetable.objects.get(id=item.vegetable.id)
-    price = VegetablePrice.objects.get(id=item.vegetable.id).latest("updated_on") 
+    price = VegetablePrice.objects.get(
+        id=item.vegetable.id).latest("updated_on")
     # should be the latest or according to the date?
     return Response(
         {
@@ -111,7 +152,7 @@ def MerchandiseInventory(request):
         item = PurchasedItem.objects.filter(
             merchandise=merch).aggregate(total_sold=sum('total_amount'))
         price = MerchandisePrice.objects.filter(
-            merchandise=merch).latest('updated_on')  
+            merchandise=merch).latest('updated_on')
         return_list.append(
             {
                 name: merch.name,
@@ -121,12 +162,16 @@ def MerchandiseInventory(request):
             }
         )
     return Response(return_list)
+
+
 '''
 name = models.CharField(max_length=100)
     photo = models.ImageField(upload_to='images', default='images/default.jpg')
     unit = models.CharField(max_length=100)
     categories = models.IntegerField(choices=VegetableType.choices)
 '''
+
+
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
@@ -135,7 +180,7 @@ def ProduceInventory(request):
 
     for produce in Vegetable.objects.all():
         price = VegetablePrice.objects.filter(
-                vegetable=produce).latest('updated_on')
+            vegetable=produce).latest('updated_on')
         produce_list.append({
             "name": produce.name,
             "unit": produce.unit,
@@ -144,7 +189,6 @@ def ProduceInventory(request):
             "price": price.price
         })
     return Response(produce_list)
-
 
 
 @api_view(['POST', 'GET'])
