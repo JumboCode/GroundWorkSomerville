@@ -31,16 +31,20 @@ class UserProfile(models.Model):
 
 
 class MerchandisePhotos(models.Model):
-    image1 = models.ImageField(upload_to='images', default='images/default.jpg')
-    image2 = models.ImageField(upload_to='images', default='images/default.jpg')
-    image3 = models.ImageField(upload_to='images', default='images/default.jpg')
+    image1 = models.ImageField(
+        upload_to='images', default='images/default.jpg')
+    image2 = models.ImageField(
+        upload_to='images', default='images/default.jpg')
+    image3 = models.ImageField(
+        upload_to='images', default='images/default.jpg')
+
 
 class Harvest(models.Model):
     date = models.DateTimeField(default=timezone.now)
     farm_name = models.CharField(max_length=20)
     created_on = models.DateTimeField(default=timezone.now)
     updated_on = models.DateTimeField(default=timezone.now)
-    active = models.BooleanField(default=True) 
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.farm_name + ' - ' + str(self.date)
@@ -129,8 +133,9 @@ class PurchasedItem(models.Model):
         constraints = [
             models.CheckConstraint(
                 name="purchased item can be either vegetable or merchandise",
-                check = models.Q(categories=1, stocked_vegetable__isnull=False, merchandise__isnull=True) and
-                models.Q(categories=2, merchandise__isnull=False, stocked_vegetable__isnull=True)
+                check=models.Q(categories=1, stocked_vegetable__isnull=False, merchandise__isnull=True) and
+                models.Q(categories=2, merchandise__isnull=False,
+                         stocked_vegetable__isnull=True)
             )]
 
     def __str__(self):

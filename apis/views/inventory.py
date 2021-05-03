@@ -1,6 +1,6 @@
 from apis.models import Vegetable, Harvest, Merchandise, MerchandisePrice, StockedVegetable
 from apis.models import PurchasedItem, VegetablePrice, StockedVegetable, MerchandisePhotos
-from apis.models import VegetableType
+from apis.models import VegetableType, MerchandiseType
 from apis.serializers import HarvestSerializer, VegetableSerializer
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
@@ -9,10 +9,6 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError, ParseError
 from apis.views.utilities import decode_base64_image
 import json
-
-
-def dummy_view(request):
-    return Response({"empty": []})
 
 
 @api_view(['POST'])
@@ -54,6 +50,7 @@ def AddMerchandise(request):
     new_price = MerchandisePrice(merchandise=new_merch, price=price)
     new_price.save()
     return Response("Added to the table.")
+
 
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -113,29 +110,28 @@ def ProduceDetail(request, pk):
 @permission_classes([IsAuthenticated])
 def HarvestInventory(request):
     if not request.data:
-        return Response("Missing information. The api requires start date and end date.")
+        return Response("The endpoint requires start date and end date.")
     else:
         startdate = request.data['start_date']
         enddate = request.data['end_date']
-        harvest = Harvest.objects.filter(
-            date__range=[startdate, enddate]).first()
         stockedvegetables = StockedVegetable.objects.filter(
-            harvested_on=harvest)
+            harvested_on__range=[startdate, enddate]).first()
         return_list = []
         for stocked in stockedvegetables:
             item = PurchasedItem.objects.filter(
                 stockedvegetables=stocked).first()
             vegetable = stocked.vegetable
             price = VegetablePrice.objects.filter(
-                vegetable=vegetable).latest('updated_on')  # depends if the selection is old, can't be latest
-
+                vegetable=vegetable,
+                updated_on__gte=startdate,
+                updated_on__lte=enddate).order_by('-updated_on')
             return_list.append(
                 {
-                    name: vegetable.name,
-                    total_available: stocked.quantity,
-                    unit: vegetable.unit,
-                    total_sold: item.total_amount,
-                    price: price.price
+                    "name": vegetable.name,
+                    "total_available": stocked.quantity,
+                    "unit": vegetable.unit,
+                    "total_sold": item.total_amount,
+                    "price": price.price
                 })
 
         return Response(return_list)
@@ -153,21 +149,13 @@ def MerchandiseInventory(request):
             merchandise=merch).latest('updated_on')
         return_list.append(
             {
-                name: merch.name,
-                total_available: merch.quantity,
-                total_sold: item['total_sold'],
-                price: price.price
+                "name": merch.name,
+                "total_available": merch.quantity,
+                "total_sold": item['total_sold'],
+                "price": price.price
             }
         )
     return Response(return_list)
-
-
-'''
-name = models.CharField(max_length=100)
-    photo = models.ImageField(upload_to='images', default='images/default.jpg')
-    unit = models.CharField(max_length=100)
-    categories = models.IntegerField(choices=VegetableType.choices)
-'''
 
 
 @api_view(['GET'])
@@ -188,10 +176,12 @@ def ProduceInventory(request):
         })
     return Response(produce_list)
 
+# update price left
 
-@api_view(['POST', 'GET'])
-# @authentication_classes([SessionAuthentication, BasicAuthentication])
-# @permission_classes([IsAuthenticated])
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def UpdateVegetable(request):
     image = request.FILES["image"]
     body = json.loads(request.data['info'])
@@ -207,6 +197,38 @@ def UpdateVegetable(request):
         return Response(vegToUpdate.id)
     else:
         return Response("Vegetable name not specified")
+
+# update price and photos left
+
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def UpdateMerchandise(request):
+    image1 = request.FILES["photo1"]
+    image2 = request.FILES["photo2"]
+    image3 = request.FILES["photo3"]
+    body = json.loads(request.data['info'])
+    if 'oldname' in body and isinstance(body["oldname"], str):
+        merchToUpdate = Merchandise.objects.filter(
+            name=body["oldname"]).first()
+        merchToUpdate.name = body["name"]
+        merchToUpdate.description = body["description"]
+        merchToUpdate.quantity = body["quantity"]
+        unit_dict = {uname.lower(): unit for (unit, uname)
+                     in MerchandiseType.choices}
+        merchToUpdate.categories = unit_dict[body["categories"].lower()]
+        merchToUpdate.save()
+        return Response(merchToUpdate.id)
+    else:
+        return Response("Vegetable name not specified")
+
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def UpdateHarvest(request):
+    return Response("Harvest Not Specified")
 
 
 @api_view(['POST'])

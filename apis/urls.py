@@ -12,8 +12,9 @@ urlpatterns = [
          inventory.DeleteVegetable, name="delete-vegetable"),
     path('search-vegetables/<str:pk>',
          inventory.SearchVegetables, name="search-vegetables"),
-    
-    path('search-merchandise/<str:pk>', landing.SearchMerchandise, name="search-merchandise"),
+
+    path('search-merchandise/<str:pk>',
+         landing.SearchMerchandise, name="search-merchandise"),
 
     path('harvest-inventory', inventory.HarvestInventory, name='harvest-inventory'),
     path('merchandise-inventory', inventory.MerchandiseInventory,
@@ -27,8 +28,8 @@ urlpatterns = [
     path('add-harvest', inventory.AddHarvest, name='add-harvest'),
 
     path('update-produce', inventory.UpdateVegetable, name="update-vegetable"),
-    path('update-merchandise', inventory.dummy_view, name='update-merchandise'),
-    path('update-harvest', inventory.dummy_view, name='update=harvest'),
+    path('update-merchandise', inventory.UpdateMerchandise, name='update-merchandise'),
+    path('update-harvest', inventory.UpdateHarvest, name='update=harvest'),
 
     path('user', authentication.GetUser, name="user-info"),
     path('add-user', authentication.AddUser, name="add-user"),
