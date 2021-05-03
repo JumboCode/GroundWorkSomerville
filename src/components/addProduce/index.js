@@ -3,22 +3,28 @@ import './styles.css';
 import Button from '../button/index.js';
 import axios from 'axios';
 
-const AddHarvest = (props) => {
+const AddProduce = (props) => {
     const [entries, setEntries] = useState({})
+    const [files, setFiles] = useState({})
 
     const [numEntries, setNumEntries] = useState(1)
 
     const handleInputChange = (e, id) => {
-        setEntries({...entries, [id]:{...entries[id], [e.target.name]:e.target.value}})
+        if (e.target.type === "file") {
+            setFiles({...files, [id]:{...files[id], [e.target.name]:e.target.files[0]}})
+        } else {
+            setEntries({...entries, [id]:{...entries[id], [e.target.name]:e.target.value}})
+        }
     }
 
     const sendEntries = () => {
         Object.keys(entries).forEach((key) => {
             var form = new FormData();
+            Object.entries(files[key]).forEach(([n, f]) => { form.append(n, f) });
             form.append('info', JSON.stringify(entries[key]))
             axios({
                 method: "post",
-                url: "add-harvest",
+                url: "add-produce",
                 data: form,
                 headers: { "Content-Type": "multipart/form-data" },
               })
@@ -38,10 +44,20 @@ const AddHarvest = (props) => {
                 <div>
                     <label>Name:</label>
                     <input type="text" onChange={onChng} name="name"/>
-                    <label>Quantity:</label>
-                    <input type="number" onChange={onChng} name="quantity"/>
-                    <label>Weight:</label>
-                    <input type="number" onChange={onChng} name="weight"/>
+                    <label>Unit:</label>
+                    <input type="text" onChange={onChng} name="unit"/>
+                    <label>Price:</label>
+                    <input type="number" onChange={onChng} name="price"/>
+                </div>
+                <div>
+                    <label>Description</label>
+                    <input type="text" onChange={onChng} name="description"/>
+                </div>
+                <label>Category:</label>
+                <input type="text" onChange={onChng} name="category"/>
+                <label>Photos:</label>
+                <div>
+                    <input type="file" onChange={onChng} name="photo"/>
                 </div>
             </div>
         )
@@ -56,6 +72,6 @@ const AddHarvest = (props) => {
     )
 }
 
-export default AddHarvest;
+export default AddProduce;
 
 

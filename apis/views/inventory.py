@@ -16,18 +16,17 @@ def dummy_view(request):
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 def AddHarvest(request):
-    items = request.data["harvests"]
-    for item in items:
-        name = item["name"]
-        quantity = item["quantity"]
-        weight = item["weight"]
-        veg = Vegetable.objects.filter(name=name).first()
-        new_harvest = StockedVegetable(vegetable=veg, quantity=quantity,
-                                       weight=weight)
-        new_harvest.save()
+    item = json.loads(request.data["info"])
+    name = item["name"]
+    quantity = item["quantity"]
+    weight = item["weight"]
+    veg = Vegetable.objects.filter(name=name).first()
+    new_harvest = StockedVegetable(vegetable=veg, quantity=quantity,
+                                    weight=weight)
+    new_harvest.save()
     return Response("Added to the table.")
 
 
@@ -58,8 +57,8 @@ def AddMerchandise(request):
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 def AddProduce(request):
     photo = request.FILES["photo"]
     item = json.loads(request.data['info'])

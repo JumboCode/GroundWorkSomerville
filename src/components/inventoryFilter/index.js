@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import AddItem from '../addItem';
 import AddHarvest from '../addHarvest';
+import AddProduce from '../addProduce';
+
 import AddUser from '../addUser';
 import { Modal, Form, Col, Dropdown, Button as BsButton} from 'react-bootstrap';
 import Button from '../button';
@@ -12,7 +14,7 @@ const InventoryFilter = ({token, harvest}) => {
     const [showAddItem, setShowAddItem] = useState(false);
     const [showAddUser, setShowAddUser] = useState(false);
     const [showAddHarvest, setShowAddHarvest] = useState(false);
-
+    const [showAddProduce, setShowAddProduce] = useState(false);
 
     return (
         <div id="inventory-filter">
@@ -42,13 +44,17 @@ const InventoryFilter = ({token, harvest}) => {
             </div>
             <div className="add-buttons">
                 <Button onClick={()=> setShowAddItem(true)} className="mb-2">Add Merchandise</Button>
-                <Button onClick={()=> setShowAddItem(true)} className="mb-2">Add Produce</Button>
-                <Button>Add New Harvest</Button>
+                <Button onClick={()=> setShowAddProduce(true)} className="mb-2">Add Produce</Button>
+                <Button onClick={()=> setShowAddHarvest(true)}>Add New Harvest</Button>
             </div>
             <BsButton onClick={()=> setShowAddUser(true)} variant="outline-success" className="saurav">Add New User</BsButton>
 
             <Modal show={showAddItem} onHide={()=> setShowAddItem(false)} size="lg" centered> 
                 <AddItem/>
+            </Modal>
+
+            <Modal show={showAddProduce} onHide={()=> setShowAddProduce(false)} size="lg" centered> 
+                <AddProduce/>
             </Modal>
         
 
