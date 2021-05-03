@@ -34,7 +34,6 @@ class MerchandisePhotos(models.Model):
     image1 = models.ImageField(upload_to='images', default='images/default.jpg')
     image2 = models.ImageField(upload_to='images', default='images/default.jpg')
     image3 = models.ImageField(upload_to='images', default='images/default.jpg')
-    image4 = models.ImageField(upload_to='images', default='images/default.jpg')
 
 class Harvest(models.Model):
     date = models.DateTimeField(default=timezone.now)
@@ -49,7 +48,6 @@ class Harvest(models.Model):
 
 class Merchandise(models.Model):
     name = models.CharField(max_length=100)
-    photo = models.ImageField(upload_to='images', default='images/default.jpg')
     photos = models.ForeignKey(to=MerchandisePhotos, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     categories = models.IntegerField(choices=MerchandiseType.choices)
@@ -78,8 +76,6 @@ class Vegetable(models.Model):
         return self.name
 
 
-
-  
 class StockedVegetable(models.Model):
     vegetable = models.ForeignKey(
         to=Vegetable, on_delete=models.SET_NULL, null=True)

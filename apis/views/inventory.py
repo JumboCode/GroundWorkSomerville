@@ -1,4 +1,4 @@
-from apis.models import Vegetable, Harvest, Merchandise, MerchandisePrice
+from apis.models import Vegetable, Harvest, Merchandise, MerchandisePrice, StockedVegetable
 from apis.models import PurchasedItem, VegetablePrice, StockedVegetable
 from apis.models import VegetableType
 from apis.serializers import HarvestSerializer, VegetableSerializer
@@ -15,10 +15,64 @@ def dummy_view(request):
     return Response({"empty": []})
 
 
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def AddMerchandise(request):
+    return Response("Added to the table.")
+
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def AddProduce(request):
+    return Response("Added to the table.")
+
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def AddHarvest(request):
+    return Response("Added to the table.")
+
+
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
-def StockVegetable(request):
+def HarvestDetail(request, pk):
+    item = StockedVegetable.objects.get(id=pk)
+    vegetable = Vegetable.objects.get(id=item.vegetable.id)
+    price = VegetablePrice.objects.get(id=item.vegetable.id).latest("updated_on") 
+    #should be the latest or according to the date?
+    return Response(
+        {
+            "name":  vegetable.name,
+            "unit": vegetable.unit,
+            "price": price.price,
+            "photo_URL-list": [vegetable.photo.url]
+        })
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def ProduceDetail(request, pk):
+    item = StockedVegetable.objects.get(id=pk)
+    vegetable = Vegetable.objects.get(id=item.vegetable.id)
+    price = VegetablePrice.objects.get(id=item.vegetable.id).latest("updated_on") 
+    # should be the latest or according to the date?
+    return Response(
+        {
+            "name":  vegetable.name,
+            "unit": vegetable.unit,
+            "price": price.price,
+            "photo_URL-list": [vegetable.photo.url]
+        })
+
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def HarvestInventory(request):
     if not request.data:
         return Response("Missing information. The api requires start date and end date.")
     else:
@@ -51,13 +105,13 @@ def StockVegetable(request):
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
-def StockMerchandise(request):
+def MerchandiseInventory(request):
     return_list = []
     for merch in Merchandise.objects.all():
         item = PurchasedItem.objects.filter(
             merchandise=merch).aggregate(total_sold=sum('total_amount'))
         price = MerchandisePrice.objects.filter(
-            merchandise=merch).latest('updated_on')  # depends if the selection is old, can't be latest
+            merchandise=merch).latest('updated_on')  
         return_list.append(
             {
                 name: merch.name,
@@ -67,6 +121,30 @@ def StockMerchandise(request):
             }
         )
     return Response(return_list)
+'''
+name = models.CharField(max_length=100)
+    photo = models.ImageField(upload_to='images', default='images/default.jpg')
+    unit = models.CharField(max_length=100)
+    categories = models.IntegerField(choices=VegetableType.choices)
+'''
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def ProduceInventory(request):
+    produce_list = []
+
+    for produce in Vegetable.objects.all():
+        price = VegetablePrice.objects.filter(
+                vegetable=produce).latest('updated_on')
+        produce_list.append({
+            "name": produce.name,
+            "unit": produce.unit,
+            "category": produce.categories,
+            "photo": produce.photo.url,
+            "price": price.price
+        })
+    return Response(produce_list)
+
 
 
 @api_view(['POST', 'GET'])
