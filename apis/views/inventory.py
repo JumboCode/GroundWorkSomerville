@@ -54,8 +54,6 @@ def AddMerchandise(request):
     new_price = MerchandisePrice(merchandise=new_merch, price=price)
     new_price.save()
     return Response("Added to the table.")
-    return Response("Added to the table.")
-
 
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
