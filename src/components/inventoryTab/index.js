@@ -4,6 +4,7 @@ import EditItem from '../editItem';
 import { Modal, Tab, Nav } from 'react-bootstrap';
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
 import ProduceItem from "./ProduceItem";
+import axios from 'axios';
 
 
 const InventoryTab = (props) => {
@@ -15,8 +16,18 @@ const InventoryTab = (props) => {
 
 
     useEffect(() =>{
+        axios.get('merchandise-inventory')
+        .then((resp) => {
+            setMerch(resp.data)
+        })
+
+        axios.get('harvest-inventory', {start_date: "05032019", end_date: "05-03-2021"})
+        .then((resp) => {
+            // setHarvest(resp.data)
+            // console.log(resp)
+        })
+
         setProduce(testData)
-        setMerch(testData)
         setHarvest(testData)
     }, [])
 
@@ -26,8 +37,8 @@ const InventoryTab = (props) => {
             <tr key={dat.name}>
                 <td>{dat.name}</td>
                 <td>{dat.price}</td>
-                <td>{dat.sold}</td>
-                <td>{dat.available}</td>
+                <td>{dat.total_sold}</td>
+                <td>{dat.total_available}</td>
                 <td> <a onClick={()=> {setShowAddItem(true); setPopUpId(dat.id+1);}} style={style}>edit</a> </td>
             </tr>
         )

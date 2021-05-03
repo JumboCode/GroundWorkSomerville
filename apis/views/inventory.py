@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError, ParseError
 from apis.views.utilities import decode_base64_image
 import json
+from django.db.models import Sum
 
 
 @api_view(['POST'])
@@ -105,8 +106,8 @@ def ProduceDetail(request, pk):
 
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 def HarvestInventory(request):
     if not request.data:
         return Response("The endpoint requires start date and end date.")
@@ -137,13 +138,13 @@ def HarvestInventory(request):
 
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 def MerchandiseInventory(request):
     return_list = []
     for merch in Merchandise.objects.all():
         item = PurchasedItem.objects.filter(
-            merchandise=merch).aggregate(total_sold=sum('total_amount'))
+            merchandise=merch).aggregate(total_sold=Sum('total_amount'))
         price = MerchandisePrice.objects.filter(
             merchandise=merch).latest('updated_on')
         return_list.append(
