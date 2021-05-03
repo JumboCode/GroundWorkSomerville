@@ -65,7 +65,7 @@ class Item extends Component {
             <div className={itemcontainer}>
                 <div className={itemblk}>
                     {!this.props.checkout && <div className="itemColumn-img">
-                        <img src={item.photo} alt="productpicture" className="prod-image"></img>
+                        <img src={item.photo_url} alt="productpicture" className="prod-image"></img>
                     </div>}
                     <div className={itemcol}>
                         <p className="itemName">{this.props.item.name}</p>

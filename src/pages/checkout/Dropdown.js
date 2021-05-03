@@ -23,10 +23,6 @@ class Dropdown extends Component {
   
     render() {
         const checkoutItems = this.props.items.map((item) => {
-            // console.log("checkoutlist is");
-            // console.log(this.props.checkoutList);
-            // console.log("item is")
-            // console.log(this.props.item);
           let quantlist = this.props.checkoutList? this.props.checkoutList.filter(citem => citem.value.id === item.id) : null
           let quant = 0
           if (quantlist !== null){

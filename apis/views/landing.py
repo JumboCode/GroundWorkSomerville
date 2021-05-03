@@ -29,8 +29,7 @@ def MerchDetail(request, pk):
     merch = Merchandise.objects.get(id=pk)
     price = MerchandisePrice.objects.filter(
         merchandise=pk).latest('updated_on')
-    photos = MerchandisePhotos.objects.filter(merchandise=pk)[0]
-    print(photos)
+    photos = MerchandisePhotos.objects.get(id=merch.photos.id)
     return Response({
         'name': merch.name,
         'id': merch.id,
@@ -40,22 +39,23 @@ def MerchDetail(request, pk):
 
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 def AllProduce(request):
     categories = []
     for choices in VegetableType.choices:
         vegetables = Vegetable.objects.filter(categories=choices[0])
         produces = []
         for vegetable in vegetables.iterator():
-            stocked = StockedVegetable.objects.filter(vegetable=vegetable)
+            stocked = StockedVegetable.objects.filter(vegetable=vegetable).first()
             price = VegetablePrice.objects.filter(
                 vegetable=vegetable).latest('updated_on')
             produces.append(
-                {"name": vegetable.name,
-                 "photo_url": vegetable.photo,
+                {"id": vegetable.id,
+                 "name": vegetable.name,
+                 "photo_url": vegetable.photo.url,
                  "unit": vegetable.unit,
                  "price": price.price,
                  "available_amount": stocked.quantity})
         categories.append({"name": choices[1], "produces": produces})
-    return Response({"categories": categories})
+    return Response(categories)
