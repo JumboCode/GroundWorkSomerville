@@ -103,7 +103,7 @@ const InventoryTab = (props) => {
                         Produce Inventory
                     </Nav.Link>
                 </Nav>
-                <Tab.Content>
+                <Tab.Content className="hello123">
                 <Tab.Pane eventKey="harvest" title="Harvest Inventory">
                     {getTable(harvest)}
                 </Tab.Pane>
@@ -125,6 +125,16 @@ const InventoryTab = (props) => {
 export default InventoryTab;
 
 const testData = [{id: 0, name: "Spinach", price: 12, sold: 4, available: 5},
+{id: 1, name: "Bell Peppers", price: 12, sold: 4, available: 5},
+{id: 2,name: "Grapes", price: 12, sold: 4, available: 5},
+{id: 3,name: "Cilantro", price: 12, sold: 4, available: 5},
+{id: 4,name: "Cauliflowers", price: 12, sold: 4, available: 5},
+{id: 5,name: "Oranges", price: 12, sold: 4, available: 5},
+{id: 6,name: "Bell Pepper", price: 12, sold: 4, available: 5},
+{id: 7,name: "Grape", price: 12, sold: 4, available: 5},
+{id: 8,name: "Cilantros", price: 12, sold: 4, available: 5},
+{id: 9,name: "Cauliflower", price: 12, sold: 4, available: 5},
+{id: 10,name: "Orange", price: 12, sold: 4, available: 5},
 {id: 1, name: "Bell Peppers", price: 12, sold: 4, available: 5},
 {id: 2,name: "Grapes", price: 12, sold: 4, available: 5},
 {id: 3,name: "Cilantro", price: 12, sold: 4, available: 5},

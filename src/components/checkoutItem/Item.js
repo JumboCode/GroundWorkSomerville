@@ -60,7 +60,6 @@ class Item extends Component {
         // const quantityvar = !this.props.checkout? this.state.quantity : this.props.quantity;
         const quantityvar = this.state.quantity;
         const {item} = this.props;
-        const PRICE_CHANGE_THIS = 1;
         return(
             <div className={itemcontainer}>
                 <div className={itemblk}>
@@ -69,7 +68,7 @@ class Item extends Component {
                     </div>}
                     <div className={itemcol}>
                         <p className="itemName">{this.props.item.name}</p>
-                        {!this.props.checkout && <p>${this.toDecimal(PRICE_CHANGE_THIS)}/{this.props.item.unit}</p>}
+                        {!this.props.checkout && <p>${this.toDecimal(this.props.item.price)}/{this.props.item.unit}</p>}
                     </div>
                     <div className={itemcolQuant}>
                         <div className="itemColumn-small small-Quant">
@@ -82,8 +81,8 @@ class Item extends Component {
                         </div>
                         <div className="itemColumn-small small-Total">
                             {!this.props.checkout && <p className="subhead">TOTAL</p>}
-                            {!this.props.checkout && this.toDecimal(quantityvar*PRICE_CHANGE_THIS)}
-                            {this.props.checkout && <p>/{this.toDecimal(quantityvar*PRICE_CHANGE_THIS)}</p>}
+                            {!this.props.checkout && this.toDecimal(quantityvar*this.props.item.price)}
+                            {this.props.checkout && <p>/{this.toDecimal(quantityvar*this.props.item.price)}</p>}
 
                         </div>
                     </div>
