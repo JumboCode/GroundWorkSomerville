@@ -31,7 +31,7 @@ class PublicHome extends Component {
         .then((resp) => {
             this.setState({vegData:resp.data, defaultData:resp.data, searchedData:resp.data})
             this.state.vegData.forEach((dat)=>{
-                this.setState({categories: this.state.categories.add(...dat['category'])})
+                this.setState({categories: this.state.categories.add(dat['category'])})
             })
         })
     }
@@ -58,12 +58,14 @@ class PublicHome extends Component {
 
     changeCat(event){
         const id = event.target.id
+        // console.log(id)
+        // console.log(this.state.searchedData)
         this.setState({currentCat:id})
         if (id === "bmVwYWw=") {
             this.setState({vegData:this.state.searchedData})
         } else {
             this.setState({vegData:this.state.searchedData.filter(dat => {
-                return(dat['category'].includes(id))
+                return(dat['category'] == id)
             })})
         }
     }
@@ -92,7 +94,7 @@ class PublicHome extends Component {
                     <Nav.Link as = "div" className="cat-text" onClick={this.changeCat} id="bmVwYWw=" eventKey="bmVwYWw=">all merchandise</Nav.Link>
                     {cats.map((cat) => {
                         return(
-                            <Nav.Link as="div" key={cat} id={cat} className="cat-text" onClick={this.changeCat} eventKey={cat}>{cat == "1" ? "miscellaneous":"apparel"}</Nav.Link>
+                            <Nav.Link as="div" key={cat} id={cat} className="cat-text" onClick={this.changeCat} eventKey={cat}>{cat}</Nav.Link>
                         )
                     })}
                 </Nav></Tab.Container>
