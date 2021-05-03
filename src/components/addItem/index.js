@@ -45,8 +45,6 @@ const AddItem = (props) => {
                 <div>
                     <label>Name:</label>
                     <input type="text" onChange={onChng} name="name"/>
-                    <label>Unit:</label>
-                    <input type="text" onChange={onChng} name="unit"/>
                     <label>Price:</label>
                     <input type="number" onChange={onChng} name="price"/>
                 </div>
