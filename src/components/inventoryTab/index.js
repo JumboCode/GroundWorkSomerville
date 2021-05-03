@@ -11,20 +11,14 @@ const InventoryTab = (props) => {
     const [produce, setProduce] = useState([]);
     const [merch, setMerch] = useState([]);
     const [harvest, setHarvest] = useState([]);
-    // const { url } = useRouteMatch();
     const [popupID, setPopUpId] = useState(0);
 
 
     useEffect(() =>{
-        async function test(){
-            setProduce(testData)
-            setMerch(testData)
-            setHarvest(testData)
-        }
-        test()
+        setProduce(testData)
+        setMerch(testData)
+        setHarvest(testData)
     }, [])
-
-    const location = useLocation();
 
     const getRow = (dat) => {
         const style = { color: "grey", cursor: "pointer" }
@@ -34,16 +28,6 @@ const InventoryTab = (props) => {
                 <td>{dat.price}</td>
                 <td>{dat.sold}</td>
                 <td>{dat.available}</td>
-                {/* <td>  <Link
-                        key={dat.id}
-                        to={{
-                            pathname: `/img/${dat.id}`,
-                            // This is the trick! This link sets
-                            // the `background` in location state.
-                            state: { background: location }
-                        }}
-                        > edit </Link> */}
-                    {/* <span data-target="#editModal" data-toggle="modal"><a href={"#"+ dat.id} role="button" onClick={()=> setShowAddItem(true)} class="btn btn-primary">edit</a></span> */}
                 <td> <a onClick={()=> {setShowAddItem(true); setPopUpId(dat.id+1);}} style={style}>edit</a> </td>
             </tr>
         )
@@ -76,8 +60,6 @@ const InventoryTab = (props) => {
                 maps[i][j] = items[(i*3+j)];
             }
         }
-        console.log("map is");
-        console.log(maps);
         return (
             <tbody>
                 {maps.map(getProduceRow)}
@@ -87,10 +69,8 @@ const InventoryTab = (props) => {
     }
 
     const getProduceRow = (row) => {
-        console.log("hello")
-    
         return (
-            <tr key={0}>
+            <tr key={row[0]}>
                 <td><ProduceItem item={row[0]} setShowAddItem={setShowAddItem} setPopUpId={setPopUpId}/></td>
                 <td>{<ProduceItem item={row[1]} setShowAddItem={setShowAddItem} setPopUpId={setPopUpId}/>}</td>
                 <td>{<ProduceItem item={row[2]} setShowAddItem={setShowAddItem} setPopUpId={setPopUpId}/>}</td>
@@ -122,9 +102,8 @@ const InventoryTab = (props) => {
                     <Nav.Link as="div" eventKey="produce" className="tab-button" onClick={(e)=>props.onQuantChange(false)}>
                         Produce Inventory
                     </Nav.Link>
-                    
                 </Nav>
-                <Tab.Content>
+                <Tab.Content className="hello123">
                 <Tab.Pane eventKey="harvest" title="Harvest Inventory">
                     {getTable(harvest)}
                 </Tab.Pane>
@@ -132,8 +111,7 @@ const InventoryTab = (props) => {
                     {getTable(merch)}
                 </Tab.Pane>
                 <Tab.Pane eventKey="produce" title="Produce Inventory">
-                    {getProduceTable(produce)}
-                    {/* <p>Produce Inventory</p> */}
+                    {/* {getProduceTable(produce)} */}
                 </Tab.Pane>
                 
                 </Tab.Content>
@@ -147,6 +125,16 @@ const InventoryTab = (props) => {
 export default InventoryTab;
 
 const testData = [{id: 0, name: "Spinach", price: 12, sold: 4, available: 5},
+{id: 1, name: "Bell Peppers", price: 12, sold: 4, available: 5},
+{id: 2,name: "Grapes", price: 12, sold: 4, available: 5},
+{id: 3,name: "Cilantro", price: 12, sold: 4, available: 5},
+{id: 4,name: "Cauliflowers", price: 12, sold: 4, available: 5},
+{id: 5,name: "Oranges", price: 12, sold: 4, available: 5},
+{id: 6,name: "Bell Pepper", price: 12, sold: 4, available: 5},
+{id: 7,name: "Grape", price: 12, sold: 4, available: 5},
+{id: 8,name: "Cilantros", price: 12, sold: 4, available: 5},
+{id: 9,name: "Cauliflower", price: 12, sold: 4, available: 5},
+{id: 10,name: "Orange", price: 12, sold: 4, available: 5},
 {id: 1, name: "Bell Peppers", price: 12, sold: 4, available: 5},
 {id: 2,name: "Grapes", price: 12, sold: 4, available: 5},
 {id: 3,name: "Cilantro", price: 12, sold: 4, available: 5},

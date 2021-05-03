@@ -1,0 +1,21 @@
+/* .dropdown-item-button {
+    border-radius: 20px; 
+}
+
+.entry {
+    padding: 2rem;
+}
+
+.title {
+    text-align: center;
+    color: gray;
+} */
+
+.add-merch-entry{
+    margin: 10px;
+}
+
+.add-merch-button {
+    float:right;
+    margin: 20px;
+}

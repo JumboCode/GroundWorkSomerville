@@ -27,11 +27,11 @@ class PublicHome extends Component {
     };
 
     componentDidMount() {
-        axios.get('list-vegetables')
+        axios.get('merch-summary')
         .then((resp) => {
             this.setState({vegData:resp.data, defaultData:resp.data, searchedData:resp.data})
-            this.state.vegData.map((dat)=>{
-                this.setState({categories: this.state.categories.add(...dat['categories'])})
+            this.state.vegData.forEach((dat)=>{
+                this.setState({categories: this.state.categories.add(...dat['category'])})
             })
         })
     }
@@ -59,11 +59,11 @@ class PublicHome extends Component {
     changeCat(event){
         const id = event.target.id
         this.setState({currentCat:id})
-        if (id == "bmVwYWw=") {
+        if (id === "bmVwYWw=") {
             this.setState({vegData:this.state.searchedData})
         } else {
             this.setState({vegData:this.state.searchedData.filter(dat => {
-                return(dat['categories'].includes(id))
+                return(dat['category'].includes(id))
             })})
         }
     }
@@ -71,11 +71,11 @@ class PublicHome extends Component {
     filter(event){
         const id = event.target.id
         this.setState({currentFilter: id})
-        const merchCmpl = (a,b) => {return (a.id < b.id ? -1 : 1)}
-        const merchCmpg = (a,b) => {return (a.id < b.id ? 1: -1)}
-        if (id == "rel"){
+        const merchCmpl = (a,b) => {return (a.price < b.price ? -1 : 1)}
+        const merchCmpg = (a,b) => {return (a.price < b.price ? 1: -1)}
+        if (id === "rel"){
             this.setState({vegData: this.state.searchedData})
-        } else if (id == "lh"){
+        } else if (id === "lh"){
             this.setState({vegData: this.state.vegData.sort(merchCmpl)})
         } else {
             this.setState({vegData: this.state.vegData.sort(merchCmpg)})
@@ -109,21 +109,32 @@ class PublicHome extends Component {
         ) 
     }
 
-    minicart(){
+    minicart(cart){
         return(
             <div className="mini-cart">
                 {/* TODO: get number of items in cart */}
-                <h4 className="filter-header">My Cart: 4 items</h4>
+                <h4 className="filter-header">My Cart: {Object.keys(cart).length} items</h4>
+                <table className="mini-cart-table">
+                    {Object.entries(cart).map(([name, item]) => {
+                            return(
+                                <tr><td>{name}</td> 
+                                <td>{item.quantity}</td>
+                                <td>${item.price}</td></tr>
+                            )
+                        })}
+                </table>
                 <div className="mini-checkout-center">
-                {/* TODO: get items in cart */}
-                <Link to="cart"><Button>Checkout</Button></Link>
+                <Link to="cart"><Button className="minicart-button">Checkout</Button></Link>
                 </div>
             </div>
         )
     }
 
     render() {
-        const {showCart} = this.props;
+        const {showCart, cart, setCart} = this.props;
+        const addToCart = (name, item) => {
+            setCart({...cart, [name]: item})
+        }
         const {vegData, searched, searchText} = this.state;
         if (showCart){
         return (
@@ -134,10 +145,10 @@ class PublicHome extends Component {
                         <Button onClick={this.search}>Search</Button>
                     </form>
                     {searched && <div onClick={this.clearSearch} className="clear-search">Clear Search Results</div>}
-                    <VegGrid vegData={vegData}/>
+                    <VegGrid vegData={vegData} addToCart={addToCart}/>
                 </Col>
                 <Col sm={3}>
-                    {this.minicart()}
+                    {this.minicart(cart)}
                 </Col>
             </Row></Container>
         )
@@ -153,7 +164,7 @@ class PublicHome extends Component {
                         <Button onClick={this.search}>Search</Button>
                     </form>
                     {searched && <div onClick={this.clearSearch} className="clear-search">Clear Search Results</div>}
-                    <VegGrid vegData={vegData}/>
+                    <VegGrid vegData={vegData} addToCart={addToCart}/>
                 </Col>
             </Row></Container>
         )}

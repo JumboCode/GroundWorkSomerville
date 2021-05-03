@@ -54,7 +54,7 @@
 .mini-cart{
     background-color: white;
     width: 20%;
-    min-height: 500px;
+    /* min-height: 500px; */
     margin-top: 50px;
     margin-right: 100px;
     border-radius: 40px;
@@ -64,8 +64,19 @@
 }
 
 .mini-checkout-center{
-    width: 100%;
-    height: 100%;
+    /* width: 100%; */
+    /* height: 100%; */
     display: flex;
     justify-content: center;
+    /* bottom:100px; */
+}
+
+.mini-cart-table{
+    width: 100%;
+    margin-top: 5%;
+    margin-bottom: 20%;
+}
+
+.mini-cart-table > tr > td {
+    width: 33%;
 }

@@ -1,84 +1,80 @@
-/* NOTES 
- * 
- * Note 1: Not sure how to handle image saving, add to state somehow? (line 16, 30)
- * 
- * Note 2: Not sure how to use onHide to hide component with button, currently only have closeButton from modal header (line 71, 74)
- */ 
-import React from 'react';
-import './styles.module.css';
-import Entries from './components/Entries.js'
-import Button from '../button/index.js'
-import { Col, Row, Modal } from 'react-bootstrap'
+import React, { useState, useEffect } from 'react';
+import './styles.css';
+import Button from '../button/index.js';
+import axios from 'axios';
 
-class AddItem extends React.Component {
+const AddItem = (props) => {
+    const [entries, setEntries] = useState({})
+    const [files, setFiles] = useState({})
 
-    state = {
-        products: [{name:"", units:"", price:"",image:null}]  //See Note 1
-    }
-    
-    handleChange = (e) => {
-        if(["name","units","price"].includes(e.target.className)) {
-            let products = [...this.state.products]
-            products[e.target.dataset.id][e.target.className] = e.target.value.toUpperCase()
-            this.setState({products}, () => console.log(this.state.products))
+    const [numEntries, setNumEntries] = useState(1)
+
+    const handleInputChange = (e, id) => {
+        if (e.target.type === "file") {
+            setFiles({...files, [id]:{...files[id], [e.target.name]:e.target.files[0]}})
         } else {
-            this.setState({[e.target.nane]: e.target.value.toUpperCase() })
+            setEntries({...entries, [id]:{...entries[id], [e.target.name]:e.target.value}})
         }
     }
 
-    addProduct = (e) => {
-        this.setState((prevState) => ({ products: [...prevState.products, {name:"", units:"", price: "", file:null}]})); //See Note 1 
+    const sendEntries = () => {
+        Object.keys(entries).forEach((key) => {
+            var form = new FormData();
+            Object.entries(files[key]).forEach(([n, f]) => { form.append(n, f) });
+            form.append('info', JSON.stringify(entries[key]))
+            axios({
+                method: "post",
+                url: "add-merchandise",
+                data: form,
+                headers: { "Content-Type": "multipart/form-data" },
+              })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (response) {
+                console.log(response);
+            });
+
+        })
     }
 
-    printProducts = (e) =>  {
-        console.log('Printing Current State of addItem')
-        this.state.products.map((product, idx) => {
-            if (product.name == "" && product.units == "" && product.price == "") {
-                this.state.products.splice(idx,1)
-            }
-        })    
-    }
-    
-
-    handleSubmit = (e) => { e.preventDefault() }
-
-    render() { 
-        let {products} = this.state
-        return (
-            <div> 
-                <Modal.Header closeButton style={{'border-bottom':'none 0'}}/> 
-                
-                <Modal.Body  style={{'maxHeight': 'calc(100vh - 210px)', 'overflowY': 'auto'}}>
-
-                    <Entries entries={products}/> 
-    
-                </Modal.Body>
-                
-                <Row>   
-
-                    <Col/>  
-
-                    <Col style={{'content-align': 'center'}}> 
-                        <Button onClick={this.addProduct}> Add A New Item </Button>
-                    </Col>
-
-                    <Col/> 
-
-                </Row>
-
-                <Row style={{'padding': '20px'}}> 
-
-                    {/* Got stuck when trying to use onHide to hide onClick for this button and onClock for save button */}
-                    {/* <Col>  <Button closeButton> Cancel </Button> </Col>  */}
-
-                    <Col>  <Button onClick={this.printProducts} className="float-right">Save</Button> </Col> 
-
-                </Row>
-
+    const entry = (id) => {
+        const onChng = (e) => handleInputChange(e, id)
+        return(
+            <div className="add-merch-entry" key={"merch-entry-"+id}>
+                <div>
+                    <label>Name:</label>
+                    <input type="text" onChange={onChng} name="name"/>
+                    <label>Price:</label>
+                    <input type="number" onChange={onChng} name="price"/>
+                </div>
+                <div>
+                    <label>Description</label>
+                    <input type="text" onChange={onChng} name="description"/>
+                </div>
+                <label>Available:</label>
+                <input type="number" onChange={onChng} name="quantity"/>
+                <label>Category:</label>
+                <input type="text" onChange={onChng} name="category"/>
+                <label>Photos:</label>
+                <div>
+                    <input type="file" onChange={onChng} name="photo1"/>
+                    <input type="file" onChange={onChng} name="photo2"/>
+                    <input type="file" onChange={onChng} name="photo3"/>
+                </div>
             </div>
         )
     }
+
+    return (
+        <div>
+            {[...Array(numEntries).keys()].map(entry)}
+            <Button onClick={() => setNumEntries(numEntries + 1)}> Add A New Item </Button>
+            <Button className="add-merch-button" onClick={sendEntries}>Save</Button>
+        </div>
+    )
 }
+
 export default AddItem;
 
 

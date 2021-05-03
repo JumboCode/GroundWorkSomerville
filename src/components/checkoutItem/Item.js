@@ -17,14 +17,10 @@ class Item extends Component {
     onQuantChange(id, newData, indicator){
         this.setState({quantity : newData}, ()=>{
             if (newData === 1 && indicator === "up") {
-                console.log("adding 1 item");
                 this.props.onAddItem(this.props.item)
             } else if (newData === 0 && indicator === "down") {
-                console.log("removing 1 item");
                 this.props.onRemoveItem(this.props.id)
             } else {
-                console.log("updating 1 item");
-                console.log(this.props.id)
                 this.props.onUpdateItem(this.props.id, newData)
             }
   
@@ -63,12 +59,12 @@ class Item extends Component {
 
         // const quantityvar = !this.props.checkout? this.state.quantity : this.props.quantity;
         const quantityvar = this.state.quantity;
-
+        const {item} = this.props;
         return(
             <div className={itemcontainer}>
                 <div className={itemblk}>
                     {!this.props.checkout && <div className="itemColumn-img">
-                        <img src="https://image.shutterstock.com/image-illustration/simple-drawing-tree-beautiful-green-260nw-1676022487.jpg" alt="productpicture" className="prod-image"></img>
+                        <img src={item.photo_url} alt="productpicture" className="prod-image"></img>
                     </div>}
                     <div className={itemcol}>
                         <p className="itemName">{this.props.item.name}</p>
