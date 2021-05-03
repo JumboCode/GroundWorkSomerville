@@ -1,4 +1,4 @@
-from apis.models import Vegetable, Merchandise, MerchandisePrice, MerchandisePhotos
+from apis.models import Vegetable, Merchandise, MerchandisePrice, MerchandisePhotos, MerchandiseType
 from apis.models import VegetablePrice, StockedVegetable
 from apis.models import VegetableType
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -11,6 +11,8 @@ from rest_framework.response import Response
 def MerchSummary(request):
     summary = []
     merchs = Merchandise.objects.all()
+    unit_dict = {unit: uname.lower() for (unit, uname)
+                in MerchandiseType.choices}
     for merch in merchs:
         photos = MerchandisePhotos.objects.get(id=merch.photos.id)
         price = MerchandisePrice.objects.filter(
@@ -19,7 +21,7 @@ def MerchSummary(request):
             'name': merch.name,
             'id': merch.id,
             'photo_url': photos.image1.url,
-            'category': [merch.categories],
+            'category': unit_dict[merch.categories],
             'price': price.price
         })
     return Response(summary)
@@ -66,6 +68,8 @@ def AllProduce(request):
 def SearchMerchandise(request, pk):
     summary = []
     items = Merchandise.objects.all().filter(name__icontains=pk)
+    unit_dict = {unit: uname.lower() for (unit, uname)
+                in MerchandiseType.choices}
     for merch in items:
         price = MerchandisePrice.objects.filter(
             merchandise=merch.id).latest('updated_on')
@@ -73,7 +77,7 @@ def SearchMerchandise(request, pk):
             'name': merch.name,
             'id': merch.id,
             'photo_url': merch.photo.url,
-            'category': [merch.categories],
+            'category': unit_dict[merch.categories],
             'price': price.price
         })
     return Response(summary)
