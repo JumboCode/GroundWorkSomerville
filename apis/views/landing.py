@@ -71,12 +71,13 @@ def SearchMerchandise(request, pk):
     unit_dict = {unit: uname.lower() for (unit, uname)
                 in MerchandiseType.choices}
     for merch in items:
+        photos = MerchandisePhotos.objects.get(id=merch.photos.id)
         price = MerchandisePrice.objects.filter(
             merchandise=merch.id).latest('updated_on')
         summary.append({
             'name': merch.name,
             'id': merch.id,
-            'photo_url': merch.photo.url,
+            'photo_url': photos.image1.url,
             'category': unit_dict[merch.categories],
             'price': price.price
         })

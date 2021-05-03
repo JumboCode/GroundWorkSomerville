@@ -48,5 +48,5 @@ urlpatterns = [
 ]
 
 if not settings.IS_HEROKU:
-    urlpatterns.append(url(r'^media/(?P<path>.*)$', serve,
+    urlpatterns.insert(-1, url(r'^media/(?P<path>.*)$', serve,
                            {'document_root': settings.MEDIA_ROOT, }))
