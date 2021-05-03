@@ -37,11 +37,12 @@ const VegetableDetail = ({show, onHide, detailID, addToCart}) => {
     }
     
     const editCart = () => {
-        onHide()
-        if (quantity != 0)
+        if (quantity != 0){
             addToCart(details.name, {"price":details.price,
                                     "quantity":quantity,
                                     "photo_url":images[0]})
+            onHide()
+        }
     }
 
     return (

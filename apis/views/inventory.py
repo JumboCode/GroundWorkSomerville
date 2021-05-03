@@ -32,8 +32,8 @@ def AddHarvest(request):
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 def AddMerchandise(request):
     photo1 = request.FILES["photo1"]
     photo2 = request.FILES["photo2"]
