@@ -1,5 +1,6 @@
 from django.urls import path
 from apis.views import transactions, inventory, landing, authentication
+from backend.views import index
 from django.conf.urls import url
 from django.conf import settings
 from django.views.static import serve
@@ -42,7 +43,8 @@ urlpatterns = [
     path('public-checkout', transactions.PurchaseMerchandise, name="merch-purchase"),
 
     path('all-produce', landing.AllProduce, name="all-produce"),
-    path('mm-checkout', transactions.PurchaseProduce, name="mm-checkout")
+    path('mm-checkout', transactions.PurchaseProduce, name="mm-checkout"),
+    path('', index, name="index")
 ]
 
 if not settings.IS_HEROKU:
