@@ -44,7 +44,7 @@ urlpatterns = [
 
     path('all-produce', landing.AllProduce, name="all-produce"),
     path('mm-checkout', transactions.PurchaseProduce, name="mm-checkout"),
-    path('', index, name="index")
+    url('', index, name="index")
 ]
 
 if not settings.IS_HEROKU:
