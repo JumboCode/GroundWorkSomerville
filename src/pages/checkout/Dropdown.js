@@ -34,14 +34,8 @@ class Dropdown extends Component {
                 quant = 0
             } else {
                 quant = quantlist[0].quantity;
-            }
-              
-              
+            } 
           }
-          console.log(item.name)
-            
-            console.log("item's quantity is:")
-            console.log(quant)
 
              return <Item   key={item.id}
                             id={item.id}

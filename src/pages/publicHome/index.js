@@ -30,7 +30,7 @@ class PublicHome extends Component {
         axios.get('merch-summary')
         .then((resp) => {
             this.setState({vegData:resp.data, defaultData:resp.data, searchedData:resp.data})
-            this.state.vegData.map((dat)=>{
+            this.state.vegData.forEach((dat)=>{
                 this.setState({categories: this.state.categories.add(...dat['category'])})
             })
         })
@@ -59,7 +59,7 @@ class PublicHome extends Component {
     changeCat(event){
         const id = event.target.id
         this.setState({currentCat:id})
-        if (id == "bmVwYWw=") {
+        if (id === "bmVwYWw=") {
             this.setState({vegData:this.state.searchedData})
         } else {
             this.setState({vegData:this.state.searchedData.filter(dat => {
@@ -73,9 +73,9 @@ class PublicHome extends Component {
         this.setState({currentFilter: id})
         const merchCmpl = (a,b) => {return (a.price < b.price ? -1 : 1)}
         const merchCmpg = (a,b) => {return (a.price < b.price ? 1: -1)}
-        if (id == "rel"){
+        if (id === "rel"){
             this.setState({vegData: this.state.searchedData})
-        } else if (id == "lh"){
+        } else if (id === "lh"){
             this.setState({vegData: this.state.vegData.sort(merchCmpl)})
         } else {
             this.setState({vegData: this.state.vegData.sort(merchCmpg)})

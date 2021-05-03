@@ -5,19 +5,26 @@ import Dropdown from './Dropdown.js';
 import OrderSummary from '../../components/orderSummary/OrderSummary';
 import "./Checkout.css";
 import "../../components/checkoutItem/Item.css";
+import axios from 'axios';
 
 class Checkout extends Component {
     constructor(props) {
         super(props)
         this.state = 
-            {itemListData: itemData, 
+            {itemListData: [], 
              checkoutList: []}
         this.onAddItem = this.onAddItem.bind(this);
         this.onUpdateItem = this.onUpdateItem.bind(this);
         this.onRemoveItem = this.onRemoveItem.bind(this);
         this.updateValue = this.updateValue.bind(this);
-        
+    }
 
+    componentDidMount(){
+        axios.get('all-produce')
+        .then((resp) => {
+            // this.setState({itemListData: resp.data})
+            console.log(resp.data)
+        })
     }
 
     renderItem(i) {
@@ -64,7 +71,6 @@ class Checkout extends Component {
     }
     
     onUpdateItem(id, i){
-        console.log("in update item CALL")
         const list = this.state.checkoutList.map(item => {
             if (item.value.id === id) {
               return {value:item.value, quantity: i};
@@ -74,7 +80,6 @@ class Checkout extends Component {
           })
      
         this.setState({checkoutList: list})
-        console.log(list);
       }
 
     updateValue(id, newData, indicator){
@@ -90,17 +95,15 @@ class Checkout extends Component {
         let category = "";
         let itemsList = [];
         let createDropdown = this.state.itemListData.map(item => {
-            if (item.type !== category) {
+            if (item.categories !== category) {
                 let tempList = [...itemsList]; 
                 let tempType = category;
 
                 itemsList = [];
                 itemsList.push(item);
 
-                category = item.type;
+                category = item.categories;
                 if (tempList.length !== 0){
-                    console.log("this is checkoutlist")
-                    console.log(this.state.checkoutList)
                     return <Dropdown 
                                 items={tempList}
                                 type={tempType}
