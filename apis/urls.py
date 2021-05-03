@@ -12,6 +12,8 @@ urlpatterns = [
          inventory.DeleteVegetable, name="delete-vegetable"),
     path('search-vegetables/<str:pk>',
          inventory.SearchVegetables, name="search-vegetables"),
+    
+    path('search-merchandise/<str:pk>', landing.SearchMerchandise, name="search-merchandise"),
 
     path('harvest-inventory', inventory.StockVegetable, name='harvest-inventory'),
     path('merchandise-inventory', inventory.StockMerchandise,

@@ -29,8 +29,7 @@ def MerchDetail(request, pk):
     merch = Merchandise.objects.get(id=pk)
     price = MerchandisePrice.objects.filter(
         merchandise=pk).latest('updated_on')
-    photos = MerchandisePhotos.objects.filter(merchandise=pk)[0]
-    print(photos)
+    photos = MerchandisePhotos.objects.get(id=merch.photos.id)
     return Response({
         'name': merch.name,
         'id': merch.id,
@@ -48,7 +47,7 @@ def AllProduce(request):
         vegetables = Vegetable.objects.filter(categories=choices[0])
         produces = []
         for vegetable in vegetables.iterator():
-            stocked = StockedVegetable.objects.filter(vegetable=vegetable)
+            stocked = StockedVegetable.objects.filter(vegetable=vegetable)[0]
             price = VegetablePrice.objects.filter(
                 vegetable=vegetable).latest('updated_on')
             produces.append(
@@ -59,3 +58,20 @@ def AllProduce(request):
                  "available_amount": stocked.quantity})
         categories.append({"name": choices[1], "produces": produces})
     return Response({"categories": categories})
+
+
+@api_view(['GET'])
+def SearchMerchandise(request, pk):
+    summary = []
+    items = Merchandise.objects.all().filter(name__icontains=pk)
+    for merch in items:
+        price = MerchandisePrice.objects.filter(
+            merchandise=merch.id).latest('updated_on')
+        summary.append({
+            'name': merch.name,
+            'id': merch.id,
+            'photo_url': merch.photo.url,
+            'category': [merch.categories],
+            'price': price.price
+        })
+    return Response(summary)
