@@ -43,7 +43,7 @@ class PublicHome extends Component {
     search(event) {
         event.preventDefault()
         this.setState({ searched: true })
-        axios.get(`search-vegetables/${this.state.searchText}`)
+        axios.get(`search-merchandise/${this.state.searchText}`)
         .then((resp) => {
             this.setState({searchedData:resp.data, vegData:resp.data})
             this.changeCat({target:{id: this.state.currentCat}})
@@ -58,8 +58,6 @@ class PublicHome extends Component {
 
     changeCat(event){
         const id = event.target.id
-        // console.log(id)
-        // console.log(this.state.searchedData)
         this.setState({currentCat:id})
         if (id === "bmVwYWw=") {
             this.setState({vegData:this.state.searchedData})
