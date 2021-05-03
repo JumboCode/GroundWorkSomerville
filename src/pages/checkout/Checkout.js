@@ -22,8 +22,7 @@ class Checkout extends Component {
     componentDidMount(){
         axios.get('all-produce')
         .then((resp) => {
-            // this.setState({itemListData: resp.data})
-            console.log(resp.data)
+            this.setState({itemListData: resp.data})
         })
     }
 
@@ -36,27 +35,6 @@ class Checkout extends Component {
     }
 
     
-
-    // onQuantChange(newData, indicator){
-    //     this.setState({quantity : newData}, ()=>{
-    //         if (!this.props.checkout) {
-    //             if (newData === 1 && indicator === "up") {
-    //                 // console.log("adding 1 item");
-    //                 this.props.onAddItem(this.props.item)
-    //             } else if (newData === 0 && indicator === "down") {
-    //                 // console.log("removing 1 item");
-    //                 this.props.onRemoveItem(this.props.id)
-    //             } else {
-    //                 // console.log("updating 1 item");
-    //                 this.props.onUpdateItem(this.props.id, newData)
-    //             }
-    //         }
-           
-    //     //   console.log('Data 1 changed by Sidebar')
-    //     //   console.log(newData)
-    //     })
-    // }
-
     // manipulating the item array
     onAddItem(newValue){
         this.setState({
@@ -91,64 +69,33 @@ class Checkout extends Component {
     }
 
     render () {
-
-        let category = "";
-        let itemsList = [];
-        let createDropdown = this.state.itemListData.map(item => {
-            if (item.categories !== category) {
-                let tempList = [...itemsList]; 
-                let tempType = category;
-
-                itemsList = [];
-                itemsList.push(item);
-
-                category = item.categories;
-                if (tempList.length !== 0){
-                    return <Dropdown 
-                                items={tempList}
-                                type={tempType}
-                                onAddItem={this.onAddItem}
-                                onUpdateItem={this.onUpdateItem}
-                                onRemoveItem={this.onRemoveItem}
-                                checkoutList={this.state.checkoutList}
-                                />
-                }else 
-                    return null;
-            }
-            else {
-                itemsList.push(item);
-                return null;
-            }
-           
-         })
-
-         let summary = this.state.checkoutList.map(item => {
-             return <Item key={item.value.id} 
-                          id={item.value.id}
-                          item ={item.value}
-                          checkout={true}
-                          quantity={item.quantity}
-                          onAddItem={this.onAddItem}
-                          onUpdateItem={this.onUpdateItem}
-                          onRemoveItem={this.onRemoveItem}
-                          />
-         })
-
-         let totalvalue = 0; 
-
-         this.state.checkoutList.forEach(val => totalvalue+=val.quantity* val.value.price);
+        const summary = this.state.checkoutList.map(item => {
+            return <Item key={item.value.id} 
+                        id={item.value.id}
+                        item ={item.value}
+                        checkout={true}
+                        quantity={item.quantity}
+                        onAddItem={this.onAddItem}
+                        onUpdateItem={this.onUpdateItem}
+                        onRemoveItem={this.onRemoveItem}
+                        />
+        })
+        let totalvalue = 0; 
+        this.state.checkoutList.forEach(val => totalvalue+=val.quantity* val.value.price);
+        const dropdowns = this.state.itemListData.map( ({name, produces}) => {
+            return(<Dropdown items={produces} 
+                type={name}
+                onAddItem={this.onAddItem}
+                onUpdateItem={this.onUpdateItem}
+                onRemoveItem={this.onRemoveItem}
+                checkoutList={this.state.checkoutList}
+            />)
+        })
 
         return(
             <div>
                 <div className="checkOrder">
-                    {createDropdown}
-                    <Dropdown items={itemsList} 
-                              type={category}
-                              onAddItem={this.onAddItem}
-                              onUpdateItem={this.onUpdateItem}
-                              onRemoveItem={this.onRemoveItem}
-                              checkoutList={this.state.checkoutList}
-                              />
+                    {dropdowns}
                 </div>
                 <div >
                     <div className="orderTitle">

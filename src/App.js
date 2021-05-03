@@ -19,13 +19,18 @@ class App extends Component {
                       isAdmin: false, 
                       token: '',
                       activated: false,
-                      showMiniCart: false}
+                      showMiniCart: false,
+                      cart:{}}
         this.logout = this.logout.bind(this);
         this.login = this.login.bind(this);
     };
 
     componentDidMount(){
         const key = window.localStorage.getItem('auth-key')
+        const stored_cart = window.localStorage.getItem('cart')
+        if (stored_cart) {
+            this.setState({cart: stored_cart})
+        }
         if (key) {
             var fetchOptions = {
                 method: 'GET',
@@ -63,7 +68,7 @@ class App extends Component {
     }
 
     render() {
-        const {loginShow, isAuth, isAdmin, token, activated, showMiniCart} = this.state;
+        const {loginShow, isAuth, isAdmin, token, activated, showMiniCart, cart} = this.state;
         const hideLogin = () => {this.setState({loginShow: false})}
         const showLogin = () => {this.setState({loginShow: true})}
         const activate = () => {this.setState({activated: true})}
@@ -73,11 +78,14 @@ class App extends Component {
             } else{
                 this.setState({showMiniCart: bv})
             }}
+        const setCart = (items) => {
+            this.setState({cart: items})
+        }
         let home;
         if (isAuth) {
             if (!activated) { home = <Redirect to='/edit-account'/> }
                 else { home = isAdmin ? <Inventory token={token}/> : <Checkout/> }}
-        else { home = <PublicHome showCart={showMiniCart}/> }
+        else { home = <PublicHome showCart={showMiniCart} cart={cart} setCart={setCart}/> }
         return (
             <div className = "App">
                 <BrowserRouter>
@@ -88,8 +96,7 @@ class App extends Component {
                         <Route exact path='/info' component={InfoPage}></Route>
                         <Route exact path='/checkout' component={Checkout}></Route>
                         <Route exact path='/inventory' component={Inventory}></Route>
-                        <Route exact path='/cart' component={Cart}></Route>
-                        {/* <Route exact path='inventory/editItem' component={EditItem}></Route> */}
+                        <Route exact path='/cart' render={() => <Cart cart={cart} setCart={setCart}/>}></Route>
                         <Route exact path='/edit-account'>
                             {isAuth ? <EditAccount token={token} activate={activate} activated={activated}/> : <Redirect to='/'/>}
                         </Route>

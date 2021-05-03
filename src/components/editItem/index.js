@@ -12,10 +12,10 @@ const EditItem = ({show, onHide, id}) => {
     const submitData = () => {
         var form = new FormData();
         form.append('image', image);
-        form.append('info', JSON.stringify(formData))
+        form.append('info', JSON.stringify({...formData, oldname:"Grapes", categories:"Vegetable"}))
         axios({
             method: "post",
-            url: "update-vegetable/",
+            url: "update-produce",
             data: form,
             headers: { "Content-Type": "multipart/form-data" },
           })

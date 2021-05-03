@@ -5,7 +5,7 @@ import Button from "../button";
 import "./VegDetail.css";
 import axios from 'axios';
 
-const VegetableDetail = ({show, onHide, detailID}) => {
+const VegetableDetail = ({show, onHide, detailID, addToCart}) => {
     const loadingGIF = "https://i.stack.imgur.com/kOnzy.gif"
     const [details, setDetails] = useState({})
     const [images, setImages] = useState([])
@@ -36,6 +36,14 @@ const VegetableDetail = ({show, onHide, detailID}) => {
             setQuantity(quantity);
     }
     
+    const editCart = () => {
+        onHide()
+        if (quantity != 0)
+            addToCart(details.name, {"price":details.price,
+                                    "quantity":quantity,
+                                    "photo_url":images[0]})
+    }
+
     return (
             <div className = "veg-detail">
                 <div className="container">
@@ -59,7 +67,7 @@ const VegetableDetail = ({show, onHide, detailID}) => {
                             />  
                         </div>
                         <div className="buttons">
-                            <Button>add to cart</Button>
+                            <Button onClick={editCart}>add to cart</Button>
                         </div>
                         </div>
                     </div>

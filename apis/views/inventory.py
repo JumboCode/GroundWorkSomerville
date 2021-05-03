@@ -190,14 +190,14 @@ def ProduceInventory(request):
 
 
 @api_view(['POST', 'GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 def UpdateVegetable(request):
     image = request.FILES["image"]
     body = json.loads(request.data['info'])
     if 'oldname' in body and isinstance(body["oldname"], str):
         vegToUpdate = Vegetable.objects.filter(name=body["oldname"]).first()
-        vegToUpdate.name = body["newname"]
+        vegToUpdate.name = body["name"]
         vegToUpdate.photo = image
         vegToUpdate.unit = body["unit"].lower()
         unit_dict = {uname.lower(): unit for (unit, uname)

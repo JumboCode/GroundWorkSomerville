@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import itemData from "../../temp-data/cartData";
 import Item from "../../components/checkoutItem/Item"
 import OrderSummary from "../../components/orderSummary/OrderSummary"
 // import { Modal, Tab, Nav } from 'react-bootstrap';
@@ -22,22 +21,23 @@ class PublicCart extends Component {
     }
 
     render() {
-
+        const {cart} = this.props;
+        // console.log(cart)
         let total = 0;
-        let cartItems = itemData.map( item => {
+        const cartItems = Object.entries(cart).map( ([name, item]) => {
             total+= item.price * item.quantity;
-            return <Item key={item.id}
-                         item={item}
+            return <Item key={name}
+                         item={{...item, name:name}}
                          quantity={item.quantity}
                          checkout={false}/>
             }
         )
 
-        const getRow = (dat) => {
+        const getRow = ([name, dat]) => {
             const style = { color: "grey", cursor: "pointer" }
             return(
-                <tr key={dat.name}>
-                    <td>{dat.name}</td>
+                <tr key={name}>
+                    <td>{name}</td>
                     <td>{dat.quantity}</td>
                     <td>${dat.price}</td>
                     <td>${dat.price * dat.quantity}</td>
@@ -55,7 +55,7 @@ class PublicCart extends Component {
                             <th>Price</th>
                             <th>Total</th></tr>
                         </thead>
-                        <tbody>{items.map(getRow)}</tbody>
+                        <tbody>{Object.entries(items).map(getRow)}</tbody>
                     </table>
                 </div>
             )
@@ -64,7 +64,7 @@ class PublicCart extends Component {
             <div>                    
                 {!this.state.checkout && 
                 <div>
-                 <div className="cartHeading"><h2 className="heading">My Cart: {itemData.length} items</h2></div>
+                 <div className="cartHeading"><h2 className="heading">My Cart: {Object.keys(cart).length} items</h2></div>
                     <div className="body">
                         <div className="cartSection">
                             <div className="listItems">{cartItems}</div> 
@@ -79,7 +79,7 @@ class PublicCart extends Component {
                      <div className="cartHeading"><h2 className="heading">Order Summary:</h2></div>
                      <div className="body">
                         <div className="cartSection">
-                            <div className="listItems">{getTable(itemData)}</div> 
+                            <div className="listItems">{getTable(cart)}</div> 
                         </div>
                         <div className="orderSection"><OrderSummary total={total} order={true}/></div>
                     </div> 

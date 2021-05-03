@@ -7,10 +7,9 @@ import VegDetail from '../detail/VegDetail';
 const VegGrid = (props) => {
     const [showDetail, setShowDetail] = useState(false);
     const [detailID, setDetailID] = useState("");
-    const { vegData } = props;
+    const { vegData, addToCart } = props;
 
     const openDetail = (event) => {
-        console.log()
         setDetailID(event.target.id)
         setShowDetail(true)
     }
@@ -27,7 +26,6 @@ const VegGrid = (props) => {
                 <div className="price-container" id={dat["id"]}>
                     ${dat['price']}
                 </div>
-
             </div>
         );
     }
@@ -39,7 +37,7 @@ const VegGrid = (props) => {
             </div>
             <Modal show={showDetail} size="lg" centered onHide={()=> setShowDetail(false)}>
                 <Modal.Header closeButton/>
-                <VegDetail detailID={detailID}/>
+                <VegDetail detailID={detailID} addToCart={addToCart} onHide={()=>setShowDetail(false)}/>
             </Modal>
         </div>
     );
