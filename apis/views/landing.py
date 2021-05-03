@@ -59,3 +59,20 @@ def AllProduce(request):
                  "available_amount": stocked.quantity})
         categories.append({"name": choices[1], "produces": produces})
     return Response(categories)
+
+
+@api_view(['GET'])
+def SearchMerchandise(request, pk):
+    summary = []
+    items = Merchandise.objects.all().filter(name__icontains=pk)
+    for merch in items:
+        price = MerchandisePrice.objects.filter(
+            merchandise=merch.id).latest('updated_on')
+        summary.append({
+            'name': merch.name,
+            'id': merch.id,
+            'photo_url': merch.photo.url,
+            'category': [merch.categories],
+            'price': price.price
+        })
+    return Response(summary)

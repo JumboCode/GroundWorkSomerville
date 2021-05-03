@@ -12,17 +12,19 @@ urlpatterns = [
          inventory.DeleteVegetable, name="delete-vegetable"),
     path('search-vegetables/<str:pk>',
          inventory.SearchVegetables, name="search-vegetables"),
+    
+    path('search-merchandise/<str:pk>', landing.SearchMerchandise, name="search-merchandise"),
 
-    path('harvest-inventory', inventory.StockVegetable, name='harvest-inventory'),
-    path('merchandise-inventory', inventory.StockMerchandise,
+    path('harvest-inventory', inventory.HarvestInventory, name='harvest-inventory'),
+    path('merchandise-inventory', inventory.MerchandiseInventory,
          name='merchandise-inventory'),
-    path('produce-inventory', inventory.StockMerchandise, name='produce-inventory'),
-    path('harvest-detail/<str:pk>', inventory.dummy_view, name='harvest-detail'),
-    path('produce-detail/<str:pk>', inventory.dummy_view, name='produce-detail'),
+    path('produce-inventory', inventory.ProduceInventory, name='produce-inventory'),
+    path('harvest-detail/<str:pk>', inventory.HarvestDetail, name='harvest-detail'),
+    path('produce-detail/<str:pk>', inventory.ProduceDetail, name='produce-detail'),
 
-    path('add-merchandise', inventory.dummy_view, name='add-merchandise'),
-    path('add-produce', inventory.dummy_view, name='add-produce'),
-    path('add-harvest', inventory.dummy_view, name='add-harvest'),
+    path('add-merchandise', inventory.AddMerchandise, name='add-merchandise'),
+    path('add-produce', inventory.AddProduce, name='add-produce'),
+    path('add-harvest', inventory.AddHarvest, name='add-harvest'),
 
     path('update-produce', inventory.UpdateVegetable, name="update-vegetable"),
     path('update-merchandise', inventory.dummy_view, name='update-merchandise'),
