@@ -12,12 +12,13 @@ def MerchSummary(request):
     summary = []
     merchs = Merchandise.objects.all()
     for merch in merchs:
+        photos = MerchandisePhotos.objects.get(id=merch.photos.id)
         price = MerchandisePrice.objects.filter(
-            merchandise=merch.id).latest('updated_on')
+            merchandise=merch).latest('updated_on')
         summary.append({
             'name': merch.name,
             'id': merch.id,
-            'photo_url': merch.photo.url,
+            'photo_url': photos.image1.url,
             'category': [merch.categories],
             'price': price.price
         })
@@ -35,7 +36,7 @@ def MerchDetail(request, pk):
         'id': merch.id,
         'description': merch.description,
         'price': price.price,
-        'photo_urls': [photos.image2.url, photos.image3.url, photos.image4.url]})
+        'photo_urls': [photos.image1.url, photos.image2.url, photos.image3.url]})
 
 
 @api_view(['GET'])
