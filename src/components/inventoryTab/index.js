@@ -102,7 +102,7 @@ const InventoryTab = (props) => {
 
     return (
         <div id="inventory-tab">
-            <Tab.Container defaultActiveKey="harvest">
+            <Tab.Container defaultActiveKey="merch">
                 <Nav>
                     <Nav.Link as="div" eventKey="harvest" className="tab-button" onClick={(e)=> props.onQuantChange(true)}>
                         Harvest Inventory
