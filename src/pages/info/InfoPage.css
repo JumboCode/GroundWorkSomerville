@@ -33,6 +33,7 @@
 .sr-step {
     display: table;
     margin-bottom: 20px;
+    align-items: center;
 }
 
 .sr-step span{
@@ -50,8 +51,8 @@
 
 .in-circle{
     position: relative;
-    margin-left: 20%;
     top:20%;
+    margin:auto;
     width: 60%;
     height: 60%;
     background-color: #FAF4F1;
@@ -72,30 +73,36 @@
 }
 
 @media only screen and (min-width: 600px) {
+    .sr-step span{
+        display: inline-block;
+        max-width: 220px;
+    }
+
     .purchase-steps{
         padding-top:5%;
-        padding-bottom: 3%;
+        padding-bottom: 5%;
         color:#1FB25A;
         margin: auto;
-        width: 80%;
+        width: 90%;
     }
     
     .line{
-        position: relative;
-        left: 7.6%;
         background-color: #1FB25A;
+        margin:auto;
         height: 15px;
-        width:81%;
+        width:66%;
         margin-bottom: -31px;
     }
     
-    .sr-step + .sr-step{
-        margin-left: 23%;
+    .step-texts{
+        display:table;
+        width:100%;
+        text-align: center;
     }
     
     .sr-step{
-        display:inline-block;
-        max-width: 18%;
+        display:table-cell;
+        width:33.33%;
         vertical-align: top;
         text-align: center;
         font-size: 19px;
@@ -103,11 +110,7 @@
     }
     
     .circle{
-        position: relative;
-        border-radius: 100%;
         content: '';
-        width: 50px;
-        height: 50px;
         background: #1FB25A;
         margin: auto;
         margin-bottom: 35px;
