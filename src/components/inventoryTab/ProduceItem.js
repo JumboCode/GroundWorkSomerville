@@ -10,6 +10,10 @@ class ProduceItem extends Component {
     }
 
     render(){
+        const onEditClick = () => {
+            this.props.setShowAddItem(true)
+            this.props.setPopUpId(this.props.item.id)
+        }
         return (
         <div className="prodcontainer"> 
             <div className="imgContainer">
@@ -18,7 +22,7 @@ class ProduceItem extends Component {
             <div className="rhsContainer">
                 <p className="label">{this.props.item.name} </p>
                 <p className="label">${this.props.item.price} /{this.props.item.unit}</p>
-                <a className="label" onClick={()=> {this.props.setShowAddItem(true); this.props.setPopUpId(this.props.item.id);} }>edit</a> 
+                <div className="label" onClick={onEditClick}>edit</div> 
             </div>
         </div>
         )

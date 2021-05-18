@@ -43,6 +43,14 @@
     padding-left: 30px;
 }
 
+.no-search {
+    color: red;
+    padding-left: 30px;
+    margin-top: 40px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
 .selected-cat{
     font-weight: bold;
 }

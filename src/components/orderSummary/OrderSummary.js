@@ -1,9 +1,6 @@
 import React, {Component} from "react";
-import { ButtonGroup } from "react-bootstrap";
 import Button from '../button';
 import { withRouter } from "react-router-dom";
-
-// import Popup fr
 
 import "./OrderSummary.css"
 

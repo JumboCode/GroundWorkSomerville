@@ -24,6 +24,7 @@ class PublicHome extends Component {
         this.changeCat = this.changeCat.bind(this)
         this.filter = this.filter.bind(this)
         this.minicart = this.minicart.bind(this)
+        this.gridcol = this.gridcol.bind(this)
     };
 
     componentDidMount() {
@@ -42,14 +43,15 @@ class PublicHome extends Component {
 
     search(event) {
         event.preventDefault()
-        this.setState({ searched: true })
-        axios.get(`search-merchandise/${this.state.searchText}`)
-        .then((resp) => {
-            this.setState({searchedData:resp.data, vegData:resp.data})
-            this.changeCat({target:{id: this.state.currentCat}})
-            this.filter({target:{id: this.state.currentFilter}})
-        })
-        
+        if (this.state.searchText !== ""){
+            this.setState({ searched: true })
+            axios.get(`search-merchandise/${this.state.searchText}`)
+            .then((resp) => {
+                this.setState({searchedData:resp.data, vegData:resp.data})
+                this.changeCat({target:{id: this.state.currentCat}})
+                this.filter({target:{id: this.state.currentFilter}})
+            })
+        }
     }
 
     clearSearch() {
@@ -63,7 +65,7 @@ class PublicHome extends Component {
             this.setState({vegData:this.state.searchedData})
         } else {
             this.setState({vegData:this.state.searchedData.filter(dat => {
-                return(dat['category'] == id)
+                return(dat['category'] === id)
             })})
         }
     }
@@ -73,9 +75,7 @@ class PublicHome extends Component {
         this.setState({currentFilter: id})
         const merchCmpl = (a,b) => {return (a.price < b.price ? -1 : 1)}
         const merchCmpg = (a,b) => {return (a.price < b.price ? 1: -1)}
-        if (id === "rel"){
-            this.setState({vegData: this.state.searchedData})
-        } else if (id === "lh"){
+        if (id === "lh"){
             this.setState({vegData: this.state.vegData.sort(merchCmpl)})
         } else {
             this.setState({vegData: this.state.vegData.sort(merchCmpg)})
@@ -99,8 +99,8 @@ class PublicHome extends Component {
                 </div>
                 <div className="filter-comp">
                 <h2 className="filter-header">&#9776; Filter</h2>
-                <Tab.Container defaultActiveKey="relevance"><Nav className="flex-column">
-                    <Nav.Link as="div" eventKey="relevance" className="cat-text" onClick={this.filter} id="rel">relevance</Nav.Link>
+                <Tab.Container><Nav className="flex-column">
+                    {/* <Nav.Link as="div" eventKey="relevance" className="cat-text" onClick={this.filter} id="rel">relevance</Nav.Link> */}
                     <Nav.Link as="div" eventKey="lohigh" className="cat-text" onClick={this.filter} id="lh">price: low to high</Nav.Link>
                     <Nav.Link as="div" eventKey="highlo" className="cat-text" onClick={this.filter} id="hl">price: high to low</Nav.Link>
                 </Nav></Tab.Container>
@@ -110,18 +110,18 @@ class PublicHome extends Component {
     }
 
     minicart(cart){
+        const getCartItem = ([name, item]) => {
+            return(
+                <tr><td>{name}</td> 
+                <td>{item.quantity}</td>
+                <td>${item.price}</td></tr>
+            )
+        }
         return(
             <div className="mini-cart">
-                {/* TODO: get number of items in cart */}
                 <h4 className="filter-header">My Cart: {Object.keys(cart).length} items</h4>
                 <table className="mini-cart-table">
-                    {Object.entries(cart).map(([name, item]) => {
-                            return(
-                                <tr><td>{name}</td> 
-                                <td>{item.quantity}</td>
-                                <td>${item.price}</td></tr>
-                            )
-                        })}
+                    {Object.entries(cart).map(getCartItem)}
                 </table>
                 <div className="mini-checkout-center">
                 <Link to="cart"><Button className="minicart-button">Checkout</Button></Link>
@@ -130,44 +130,36 @@ class PublicHome extends Component {
         )
     }
 
-    render() {
-        const {showCart, cart, setCart} = this.props;
-        const addToCart = (name, item) => {
-            setCart({...cart, [name]: item})
-        }
+    gridcol() {
         const {vegData, searched, searchText} = this.state;
-        if (showCart){
-        return (
-            <Container id="public-home" fluid><Row>
-                <Col>
-                    <form className="home-search">
-                        <input type="text" onChange={this.handleSearch} placeholder="Search" value={searchText} className="home-search-text"/>
-                        <Button onClick={this.search}>Search</Button>
-                    </form>
-                    {searched && <div onClick={this.clearSearch} className="clear-search">Clear Search Results</div>}
-                    <VegGrid vegData={vegData} addToCart={addToCart}/>
-                </Col>
-                <Col sm={3}>
-                    {this.minicart(cart)}
-                </Col>
-            </Row></Container>
-        )
-        } else {
-        return (
-            <Container id="public-home" fluid><Row>
-                <Col sm={3}>
-                    {this.filterComp()}
-                </Col>
-                <Col>
-                    <form className="home-search">
-                        <input type="text" onChange={this.handleSearch} placeholder="Search" value={searchText} className="home-search-text"/>
-                        <Button onClick={this.search}>Search</Button>
-                    </form>
-                    {searched && <div onClick={this.clearSearch} className="clear-search">Clear Search Results</div>}
-                    <VegGrid vegData={vegData} addToCart={addToCart}/>
-                </Col>
-            </Row></Container>
-        )}
+        const {cart, setCart} = this.props;
+        const addToCart = (name, item) => { setCart({...cart, [name]: item}) }
+        return(
+            <div>
+            <form className="home-search">
+                <input type="text" onChange={this.handleSearch} placeholder="Search" value={searchText} className="home-search-text"/>
+                <Button onClick={this.search}>Search</Button>
+            </form>
+            {searched && <div onClick={this.clearSearch} className="clear-search">Clear Search Results</div>}
+            {searched && !vegData.length ?
+            <div className="no-search">No results found for {searchText}</div>:
+            <VegGrid vegData={vegData} addToCart={addToCart}/>}
+            </div>)
+    }
+
+    render() {
+        const {showCart, cart} = this.props;
+        const withCart = 
+            (<Container id="public-home" fluid><Row>
+                <Col> {this.gridcol()} </Col>
+                <Col sm={3}> {this.minicart(cart)} </Col>}
+            </Row></Container>);
+        const withoutCart = 
+            (<Container id="public-home" fluid><Row>
+                <Col sm={3}> {this.filterComp()} </Col>
+                <Col> {this.gridcol()} </Col>
+            </Row></Container>)
+        return( showCart ? withCart : withoutCart )
     }
 }
 

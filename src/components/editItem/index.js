@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import './styles.css';
-import { Modal, Form, Button } from 'react-bootstrap';
-import inventoryData from "../../temp-data/inventoryData";
+import { Modal, Button } from 'react-bootstrap';
 import EditUnit from "./EditUnit";
 import axios from 'axios';
  

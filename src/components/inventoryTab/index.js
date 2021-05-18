@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './styles.css';
 import EditItem from '../editItem';
-import { Modal, Tab, Nav } from 'react-bootstrap';
-import { Link, useRouteMatch, useLocation } from "react-router-dom";
-import ProduceItem from "./ProduceItem";
+import { Tab, Nav } from 'react-bootstrap';
+// import ProduceItem from "./ProduceItem";
 import axios from 'axios';
 
 
@@ -39,7 +38,7 @@ const InventoryTab = (props) => {
                 <td>{dat.price}</td>
                 <td>{dat.total_sold}</td>
                 <td>{dat.total_available}</td>
-                <td> <a onClick={()=> {setShowAddItem(true); setPopUpId(dat.id+1);}} style={style}>edit</a> </td>
+                <td> <div onClick={()=> {setShowAddItem(true); setPopUpId(dat.id+1);}} style={style}>edit</div> </td>
             </tr>
         )
     }
@@ -62,43 +61,43 @@ const InventoryTab = (props) => {
     }
 
 
-    const getProduceRows = (items) => {
-        var i, j;
-        const maps = [];
-        for (i = 0; i < (items.length/3); i++){ //TODO: fix this
-            maps[i] =  [];
-            for (j = 0; j < 3; j++) {
-                maps[i][j] = items[(i*3+j)];
-            }
-        }
-        return (
-            <tbody>
-                {maps.map(getProduceRow)}
-            </tbody>
-        )
+    // const getProduceRows = (items) => {
+    //     var i, j;
+    //     const maps = [];
+    //     for (i = 0; i < (items.length/3); i++){ //TODO: fix this
+    //         maps[i] =  [];
+    //         for (j = 0; j < 3; j++) {
+    //             maps[i][j] = items[(i*3+j)];
+    //         }
+    //     }
+    //     return (
+    //         <tbody>
+    //             {maps.map(getProduceRow)}
+    //         </tbody>
+    //     )
        
-    }
+    // }
 
-    const getProduceRow = (row) => {
-        return (
-            <tr key={row[0]}>
-                <td><ProduceItem item={row[0]} setShowAddItem={setShowAddItem} setPopUpId={setPopUpId}/></td>
-                <td>{<ProduceItem item={row[1]} setShowAddItem={setShowAddItem} setPopUpId={setPopUpId}/>}</td>
-                <td>{<ProduceItem item={row[2]} setShowAddItem={setShowAddItem} setPopUpId={setPopUpId}/>}</td>
-            </tr>
-        )
+    // const getProduceRow = (row) => {
+    //     return (
+    //         <tr key={row[0]}>
+    //             <td><ProduceItem item={row[0]} setShowAddItem={setShowAddItem} setPopUpId={setPopUpId}/></td>
+    //             <td>{<ProduceItem item={row[1]} setShowAddItem={setShowAddItem} setPopUpId={setPopUpId}/>}</td>
+    //             <td>{<ProduceItem item={row[2]} setShowAddItem={setShowAddItem} setPopUpId={setPopUpId}/>}</td>
+    //         </tr>
+    //     )
         
-    }
+    // }
 
-    const getProduceTable = (items) => {
-        return (
-            <div className="fixedHeader">
-                <table className="inventory-table">
-                    {getProduceRows(items)}
-                </table>
-            </div>
-        )
-    }
+    // const getProduceTable = (items) => {
+    //     return (
+    //         <div className="fixedHeader">
+    //             <table className="inventory-table">
+    //                 {getProduceRows(items)}
+    //             </table>
+    //         </div>
+    //     )
+    // }
 
     return (
         <div id="inventory-tab">
@@ -116,7 +115,7 @@ const InventoryTab = (props) => {
                 </Nav>
                 <Tab.Content className="hello123">
                 <Tab.Pane eventKey="harvest" title="Harvest Inventory">
-                    {getTable(harvest)}
+                    {/* {getTable(harvest)} */}
                 </Tab.Pane>
                 <Tab.Pane eventKey="merch" title="Merchandise Inventory">
                     {getTable(merch)}

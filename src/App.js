@@ -73,7 +73,7 @@ class App extends Component {
         const showLogin = () => {this.setState({loginShow: true})}
         const activate = () => {this.setState({activated: true})}
         const showCart = (bv) => {
-            if (bv == "toggle"){
+            if (bv === "toggle"){
                 this.setState({showMiniCart: !showMiniCart})
             } else{
                 this.setState({showMiniCart: bv})

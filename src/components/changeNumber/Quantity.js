@@ -2,7 +2,7 @@
 import React, {Component} from "react";
 import "./Quantity.css";
 
-class Quantity extends React.Component {
+class Quantity extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -11,8 +11,6 @@ class Quantity extends React.Component {
         max: 5,
         min: 0
       };
-
-
     }
   
     IncrementItem = () => {

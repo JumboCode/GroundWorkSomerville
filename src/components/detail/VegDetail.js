@@ -19,13 +19,11 @@ const VegetableDetail = ({show, onHide, detailID, addToCart}) => {
             setImages(resp.data['photo_urls'])
             setSelectedImage(resp.data['photo_urls'][0])
         })
-    }, [])
+    }, [detailID])
 
     const getImage = (img) => {
         return (
-            <a onClick={(e) => setSelectedImage(img)} key={img}>
-                 <img src={img} alt="close up of product" className="small-img"></img>
-            </a>
+            <img src={img} onClick={(e) => setSelectedImage(img)} alt="close up of product" className="small-img" key={img}></img>
         )
     }
 
@@ -37,7 +35,7 @@ const VegetableDetail = ({show, onHide, detailID, addToCart}) => {
     }
     
     const editCart = () => {
-        if (quantity != 0){
+        if (quantity !== 0){
             addToCart(details.name, {"price":details.price,
                                     "quantity":quantity,
                                     "photo_url":images[0]})

@@ -35,7 +35,7 @@ const InfoPage = () => {
                     Somerville, MA 02143</em></h4><br/>
 
                     <h5>Pickup hours: <strong>9am - 5pm, Mon - Fri</strong><br/><br/>
-                    <a href="tel:6176289988"><img src={phone} style={{height:30}}/></a>
+                    <a href="tel:6176289988"><img src={phone} alt="Call us" style={{height:30}}/></a>
                     +1 617 628-9988</h5><br/>
 
                     </div>
