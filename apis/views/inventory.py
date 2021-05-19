@@ -190,9 +190,9 @@ def UpdateVegetable(request):
         vegToUpdate.name = body["name"]
         vegToUpdate.photo = image
         vegToUpdate.unit = body["unit"].lower()
-        unit_dict = {uname.lower(): unit for (unit, uname)
-                     in VegetableType.choices}
-        vegToUpdate.categories = unit_dict[body["categories"].lower()]
+        # unit_dict = {uname.lower(): unit for (unit, uname)
+        #              in VegetableType.choices}
+        vegToUpdate.categories = body["categories"]
         vegToUpdate.save()
         return Response(vegToUpdate.id)
     else:
@@ -215,9 +215,9 @@ def UpdateMerchandise(request):
         merchToUpdate.name = body["name"]
         merchToUpdate.description = body["description"]
         merchToUpdate.quantity = body["quantity"]
-        unit_dict = {uname.lower(): unit for (unit, uname)
-                     in MerchandiseType.choices}
-        merchToUpdate.categories = unit_dict[body["categories"].lower()]
+        # unit_dict = {uname.lower(): unit for (unit, uname)
+        #              in MerchandiseType.choices}
+        merchToUpdate.categories = body["categories"]
         merchToUpdate.save()
         return Response(merchToUpdate.id)
     else:
