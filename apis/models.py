@@ -110,7 +110,7 @@ class VegetablePrice(models.Model):
 
 class Transaction(models.Model):
     date = models.DateTimeField(default=timezone.now)
-    user_id = models.ForeignKey(User, on_delete=models.PROTECT)
+    user_id = models.ForeignKey(User, on_delete=models.PROTECT, null=True, default=None)
     is_complete = models.BooleanField(default=False)
     is_paid = models.BooleanField(default=False)
     method_of_payment = models.CharField(max_length=100)
@@ -120,7 +120,7 @@ class Transaction(models.Model):
 
 
 class PurchasedItem(models.Model):
-    transaction = models.ForeignKey(to=Transaction, on_delete=models.PROTECT)
+    transaction = models.ForeignKey(to=Transaction, on_delete=models.PROTECT, null=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     categories = models.IntegerField(choices=ProductType.choices)

@@ -22,14 +22,15 @@ def PurchaseProduce(request):
     transaction.save()
     for item in body["items"]:
         vegetable = Vegetable.objects.filter(name=item["name"]).first()
-        stocked_veg = StockedVegetable.objects.filter(vegetable=vegetable).latest('harvested_on')
-        stocked_veg['quantity'] -= item["quantity"]
-        stocked_veg.save()
-        purchased_item = PurchasedItem.objects.create(
-            transaction = transaction, categories = 1,
-            total_price = item["price"], total_amount = item["quantity"],
-            stocked_vegetable = stocked_veg, merchandise=None)
-        purchased_item.save()
+        if vegetable:
+            stocked_veg = StockedVegetable.objects.filter(vegetable=vegetable).latest('harvested_on')
+            stocked_veg['quantity'] -= item["quantity"]
+            stocked_veg.save()
+            purchased_item = PurchasedItem.objects.create(
+                transaction = transaction, categories = 1,
+                total_price = item["price"], total_amount = item["quantity"],
+                stocked_vegetable = stocked_veg, merchandise=None)
+            purchased_item.save()
     return Response({
         "transaction_id": transaction,
         "total_owed": item['quantity'],
@@ -41,19 +42,19 @@ def PurchaseProduce(request):
 def PurchaseMerchandise(request):
     body = json.loads(request.body)
     user = None
-    transaction = Transaction.objects.create(
-        user_id=user, is_complete=body["is_complete"],
+    transaction = Transaction.objects.create(is_complete=body["is_complete"],
         is_paid=body["is_paid"], method_of_payment=body["method_payment"])
     transaction.save()
     for item in body["items"]:
         merchandise = Merchandise.objects.filter(name=item['name']).first()
-        merchandise["quantity"] -= item["quantity"]
-        merchandise.save()
-        purchased_item = PurchasedItem.objects.create(
-            transaction = transaction, categories = 1,
-            total_price = item["price"], total_amount = item["quantity"],
-            stocked_vegetable = None, merchandise= merchandise)
-        purchased_item.save()
+        if merchandise:
+            merchandise["quantity"] -= item["quantity"]
+            merchandise.save()
+            purchased_item = PurchasedItem.objects.create(
+                transaction = transaction, categories = 1,
+                total_price = item["price"], total_amount = item["quantity"],
+                stocked_vegetable = None, merchandise= merchandise)
+            purchased_item.save()
     return Response(transaction)
 
 
