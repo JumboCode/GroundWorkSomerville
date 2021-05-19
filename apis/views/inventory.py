@@ -117,23 +117,23 @@ def HarvestInventory(request):
         stockedvegetables = StockedVegetable.objects.filter(
             harvested_on__range=[startdate, enddate]).first()
         return_list = []
-        for stocked in stockedvegetables:
-            item = PurchasedItem.objects.filter(
-                stockedvegetables=stocked).first()
-            vegetable = stocked.vegetable
-            price = VegetablePrice.objects.filter(
-                vegetable=vegetable,
-                updated_on__gte=startdate,
-                updated_on__lte=enddate).order_by('-updated_on')
-            return_list.append(
-                {
-                    "name": vegetable.name,
-                    "total_available": stocked.quantity,
-                    "unit": vegetable.unit,
-                    "total_sold": item.total_amount,
-                    "price": price.price
-                })
-
+        if stockedvegetables:
+            for stocked in stockedvegetables:
+                item = PurchasedItem.objects.filter(
+                    stockedvegetables=stocked).first()
+                vegetable = stocked.vegetable
+                price = VegetablePrice.objects.filter(
+                    vegetable=vegetable,
+                    updated_on__gte=startdate,
+                    updated_on__lte=enddate).order_by('-updated_on')
+                return_list.append(
+                    {
+                        "name": vegetable.name,
+                        "total_available": stocked.quantity,
+                        "unit": vegetable.unit,
+                        "total_sold": item.total_amount,
+                        "price": price.price
+                    })
         return Response(return_list)
 
 
@@ -262,3 +262,48 @@ def SearchVegetables(request, pk):
     items = Vegetable.objects.all().filter(name__icontains=pk)
     serializer = VegetableSerializer(items, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def ProducePurchases(request):
+    return Response({
+        "user_name": "mobile_market",
+        "total_owed": 500,
+        "last_paid": '2020-06-23',
+        "last_ordered": '2021-02-21'
+    })
+
+
+@api_view(['POST'])
+def ProducePurchasesEdit(request, pk):
+    return Response("Successfully edited the items")
+
+
+@api_view(['GET'])
+def MerchPurchases(request):
+    return Response({
+        "receipt_number": "123DC4",
+        "date_bought": "2020-04-01",
+        "total_owed": 241,
+        "paid": 1,
+        "picked_up": 0
+    })
+
+
+@api_view(['GET'])
+def MerchPurchasesDetail(request):
+    return Response([
+        {
+            'quantity': 6,
+            'item': "cap"
+        },
+        {
+            'quantity': 4,
+            'item': "stickers"
+        }
+    ])
+
+
+@api_view(['POST'])
+def MerchPurchasesEdit(request, pk):
+    return Response("Successfully edited the items")
