@@ -199,8 +199,6 @@ def UpdateVegetable(request):
         return Response("Vegetable name not specified")
 
 # update price and photos left
-
-
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
