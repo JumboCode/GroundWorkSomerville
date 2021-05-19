@@ -30,18 +30,17 @@ def PurchaseProduce(request):
             total_price = item["price"], total_amount = item["quantity"],
             stocked_vegetable = stocked_veg, merchandise=None)
         purchased_item.save()
-    return Response(transaction)
+    return Response({
+        "transaction_id": transaction,
+        "total_owed": item['quantity'],
+        "current_total": item['quantity']
+    })
 
 
 @api_view(['POST'])
 def PurchaseMerchandise(request):
     body = json.loads(request.body)
-    username = None
-    if request.user.is_authenticated():
-        username = request.user.username
-    else:
-        return Response("User not authenticated.")
-    user = User.objects.get(username=username)
+    user = None
     transaction = Transaction.objects.create(
         user_id=user, is_complete=body["is_complete"],
         is_paid=body["is_paid"], method_of_payment=body["method_payment"])
