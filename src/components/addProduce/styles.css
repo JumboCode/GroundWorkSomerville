@@ -1,8 +1,9 @@
 .add-produce-entry{
-    margin: 10px;
+    margin: 20px;
 }
 
-.add-merch-button {
+.add-produce-button {
     float:right;
-    margin: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
 }

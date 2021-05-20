@@ -51,3 +51,34 @@
 .inventory-table td, th{
     padding-left: 0%;
 }
+
+.produce-inv-img{
+    height:100px;
+    width: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.produce-cards {
+    margin: 15px;
+    margin: 1 auto;
+    display: grid;
+    grid-gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    background-color: white;
+    /* min-height: 63vh; */
+    border-radius: 15px;
+    padding-top: 15px;
+    overflow-y: auto;
+}
+
+.produce-texts{
+    margin: auto;
+    font-weight: 500;
+    /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+}
+
+.produce-edit{
+    color: grey;
+    font-weight: 400;
+}

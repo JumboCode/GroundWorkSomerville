@@ -37,7 +37,8 @@ const Login = ({show, onHide, login}) => {
 
     return (
         <Modal show={show} size="lg" className="Login" centered onHide={onHide}>
-            <div>
+            <div className="detail-close"><span onClick={onHide}>x</span></div>
+            <div className="login-modal-content">
                 <h2 className="text-center">Login</h2>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group size="lg" controlId="email">

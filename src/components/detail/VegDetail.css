@@ -1,47 +1,73 @@
-.container {
+.detail-close{
+    text-align: right;
+    font-size: larger;
     width: 100%;
-}
-.images{
-    width: 15%;
-    margin: 1%;
-    display: inline-block;
-
+    padding-right: 20px;
+    padding-top: 10px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.small-img{
-    width: 90%; 
-    display:inline-block;
+.detail-close>span{
+    cursor: pointer;
 }
 
-.central { 
-    width:35%;
-    margin: 1%;
-    display:inline-block;
+.prod-thumbnails{
+    height:100px;
+    width: 100px;
+    object-fit: cover;
+    display: block;
 }
 
 .big-image {
-    width: 100%;
-    display: block;
-    margin:auto;
-
+    max-width: 350px;
+    max-height: 350px;
+    object-fit: contain;
 }
 
-.detail-description{
-    width:40%;
-    margin: 3%;
-    display:inline-block;
+.img-cont{
+    display: flex;
+    vertical-align: middle;
 }
 
-.buttons{
-    display: inline-block;
-    margin: 3%;
-}
-
-.h2sub {
+.detail-title{
+    color: #104E29;
     font-size: 30px;
-    color: #104E29
+    font-weight:500;
+
 }
 
-.psub {
-    font-size: 14px;
+.detail-desc {
+    color: grey;
+    min-height: 40%;
+    margin-right:15px;
+}
+
+.detail-modal{
+    min-width: 55%;
+}
+
+.detail-price {
+    color: #104E29;
+    font-size: 25px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.detail-quant{
+    float: left;
+    margin-top: 5px;
+}
+
+.detail-cart{
+    float: right;
+    margin-top: 5px;
+    margin-right: 60px;
+}
+
+.detail-nav.active {
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19);
+}
+
+.detail-nav{
+    margin-bottom: 10px;
 }

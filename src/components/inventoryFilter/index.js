@@ -49,16 +49,19 @@ const InventoryFilter = ({token, harvest}) => {
             </div>
             <BsButton onClick={()=> setShowAddUser(true)} variant="outline-success" className="saurav">Add New User</BsButton>
 
-            <Modal show={showAddItem} onHide={()=> setShowAddItem(false)} size="lg" centered> 
+            <Modal show={showAddItem} onHide={()=> setShowAddItem(false)} size="lg" centered>
+                <Modal.Header closeButton><Modal.Title>Add Merchandise</Modal.Title></Modal.Header>
                 <AddItem/>
             </Modal>
 
-            <Modal show={showAddProduce} onHide={()=> setShowAddProduce(false)} size="lg" centered> 
+            <Modal show={showAddProduce} onHide={()=> setShowAddProduce(false)} size="lg" centered>
+                <Modal.Header closeButton><Modal.Title>Add Produce</Modal.Title></Modal.Header>
                 <AddProduce/>
             </Modal>
         
 
-            <Modal show={showAddHarvest} onHide={()=> setShowAddHarvest(false)} size="lg" centered> 
+            <Modal show={showAddHarvest} onHide={()=> setShowAddHarvest(false)} size="lg" centered>
+                <Modal.Header closeButton><Modal.Title>Add Harvest</Modal.Title></Modal.Header>
                 <AddHarvest/>
             </Modal>
 

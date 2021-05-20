@@ -11,5 +11,8 @@
 .Login .modal-content {
   background-image: url('/static/loginBackground.jpg');
   color: white;
+}
+
+.login-modal-content{
   padding: 15%;
 }
