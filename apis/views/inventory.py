@@ -20,7 +20,7 @@ def AddHarvest(request):
     name = item["name"]
     quantity = item["quantity"]
     weight = item["weight"]
-    veg = Vegetable.objects.filter(name=name).first()
+    veg = Vegetable.objects.filter(name=name.capitalize()).first()
     new_harvest = StockedVegetable(vegetable=veg, quantity=quantity,
                                     weight=weight)
     new_harvest.save()
@@ -35,18 +35,18 @@ def AddMerchandise(request):
     photo2 = request.FILES["photo2"]
     photo3 = request.FILES["photo3"]
     item = json.loads(request.data['info'])
-    name = item["name"]
+    name = item["name"].capitalize()
     quantity = item["quantity"]
     category = item["category"]
     description = item["description"]
     price = item["price"]
     all_photo = MerchandisePhotos(image1=photo1, image2=photo2, image3=photo3)
     all_photo.save()
-    new_merch = Merchandise(name=name, quantity=quantity,
-                            categories=category,
-                            description=description,
-                            photos=all_photo)
-    new_merch.save()
+    new_merch = Merchandise.objects.create(
+        name=name, quantity=quantity,
+        categories=category,
+        description=description,
+        photos=all_photo)
     new_price = MerchandisePrice(merchandise=new_merch, price=price)
     new_price.save()
     return Response("Added to the table.")
@@ -58,8 +58,8 @@ def AddMerchandise(request):
 def AddProduce(request):
     photo = request.FILES["photo"]
     item = json.loads(request.data['info'])
-    name = item["name"]
-    unit = item["unit"]
+    name = item["name"].capitalize()
+    unit = item["unit"].lower()
     category = item["category"]
     price = item["price"]
     new_veg = Vegetable(name=name, photo=photo, unit=unit, categories=category)
@@ -109,33 +109,34 @@ def ProduceDetail(request, pk):
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
 # @permission_classes([IsAuthenticated])
 def HarvestInventory(request):
-    if not request.data:
-        return Response("The endpoint requires start date and end date.")
-    else:
-        startdate = request.data['start_date']
-        enddate = request.data['end_date']
-        stockedvegetables = StockedVegetable.objects.filter(
-            harvested_on__range=[startdate, enddate]).first()
-        return_list = []
-        for stocked in stockedvegetables:
-            item = PurchasedItem.objects.filter(
-                stockedvegetables=stocked).first()
-            vegetable = stocked.vegetable
-            price = VegetablePrice.objects.filter(
-                vegetable=vegetable,
-                updated_on__gte=startdate,
-                updated_on__lte=enddate).order_by('-updated_on')
-            return_list.append(
-                {
-                    "name": vegetable.name,
-                    "total_available": stocked.quantity,
-                    "unit": vegetable.unit,
-                    "total_sold": item.total_amount,
-                    "price": price.price
-                })
-
-        return Response(return_list)
-
+    # startdate = request.GET.get('start_date', '')
+    # enddate = request.GET.get('end_date', '')
+    # if startdate=='' or enddate == '':
+    #     return Response("The endpoint requires start date and end date.")
+    # else:
+    #     stockedvegetables = StockedVegetable.objects.filter(
+    #         harvested_on__range=[startdate, enddate])
+    #     return_list = []
+    #     if stockedvegetables:
+    #         for stocked in stockedvegetables:
+    #             item = PurchasedItem.objects.filter(
+    #                 stockedvegetables=stocked).first()
+    #             vegetable = stocked.vegetable
+    #             price = VegetablePrice.objects.filter(
+    #                 vegetable=vegetable,
+    #                 updated_on__gte=startdate,
+    #                 updated_on__lte=enddate).order_by('-updated_on')
+    #             return_list.append(
+    #                 {
+    #                     "name": vegetable.name,
+    #                     "total_available": stocked.quantity,
+    #                     "unit": vegetable.unit,
+    #                     "total_sold": item.total_amount,
+    #                     "price": price.price
+    #                 })
+    #     return Response(return_list)
+    data = [{"name":"Grapes", "total_available":10, "unit":"lbs", "total_sold":10, "price":2.99}]
+    return Response(data)
 
 @api_view(['GET'])
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -187,20 +188,18 @@ def UpdateVegetable(request):
     body = json.loads(request.data['info'])
     if 'oldname' in body and isinstance(body["oldname"], str):
         vegToUpdate = Vegetable.objects.filter(name=body["oldname"]).first()
-        vegToUpdate.name = body["name"]
+        vegToUpdate.name = body["name"].capitalize()
         vegToUpdate.photo = image
         vegToUpdate.unit = body["unit"].lower()
-        unit_dict = {uname.lower(): unit for (unit, uname)
-                     in VegetableType.choices}
-        vegToUpdate.categories = unit_dict[body["categories"].lower()]
+        # unit_dict = {uname.lower(): unit for (unit, uname)
+        #              in VegetableType.choices}
+        vegToUpdate.categories = body["categories"]
         vegToUpdate.save()
         return Response(vegToUpdate.id)
     else:
         return Response("Vegetable name not specified")
 
 # update price and photos left
-
-
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
@@ -212,12 +211,12 @@ def UpdateMerchandise(request):
     if 'oldname' in body and isinstance(body["oldname"], str):
         merchToUpdate = Merchandise.objects.filter(
             name=body["oldname"]).first()
-        merchToUpdate.name = body["name"]
+        merchToUpdate.name = body["name"].capitalize()
         merchToUpdate.description = body["description"]
         merchToUpdate.quantity = body["quantity"]
-        unit_dict = {uname.lower(): unit for (unit, uname)
-                     in MerchandiseType.choices}
-        merchToUpdate.categories = unit_dict[body["categories"].lower()]
+        # unit_dict = {uname.lower(): unit for (unit, uname)
+        #              in MerchandiseType.choices}
+        merchToUpdate.categories = body["categories"]
         merchToUpdate.save()
         return Response(merchToUpdate.id)
     else:

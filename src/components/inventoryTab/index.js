@@ -11,6 +11,7 @@ const InventoryTab = (props) => {
     const [produce, setProduce] = useState([]);
     const [merch, setMerch] = useState([]);
     const [popupID, setPopUpId] = useState(0);
+    const [harvest, setHarvest] = useState([]);
 
 
     useEffect(() =>{
@@ -19,16 +20,14 @@ const InventoryTab = (props) => {
             setMerch(resp.data)
         })
 
-        // axios.get('harvest-inventory', {params: {start_date: "2021-04-05", end_date: "2021-05-06"}})
-        // .then((resp) => {
-        //     // setHarvest(resp.data)
-        //     console.log(resp)
-        // })
+        axios.get('harvest-inventory', {params: {start_date: "2021-04-05", end_date: "2021-05-21"}})
+        .then((resp) => {
+            setHarvest(resp.data)
+        })
 
         axios.get('produce-inventory')
         .then((resp) => {
             setProduce(resp.data)
-            console.log(resp.data)
         })
     }, [])
 
@@ -102,7 +101,7 @@ const InventoryTab = (props) => {
                 </Nav>
                 <Tab.Content className="hello123">
                 <Tab.Pane eventKey="harvest" title="Harvest Inventory">
-                    {/* {getTable(harvest)} */}
+                    {getTable(harvest)}
                 </Tab.Pane>
                 <Tab.Pane eventKey="merch" title="Merchandise Inventory">
                     {getTable(merch)}
