@@ -17,12 +17,12 @@ from django.db.models import Sum
 # @permission_classes([IsAuthenticated])
 def AddHarvest(request):
     item = json.loads(request.data["info"])
-    name = item["name"]
+    name = item["name"].capitalize()
     quantity = item["quantity"]
     weight = item["weight"]
-    veg = Vegetable.objects.filter(name=name.capitalize()).first()
-    new_harvest = StockedVegetable(vegetable=veg, quantity=quantity,
-                                    weight=weight)
+    veg = Vegetable.objects.filter(name=name).first()
+    new_harvest = StockedVegetable(
+        vegetable=veg, quantity=quantity, weight=weight)
     new_harvest.save()
     return Response("Added to the table.")
 
@@ -115,12 +115,13 @@ def HarvestInventory(request):
         startdate = request.data['start_date']
         enddate = request.data['end_date']
         stockedvegetables = StockedVegetable.objects.filter(
-            harvested_on__range=[startdate, enddate]).first()
+            harvested_on__range=[startdate, enddate])
         return_list = []
         if stockedvegetables:
             for stocked in stockedvegetables:
                 item = PurchasedItem.objects.filter(
-                    stockedvegetables=stocked).first()
+                    stocked_vegetable=stocked).first()
+                total_sold = 0 if item else item.total_amount
                 vegetable = stocked.vegetable
                 price = VegetablePrice.objects.filter(
                     vegetable=vegetable,
@@ -131,7 +132,7 @@ def HarvestInventory(request):
                         "name": vegetable.name,
                         "total_available": stocked.quantity,
                         "unit": vegetable.unit,
-                        "total_sold": item.total_amount,
+                        "total_sold": total_sold,
                         "price": price.price
                     })
         return Response(return_list)
