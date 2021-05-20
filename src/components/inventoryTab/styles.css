@@ -69,6 +69,7 @@
     /* min-height: 63vh; */
     border-radius: 15px;
     padding-top: 15px;
+    padding-bottom: 15px;
     overflow-y: auto;
 }
 
