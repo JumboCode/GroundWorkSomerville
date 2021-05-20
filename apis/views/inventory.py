@@ -187,7 +187,7 @@ def UpdateVegetable(request):
     body = json.loads(request.data['info'])
     if 'oldname' in body and isinstance(body["oldname"], str):
         vegToUpdate = Vegetable.objects.filter(name=body["oldname"]).first()
-        vegToUpdate.name = body["name"]
+        vegToUpdate.name = body["name"].capitalize()
         vegToUpdate.photo = image
         vegToUpdate.unit = body["unit"].lower()
         # unit_dict = {uname.lower(): unit for (unit, uname)
@@ -210,7 +210,7 @@ def UpdateMerchandise(request):
     if 'oldname' in body and isinstance(body["oldname"], str):
         merchToUpdate = Merchandise.objects.filter(
             name=body["oldname"]).first()
-        merchToUpdate.name = body["name"]
+        merchToUpdate.name = body["name"].capitalize()
         merchToUpdate.description = body["description"]
         merchToUpdate.quantity = body["quantity"]
         # unit_dict = {uname.lower(): unit for (unit, uname)
