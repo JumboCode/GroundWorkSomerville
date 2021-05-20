@@ -45,11 +45,11 @@ urlpatterns = [
     path('all-produce', landing.AllProduce, name="all-produce"),
     path('mm-checkout', transactions.PurchaseProduce, name="mm-checkout"),
 
-    path('produce-purchases', inventory.ProducePurchases, name='produce-purchases'),
-    path('merchandise-purchases', inventory.MerchPurchases, name='merchandise-purchases'),
-    path('merchandise-purchases-detail', inventory.MerchPurchasesDetail, name='merchandise-purchases-detail'),
-    path('edit-merchandise-purchases/<str:pk>', inventory.MerchPurchasesEdit, name='edit-merchandise-purchases'),
-    path('edit-produce-purchases/<str:pk>', inventory.ProducePurchasesEdit, name='edit-produce-purchases'),
+    path('produce-purchases', transactions.ProducePurchases, name='produce-purchases'),
+    path('merchandise-purchases', transactions.MerchPurchases, name='merchandise-purchases'),
+    path('merchandise-purchases-detail/<str:receiptnum>', transactions.MerchPurchasesDetail, name='merchandise-purchases-detail'),
+    path('edit-merchandise-purchases/<str:receiptnum>', transactions.MerchPurchasesEdit, name='edit-merchandise-purchases'),
+    path('edit-produce-purchases/<str:username>', transactions.ProducePurchasesEdit, name='edit-produce-purchases'),
     url('', index, name="index")
 ]
 

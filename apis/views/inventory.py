@@ -20,7 +20,7 @@ def AddHarvest(request):
     name = item["name"]
     quantity = item["quantity"]
     weight = item["weight"]
-    veg = Vegetable.objects.filter(name=name).first()
+    veg = Vegetable.objects.filter(name=name.capitalize()).first()
     new_harvest = StockedVegetable(vegetable=veg, quantity=quantity,
                                     weight=weight)
     new_harvest.save()
@@ -35,18 +35,18 @@ def AddMerchandise(request):
     photo2 = request.FILES["photo2"]
     photo3 = request.FILES["photo3"]
     item = json.loads(request.data['info'])
-    name = item["name"]
+    name = item["name"].capitalize()
     quantity = item["quantity"]
     category = item["category"]
     description = item["description"]
     price = item["price"]
     all_photo = MerchandisePhotos(image1=photo1, image2=photo2, image3=photo3)
     all_photo.save()
-    new_merch = Merchandise(name=name, quantity=quantity,
-                            categories=category,
-                            description=description,
-                            photos=all_photo)
-    new_merch.save()
+    new_merch = Merchandise.objects.create(
+        name=name, quantity=quantity,
+        categories=category,
+        description=description,
+        photos=all_photo)
     new_price = MerchandisePrice(merchandise=new_merch, price=price)
     new_price.save()
     return Response("Added to the table.")
@@ -58,8 +58,8 @@ def AddMerchandise(request):
 def AddProduce(request):
     photo = request.FILES["photo"]
     item = json.loads(request.data['info'])
-    name = item["name"]
-    unit = item["unit"]
+    name = item["name"].capitalize()
+    unit = item["unit"].lower()
     category = item["category"]
     price = item["price"]
     new_veg = Vegetable(name=name, photo=photo, unit=unit, categories=category)
@@ -262,48 +262,3 @@ def SearchVegetables(request, pk):
     items = Vegetable.objects.all().filter(name__icontains=pk)
     serializer = VegetableSerializer(items, many=True)
     return Response(serializer.data)
-
-
-@api_view(['GET'])
-def ProducePurchases(request):
-    return Response({
-        "user_name": "mobile_market",
-        "total_owed": 500,
-        "last_paid": '2020-06-23',
-        "last_ordered": '2021-02-21'
-    })
-
-
-@api_view(['POST'])
-def ProducePurchasesEdit(request, pk):
-    return Response("Successfully edited the items")
-
-
-@api_view(['GET'])
-def MerchPurchases(request):
-    return Response({
-        "receipt_number": "123DC4",
-        "date_bought": "2020-04-01",
-        "total_owed": 241,
-        "paid": 1,
-        "picked_up": 0
-    })
-
-
-@api_view(['GET'])
-def MerchPurchasesDetail(request):
-    return Response([
-        {
-            'quantity': 6,
-            'item': "cap"
-        },
-        {
-            'quantity': 4,
-            'item': "stickers"
-        }
-    ])
-
-
-@api_view(['POST'])
-def MerchPurchasesEdit(request, pk):
-    return Response("Successfully edited the items")
