@@ -11,8 +11,8 @@ from rest_framework.response import Response
 def MerchSummary(request):
     summary = []
     merchs = Merchandise.objects.all()
-    unit_dict = {unit: uname.lower() for (unit, uname)
-                in MerchandiseType.choices}
+    # unit_dict = {unit: uname.lower() for (unit, uname)
+    #             in MerchandiseType.choices}
     for merch in merchs:
         photos = MerchandisePhotos.objects.get(id=merch.photos.id)
         price = MerchandisePrice.objects.filter(
@@ -21,7 +21,7 @@ def MerchSummary(request):
             'name': merch.name,
             'id': merch.id,
             'photo_url': photos.image1.url,
-            'category': unit_dict[merch.categories],
+            'category': merch.categories,
             'price': price.price
         })
     return Response(summary)
@@ -68,8 +68,8 @@ def AllProduce(request):
 def SearchMerchandise(request, pk):
     summary = []
     items = Merchandise.objects.all().filter(name__icontains=pk)
-    unit_dict = {unit: uname.lower() for (unit, uname)
-                in MerchandiseType.choices}
+    # unit_dict = {unit: uname.lower() for (unit, uname)
+    #             in MerchandiseType.choices}
     for merch in items:
         photos = MerchandisePhotos.objects.get(id=merch.photos.id)
         price = MerchandisePrice.objects.filter(
@@ -78,7 +78,7 @@ def SearchMerchandise(request, pk):
             'name': merch.name,
             'id': merch.id,
             'photo_url': photos.image1.url,
-            'category': unit_dict[merch.categories],
+            'category': merch.categories,
             'price': price.price
         })
     return Response(summary)

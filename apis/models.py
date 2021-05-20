@@ -2,7 +2,6 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-
 class ProductType(models.IntegerChoices):
     VEGETABLE = 1, "Vegetable"
     MERCHANDISE = 2, "Merchandise"
@@ -20,12 +19,23 @@ class VegetableType(models.IntegerChoices):
     HERB = 3, "Herb"
     OTHERS = 4, "Others"
 
+def increment_receipt_number():
+    last_transact = Transaction.objects.all().order_by('id').last()
+    if not last_transact:
+        return 'SG0001'
+    receipt_num = last_transact.receipt_number
+    receipt_int = int(receipt_num.split('SG')[-1])
+    new_receipt_int = receipt_int + 1
+    new_receipt = 'SG' + str(new_receipt_int)
+    return new_receipt
+
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     loggedInOnce = models.BooleanField(default=False)
     isGSAdmin = models.BooleanField(default=False)
-
+    last_paid = models.DateTimeField(blank=True, null=True)
     def __str__(self):
         return self.user.username
 
@@ -108,10 +118,13 @@ class VegetablePrice(models.Model):
         return self.vegetable.name + '-' + str(self.price)
 
 
+
 class Transaction(models.Model):
+    receipt_number = models.CharField(max_length=500, default=increment_receipt_number, unique=True)
     date = models.DateTimeField(default=timezone.now)
-    user_id = models.ForeignKey(User, on_delete=models.PROTECT)
-    is_complete = models.BooleanField(default=False)
+    user_id = models.ForeignKey(UserProfile, on_delete=models.PROTECT, null=True,  blank=True)
+    is_picked = models.BooleanField(default=False)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     is_paid = models.BooleanField(default=False)
     method_of_payment = models.CharField(max_length=100)
 
@@ -120,7 +133,7 @@ class Transaction(models.Model):
 
 
 class PurchasedItem(models.Model):
-    transaction = models.ForeignKey(to=Transaction, on_delete=models.PROTECT)
+    transaction = models.ForeignKey(to=Transaction, on_delete=models.PROTECT, null=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     categories = models.IntegerField(choices=ProductType.choices)
@@ -132,7 +145,7 @@ class PurchasedItem(models.Model):
     class Meta:
         constraints = [
             models.CheckConstraint(
-                name="purchased item can be either vegetable or merchandise",
+                name="Purchased item can only be either Vegetable or Merchandise",
                 check=models.Q(categories=1, stocked_vegetable__isnull=False, merchandise__isnull=True) and
                 models.Q(categories=2, merchandise__isnull=False,
                          stocked_vegetable__isnull=True)
