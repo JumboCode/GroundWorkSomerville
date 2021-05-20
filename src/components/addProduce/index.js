@@ -31,8 +31,7 @@ const AddProduce = (props) => {
                 headers: { "Content-Type": "multipart/form-data" },
               })
             .then(function (response) {
-                console.log(response);
-
+                setEntrySucc(true);
             })
             .catch(function (response) {
                 console.log(response);
