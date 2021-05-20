@@ -41,21 +41,20 @@ def PurchaseProduce(request):
 @api_view(['POST'])
 def PurchaseMerchandise(request):
     body = json.loads(request.body)
-    user = None
-    transaction = Transaction.objects.create(is_complete=body["is_complete"],
-        is_paid=body["is_paid"], method_of_payment=body["method_payment"])
-    transaction.save()
+    transact = Transaction.objects.create(is_complete=body["is_complete"],is_paid=body["is_paid"], method_of_payment=body["method_payment"])
+    transact.save()
+
     for item in body["items"]:
         merchandise = Merchandise.objects.filter(name=item['name']).first()
         if merchandise:
             merchandise["quantity"] -= item["quantity"]
             merchandise.save()
             purchased_item = PurchasedItem.objects.create(
-                transaction = transaction, categories = 1,
+                transaction = transact, categories = 1,
                 total_price = item["price"], total_amount = item["quantity"],
                 stocked_vegetable = None, merchandise= merchandise)
             purchased_item.save()
-    return Response(transaction)
+    return Response(transact.id)
 
 
 @api_view(['GET'])
