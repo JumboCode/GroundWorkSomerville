@@ -10,8 +10,6 @@ class Dropdown extends Component {
             items: this.props.items, 
             showList: true,
         };
-  
-        
     }
 
     toggleList = () => {

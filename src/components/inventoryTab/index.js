@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './styles.css';
 import EditItem from '../editItem';
 import { Tab, Nav, Container, Row, Col, Modal } from 'react-bootstrap';
-// import ProduceItem from "./ProduceItem";
 import axios from 'axios';
 
 
@@ -18,6 +17,7 @@ const InventoryTab = (props) => {
         axios.get('merchandise-inventory')
         .then((resp) => {
             setMerch(resp.data)
+            console.log(resp.data)
         })
 
         axios.get('harvest-inventory', {params: {start_date: "2021-04-05", end_date: "2021-05-21"}})
@@ -32,19 +32,19 @@ const InventoryTab = (props) => {
     }, [props.updated])
 
     const showEdit = (e, i) => {
-        // setShowAddItem(true);
-        // setPopUpId(dat.id);
-        console.log(i)
+        setPopUpId(i);
+        setShowAddItem(true);
     }
+
     const getRow = (dat) => {
         const style = { color: "grey", cursor: "pointer" }
         return(
-            <tr key={dat.name}>
+            <tr key={dat.id}>
                 <td>{dat.name}</td>
                 <td>{dat.price}</td>
                 <td>{dat.total_sold}</td>
                 <td>{dat.total_available}</td>
-                <td> <div onClick={(e) => {showEdit(e, dat)}} style={style}>edit</div> </td>
+                <td> <div onClick={(e) => {showEdit(e, dat.id)}} style={style}>edit</div> </td>
             </tr>
         )
     }
@@ -106,7 +106,7 @@ const InventoryTab = (props) => {
                 </Nav>
                 <Tab.Content className="hello123">
                 <Tab.Pane eventKey="harvest" title="Harvest Inventory">
-                    {getTable(harvest)}
+                    {/* {getTable(harvest)} */}
                 </Tab.Pane>
                 <Tab.Pane eventKey="merch" title="Merchandise Inventory">
                     {getTable(merch)}

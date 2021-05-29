@@ -51,6 +51,20 @@ def AddMerchandise(request):
     new_price.save()
     return Response("Added to the table.")
 
+@api_view(['GET'])
+def MerchDetailInventory(request, pk):
+    merch = Merchandise.objects.get(id=pk)
+    price = MerchandisePrice.objects.filter(
+        merchandise=pk).latest('updated_on')
+    photos = MerchandisePhotos.objects.get(id=merch.photos.id)
+    return Response({
+        'name': merch.name,
+        'id': merch.id,
+        'description': merch.description,
+        'category': merch.categories,
+        'price': price.price,
+        'photo_urls': [photos.image1.url, photos.image2.url, photos.image3.url]})
+
 
 @api_view(['POST'])
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -109,11 +123,12 @@ def ProduceDetail(request, pk):
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
 # @permission_classes([IsAuthenticated])
 def HarvestInventory(request):
-    if not request.data:
+    # dates from URL query
+    startdate = request.GET.get('start_date')
+    enddate = request.GET.get('end_date')
+    if (not startdate) or (not enddate):
         return Response("The endpoint requires start date and end date.")
     else:
-        startdate = request.data['start_date']
-        enddate = request.data['end_date']
         stockedvegetables = StockedVegetable.objects.filter(
             harvested_on__range=[startdate, enddate])
         return_list = []
@@ -149,6 +164,7 @@ def MerchandiseInventory(request):
             merchandise=merch).latest('updated_on')
         return_list.append(
             {
+                "id": merch.id,
                 "name": merch.name,
                 "total_available": merch.quantity,
                 "total_sold": item['total_sold'],
