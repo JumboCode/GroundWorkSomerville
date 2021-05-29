@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import Item from "../../components/checkoutItem/Item"
 import OrderSummary from "../../components/orderSummary/OrderSummary"
-// import { Modal, Tab, Nav } from 'react-bootstrap';
 import CartOrder from "./CartOrder"
 import "./PublicCart.css"
 
@@ -34,7 +33,6 @@ class PublicCart extends Component {
         )
 
         const getRow = ([name, dat]) => {
-            const style = { color: "grey", cursor: "pointer" }
             return(
                 <tr key={name}>
                     <td>{name}</td>

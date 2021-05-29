@@ -1,43 +1,163 @@
-import React, {useState} from 'react';
-import './styles.css';
-import { Modal, Form, Button } from 'react-bootstrap';
-import inventoryData from "../../temp-data/inventoryData";
-import EditUnit from "./EditUnit";
-import axios from 'axios';
+// import React, {useState} from 'react';
+// import './styles.css';
+// import { Modal, Button } from 'react-bootstrap';
+// import EditUnit from "./EditUnit";
+// import axios from 'axios';
  
-const EditItem = ({show, onHide, id}) => {
-    const [formData, setFormData] = useState({})
-    const [image, setImage] = useState({})
+// const EditItem = ({show, onHide, id}) => {
+//     const [formData, setFormData] = useState({})
+//     const [image, setImage] = useState({})
 
-    const submitData = () => {
+//     const submitData = () => {
+//         var form = new FormData();
+//         form.append('image', image);
+//         form.append('info', JSON.stringify({...formData, oldname:"Grapes", categories:"Vegetable"}))
+//         axios({
+//             method: "post",
+//             url: "update-produce",
+//             data: form,
+//             headers: { "Content-Type": "multipart/form-data" },
+//           })
+//         .then(function (response) {
+//             console.log(response);
+//         })
+//         .catch(function (response) {
+//             console.log(response);
+//         });
+          
+//     }
+
+//     return (
+//         // <Modal id="editModal" show={show} onHide={onHide} size="lg" scrollable={true} centered>
+//         //     <Modal.Header closeButton>
+//         //         <Modal.Title as="h5">Edit Item</Modal.Title>
+//         //     </Modal.Header>
+//         //     <Modal.Body  style={{'maxHeight': 'calc(100vh - 210px)', 'overflowY': 'auto'}}>
+//         //         <EditUnit id={id} sendFormData={(dat)=>setFormData(dat)} sendImage={(dat)=>setImage(dat)}/>
+//         //     </Modal.Body>
+//         //     <Button className="float-right" onClick={submitData}>Save</Button>
+//         // </Modal>
+//         <div>
+//             Saurav
+//         </div>
+//     )
+// }
+
+// export default EditItem;
+
+
+import React, { useState, useEffect } from 'react';
+import './styles.css';
+import Button from '../button/index.js';
+import axios from 'axios';
+import {Form, Row, Col} from 'react-bootstrap';
+
+const EditItem = ({update, id}) => {
+    const [entries, setEntries] = useState({})
+    const [files, setFiles] = useState({})
+    const [entrySucc, setEntrySucc] = useState(false)
+
+    const handleInputChange = (e, id) => {
+        if (e.target.type === "file") {
+            setFiles({...files, [e.target.name]:e.target.files[0]})
+        } else {
+            setEntries({...entries, [e.target.name]:e.target.value})
+        }
+    }
+
+    const sendEntries = (e) => {
+        e.preventDefault()
         var form = new FormData();
-        form.append('image', image);
-        form.append('info', JSON.stringify({...formData, oldname:"Grapes", categories:"Vegetable"}))
+        Object.entries(files).forEach(([n, f]) => { form.append(n, f) });
+        form.append('info', JSON.stringify(entries))
         axios({
             method: "post",
-            url: "update-produce",
+            url: "add-merchandise",
             data: form,
             headers: { "Content-Type": "multipart/form-data" },
-          })
+        })
         .then(function (response) {
-            console.log(response);
+            console.log(response)
+            // update(key+i)
+            setEntrySucc(true)
         })
         .catch(function (response) {
-            console.log(response);
+            console.log(response)
         });
-          
+    }
+
+    const getValue = (id, dat) =>{
+        const val = entries[dat]
+        if (val !== undefined){
+            return val
+        }
+        return ''
+    }
+
+    const getFile = (id, dat) => {
+        const val = files[dat]
+        if (val !== undefined){
+            return ''
+        }
+        return ''
+    }
+
+    const entry = (id, i) => {
+        const onChng = (e) => handleInputChange(e, id)
+        return(
+            <Form key={"merch-entry-"+id} className="add-merch-entry" onSubmit={sendEntries}>
+            <Row>
+                <Col sm={5}>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm={2}>Name</Form.Label>
+                        <Col><Form.Control name="name" onChange={onChng} required value={getValue(id, "name")}/></Col>
+                    </Form.Group>
+                </Col>
+
+                <Col>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm={4}>Available</Form.Label>
+                        <Col><Form.Control type="number" name="quantity" min={0} onChange={onChng} value={getValue(id, "quantity")} required/></Col>
+                    </Form.Group>
+                </Col>
+
+                <Col>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm={4}>Price</Form.Label>
+                        <Col><Form.Control name="price" type="number" step="0.01" min="0" onChange={onChng} value={getValue(id, "price")} required/></Col>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm={4}>Category</Form.Label>
+                        <Col><Form.Control type="number" name="category" onChange={onChng} value={getValue(id, "category")} required/></Col>
+                    </Form.Group>
+                </Col>
+                <Col sm={8}>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm={2}>Description</Form.Label>
+                        <Col><Form.Control name="description" as="textarea" onChange={onChng} value={getValue(id, "description")} required/></Col>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Form.Group as={Row}>
+                <Form.Label column sm={1}>Images</Form.Label>
+                <Col> <Form.File className="custom-file" required name="photo1" onChange={onChng} files={getFile(id, "photo1")}/> </Col>
+                <Col> <Form.File className="custom-file" required name="photo2" onChange={onChng} files={getFile(id, "photo2")}/> </Col>
+                <Col> <Form.File className="custom-file" required name="photo3" onChange={onChng} files={getFile(id, "photo3")}/> </Col>
+            </Form.Group>
+            {entrySucc[i] && <div className="text-success ml-2">Successfully added entry</div>}
+            <Button className="add-merch-button">Save all</Button>
+            </Form>
+        )
     }
 
     return (
-        <Modal id="editModal" show={show} onHide={onHide} size="lg" scrollable={true} centered>
-            <Modal.Header closeButton>
-                <Modal.Title as="h5">Edit Item</Modal.Title>
-            </Modal.Header>
-            <Modal.Body  style={{'maxHeight': 'calc(100vh - 210px)', 'overflowY': 'auto'}}>
-                <EditUnit id={id} sendFormData={(dat)=>setFormData(dat)} sendImage={(dat)=>setImage(dat)}/>
-            </Modal.Body>
-            <Button className="float-right" onClick={submitData}>Save</Button>
-        </Modal>
+        <div>
+            {entry(0)}
+        </div>
     )
 }
 

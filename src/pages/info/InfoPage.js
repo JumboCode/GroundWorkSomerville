@@ -9,17 +9,19 @@ const InfoPage = () => {
             <div className="info-title"><h1><strong>How it works:</strong></h1></div>
             <div className="purchase-steps">
                 <div className="line"></div>
-                <div className="sr-step">
-                    <div className="circle"><div className="in-circle"></div></div>
-                    <span>1. Add desired items to cart</span>
-                </div>
-                <div className="sr-step">
-                    <div className="circle"><div className="in-circle"></div></div>
-                    <span>2. Order & check out</span>
-                </div>
-                <div className="sr-step">
-                    <div className="circle"><div className="in-circle"></div></div>
-                    <span>3. Pick up your items at Groundworks Somerville</span>
+                <div className="step-texts">
+                    <div className="sr-step">
+                        <div className="circle"><div className="in-circle"></div></div>
+                        <span>1. Add desired items to cart</span>
+                    </div>
+                    <div className="sr-step">
+                        <div className="circle"><div className="in-circle"></div></div>
+                        <span>2. Order & check out</span>
+                    </div>
+                    <div className="sr-step">
+                        <div className="circle"><div className="in-circle"></div></div>
+                        <span>3. Pick up your items at Groundworks Somerville</span>
+                    </div>
                 </div>
             </div>
 
@@ -33,7 +35,7 @@ const InfoPage = () => {
                     Somerville, MA 02143</em></h4><br/>
 
                     <h5>Pickup hours: <strong>9am - 5pm, Mon - Fri</strong><br/><br/>
-                    <a href="tel:6176289988"><img src={phone} style={{height:30}}/></a>
+                    <a href="tel:6176289988"><img src={phone} alt="Call us" style={{height:30}}/></a>
                     +1 617 628-9988</h5><br/>
 
                     </div>

@@ -10,7 +10,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './styles.css';
 
-const InventoryFilter = ({token, harvest}) => {
+const InventoryFilter = ({token, harvest, update}) => {
     const [showAddItem, setShowAddItem] = useState(false);
     const [showAddUser, setShowAddUser] = useState(false);
     const [showAddHarvest, setShowAddHarvest] = useState(false);
@@ -49,17 +49,20 @@ const InventoryFilter = ({token, harvest}) => {
             </div>
             <BsButton onClick={()=> setShowAddUser(true)} variant="outline-success" className="saurav">Add New User</BsButton>
 
-            <Modal show={showAddItem} onHide={()=> setShowAddItem(false)} size="lg" centered> 
-                <AddItem/>
+            <Modal show={showAddItem} onHide={()=> setShowAddItem(false)} size="lg" centered>
+                <Modal.Header closeButton><Modal.Title>Add Merchandise</Modal.Title></Modal.Header>
+                <AddItem update={update}/>
             </Modal>
 
-            <Modal show={showAddProduce} onHide={()=> setShowAddProduce(false)} size="lg" centered> 
-                <AddProduce/>
+            <Modal show={showAddProduce} onHide={()=> setShowAddProduce(false)} size="lg" centered>
+                <Modal.Header closeButton><Modal.Title>Add Produce</Modal.Title></Modal.Header>
+                <AddProduce update={update}/>
             </Modal>
         
 
-            <Modal show={showAddHarvest} onHide={()=> setShowAddHarvest(false)} size="lg" centered> 
-                <AddHarvest/>
+            <Modal show={showAddHarvest} onHide={()=> setShowAddHarvest(false)} size="lg" centered>
+                <Modal.Header closeButton><Modal.Title>Add Harvest</Modal.Title></Modal.Header>
+                <AddHarvest update={update}/>
             </Modal>
 
             <AddUser show={showAddUser} onHide={()=> setShowAddUser(false)} token={token}/>

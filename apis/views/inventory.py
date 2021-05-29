@@ -137,7 +137,6 @@ def HarvestInventory(request):
                     })
         return Response(return_list)
 
-
 @api_view(['GET'])
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
 # @permission_classes([IsAuthenticated])
@@ -160,8 +159,8 @@ def MerchandiseInventory(request):
 
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 def ProduceInventory(request):
     produce_list = []
 

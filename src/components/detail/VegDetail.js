@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import './VegDetail.css'
 import Quantity from "../changeNumber/Quantity";
 import Button from "../button";
+import {Container, Row, Col, Tab, Nav} from "react-bootstrap";
 import "./VegDetail.css";
 import axios from 'axios';
 
-const VegetableDetail = ({show, onHide, detailID, addToCart}) => {
+const VegetableDetail = ({onHide, detailID, addToCart}) => {
     const loadingGIF = "https://i.stack.imgur.com/kOnzy.gif"
     const [details, setDetails] = useState({})
     const [images, setImages] = useState([])
@@ -19,61 +20,58 @@ const VegetableDetail = ({show, onHide, detailID, addToCart}) => {
             setImages(resp.data['photo_urls'])
             setSelectedImage(resp.data['photo_urls'][0])
         })
-    }, [])
+    }, [detailID])
 
-    const getImage = (img) => {
+    const getImage = (img, i) => {
         return (
-            <a onClick={(e) => setSelectedImage(img)} key={img}>
-                 <img src={img} alt="close up of product" className="small-img"></img>
-            </a>
+            <Nav.Link as="div" key={i} id={i} onClick={(e) => setSelectedImage(img)} className="detail-nav" eventKey={i}>
+                <img src={img} alt="product" className="prod-thumbnails"/>
+            </Nav.Link>
         )
     }
 
     const onQuantChange = (id, quantity, increment) => {
-        if (increment === "up")
-            setQuantity(quantity);
-        if (increment === "down")
-            setQuantity(quantity);
+        setQuantity(quantity)
     }
     
     const editCart = () => {
-        if (quantity != 0){
-            addToCart(details.name, {"price":details.price,
-                                    "quantity":quantity,
-                                    "photo_url":images[0]})
+        if (quantity !== 0){
+            addToCart(details.name, 
+                {"price":details.price,
+                 "quantity":quantity,
+                 "photo_url":images[0]})
             onHide()
         }
     }
 
     return (
-            <div className = "veg-detail">
-                <div className="container">
-                    <div className="images">
+        <Container>
+            <Row><div className="detail-close"><span onClick={onHide}>x</span></div></Row>
+            <Row>
+                <Col xs={2}>
+                    <Tab.Container defaultActiveKey={0}><Nav>
                         {images.map(getImage)}
+                    </Nav></Tab.Container>
+                </Col>
+                <Col className="img-cont" xs={5}>
+                    <img src={selectedImage} alt="main product" className="big-image"/>
+                </Col>
+                <Col>
+                    <div className="detail-title">{details.name}</div>
+                    <div className="detail-desc">{details.description}</div>
+                    <div className="detail-price">${details.price}</div>
+                    Select quantity:
+                    <div className="detail-actions">
+                        <span className="detail-quant">
+                            <Quantity id = {details.id} quantity={quantity} onQuantChange={onQuantChange}/>
+                        </span>
+                        <span className="detail-cart">
+                            <Button onClick={editCart}>Add to cart</Button>
+                        </span>
                     </div>
-                    <div className="central">
-                        <img src={selectedImage} alt="main product" className="big-image"></img>
-                    </div>
-                    <div className="detail-description">
-                        <div className="h2sub">{details.name}</div>
-                        <div className="psub">{details.description}</div>
-                        <div className="h2sub">${details.price}</div>
-                        <div> 
-                        <div className="buttons">
-                        <div className="psub">select quantity:</div>
-                            <Quantity 
-                                id = {details.id}
-                                quantity={quantity}
-                                onQuantChange={onQuantChange} 
-                            />  
-                        </div>
-                        <div className="buttons">
-                            <Button onClick={editCart}>add to cart</Button>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
+                </Col>
+            </Row>
+        </Container>
     )
 }
 

@@ -30,17 +30,16 @@ const VegGrid = (props) => {
         );
     }
 
-    return (
+    return (<>
         <div id = "veg-grid">
             <div className="veg-cards">
                 {vegData.map(getSingleCard)}
             </div>
-            <Modal show={showDetail} size="lg" centered onHide={()=> setShowDetail(false)}>
-                <Modal.Header closeButton/>
-                <VegDetail detailID={detailID} addToCart={addToCart} onHide={()=>setShowDetail(false)}/>
-            </Modal>
         </div>
-    );
+        <Modal show={showDetail} centered onHide={()=> setShowDetail(false)} dialogClassName="detail-modal">
+                <VegDetail detailID={detailID} addToCart={addToCart} onHide={()=>setShowDetail(false)}/>
+        </Modal>
+    </>);
 }
 
 export default VegGrid;

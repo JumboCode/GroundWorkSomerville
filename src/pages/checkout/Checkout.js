@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Item from '../../components/checkoutItem/Item';
-import itemData from "../../temp-data/checkoutData";
 import Dropdown from './Dropdown.js';
 import OrderSummary from '../../components/orderSummary/OrderSummary';
 import "./Checkout.css";

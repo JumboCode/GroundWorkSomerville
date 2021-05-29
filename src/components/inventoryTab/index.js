@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './styles.css';
 import EditItem from '../editItem';
-import { Modal, Tab, Nav } from 'react-bootstrap';
-import { Link, useRouteMatch, useLocation } from "react-router-dom";
-import ProduceItem from "./ProduceItem";
+import { Tab, Nav, Container, Row, Col, Modal } from 'react-bootstrap';
+// import ProduceItem from "./ProduceItem";
 import axios from 'axios';
 
 
@@ -11,8 +10,8 @@ const InventoryTab = (props) => {
     const [showAddItem, setShowAddItem] = useState(false);
     const [produce, setProduce] = useState([]);
     const [merch, setMerch] = useState([]);
-    const [harvest, setHarvest] = useState([]);
     const [popupID, setPopUpId] = useState(0);
+    const [harvest, setHarvest] = useState([]);
 
 
     useEffect(() =>{
@@ -21,16 +20,22 @@ const InventoryTab = (props) => {
             setMerch(resp.data)
         })
 
-        axios.get('harvest-inventory', {start_date: "05032019", end_date: "05-03-2021"})
+        axios.get('harvest-inventory', {params: {start_date: "2021-04-05", end_date: "2021-05-21"}})
         .then((resp) => {
-            // setHarvest(resp.data)
-            // console.log(resp)
+            setHarvest(resp.data)
         })
 
-        setProduce(testData)
-        setHarvest(testData)
-    }, [])
+        axios.get('produce-inventory')
+        .then((resp) => {
+            setProduce(resp.data)
+        })
+    }, [props.updated])
 
+    const showEdit = (e, i) => {
+        // setShowAddItem(true);
+        // setPopUpId(dat.id);
+        console.log(i)
+    }
     const getRow = (dat) => {
         const style = { color: "grey", cursor: "pointer" }
         return(
@@ -39,7 +44,7 @@ const InventoryTab = (props) => {
                 <td>{dat.price}</td>
                 <td>{dat.total_sold}</td>
                 <td>{dat.total_available}</td>
-                <td> <a onClick={()=> {setShowAddItem(true); setPopUpId(dat.id+1);}} style={style}>edit</a> </td>
+                <td> <div onClick={(e) => {showEdit(e, dat)}} style={style}>edit</div> </td>
             </tr>
         )
     }
@@ -61,43 +66,28 @@ const InventoryTab = (props) => {
         )
     }
 
-
-    const getProduceRows = (items) => {
-        var i, j;
-        const maps = [];
-        for (i = 0; i < (items.length/3); i++){ //TODO: fix this
-            maps[i] =  [];
-            for (j = 0; j < 3; j++) {
-                maps[i][j] = items[(i*3+j)];
-            }
-        }
+    const getProduceItem = (dat) => {
         return (
-            <tbody>
-                {maps.map(getProduceRow)}
-            </tbody>
-        )
-       
+            <Container className="produce-card" key={dat['name']}>
+                <Row>
+                    <Col sm={5}>
+                        <img src={dat['photo']} alt={dat['name']} className="produce-inv-img" />
+                    </Col>
+                    <Col className="produce-texts">
+                        <Row><Col>{dat['name']}</Col></Row>
+                        <Row><Col>${dat['price']} / {dat['unit']}</Col></Row>
+                        <Row><Col className="produce-edit">edit</Col></Row>
+                    </Col>
+                </Row>
+            </Container>
+        );
     }
 
-    const getProduceRow = (row) => {
-        return (
-            <tr key={row[0]}>
-                <td><ProduceItem item={row[0]} setShowAddItem={setShowAddItem} setPopUpId={setPopUpId}/></td>
-                <td>{<ProduceItem item={row[1]} setShowAddItem={setShowAddItem} setPopUpId={setPopUpId}/>}</td>
-                <td>{<ProduceItem item={row[2]} setShowAddItem={setShowAddItem} setPopUpId={setPopUpId}/>}</td>
-            </tr>
-        )
-        
-    }
-
-    const getProduceTable = (items) => {
-        return (
-            <div className="fixedHeader">
-                <table className="inventory-table">
-                    {getProduceRows(items)}
-                </table>
-            </div>
-        )
+    const getProduceTable = (produce) => {
+        return(
+            <div className="produce-cards">
+                {produce.map(getProduceItem)}
+            </div>)
     }
 
     return (
@@ -122,38 +112,19 @@ const InventoryTab = (props) => {
                     {getTable(merch)}
                 </Tab.Pane>
                 <Tab.Pane eventKey="produce" title="Produce Inventory">
-                    {/* {getProduceTable(produce)} */}
+                    {getProduceTable(produce)}
                 </Tab.Pane>
                 
                 </Tab.Content>
             </Tab.Container>
-            <EditItem show={showAddItem} onHide={()=> setShowAddItem(false)} id={popupID}/>
+            <Modal show={showAddItem} onHide={()=> setShowAddItem(false)} size="lg" centered>
+                <Modal.Header closeButton><Modal.Title>Edit Merchandise </Modal.Title></Modal.Header>
+                <EditItem id={popupID}/>
+            </Modal>
 
+            {/* <EditItem show={showAddItem} onHide={()=> setShowAddItem(false)} id={popupID}/> */}
         </div>
     )
 }
 
 export default InventoryTab;
-
-const testData = [{id: 0, name: "Spinach", price: 12, sold: 4, available: 5},
-{id: 1, name: "Bell Peppers", price: 12, sold: 4, available: 5},
-{id: 2,name: "Grapes", price: 12, sold: 4, available: 5},
-{id: 3,name: "Cilantro", price: 12, sold: 4, available: 5},
-{id: 4,name: "Cauliflowers", price: 12, sold: 4, available: 5},
-{id: 5,name: "Oranges", price: 12, sold: 4, available: 5},
-{id: 6,name: "Bell Pepper", price: 12, sold: 4, available: 5},
-{id: 7,name: "Grape", price: 12, sold: 4, available: 5},
-{id: 8,name: "Cilantros", price: 12, sold: 4, available: 5},
-{id: 9,name: "Cauliflower", price: 12, sold: 4, available: 5},
-{id: 10,name: "Orange", price: 12, sold: 4, available: 5},
-{id: 1, name: "Bell Peppers", price: 12, sold: 4, available: 5},
-{id: 2,name: "Grapes", price: 12, sold: 4, available: 5},
-{id: 3,name: "Cilantro", price: 12, sold: 4, available: 5},
-{id: 4,name: "Cauliflowers", price: 12, sold: 4, available: 5},
-{id: 5,name: "Oranges", price: 12, sold: 4, available: 5},
-{id: 6,name: "Bell Pepper", price: 12, sold: 4, available: 5},
-{id: 7,name: "Grape", price: 12, sold: 4, available: 5},
-{id: 8,name: "Cilantros", price: 12, sold: 4, available: 5},
-{id: 9,name: "Cauliflower", price: 12, sold: 4, available: 5},
-{id: 10,name: "Orange", price: 12, sold: 4, available: 5},
-{id: 11,name: "Apple", price: 12, sold: 4, available: 5}]
