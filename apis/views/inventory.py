@@ -17,12 +17,12 @@ from django.db.models import Sum
 # @permission_classes([IsAuthenticated])
 def AddHarvest(request):
     item = json.loads(request.data["info"])
-    name = item["name"]
+    name = item["name"].capitalize()
     quantity = item["quantity"]
     weight = item["weight"]
-    veg = Vegetable.objects.filter(name=name.capitalize()).first()
-    new_harvest = StockedVegetable(vegetable=veg, quantity=quantity,
-                                    weight=weight)
+    veg = Vegetable.objects.filter(name=name).first()
+    new_harvest = StockedVegetable(
+        vegetable=veg, quantity=quantity, weight=weight)
     new_harvest.save()
     return Response("Added to the table.")
 
@@ -109,34 +109,33 @@ def ProduceDetail(request, pk):
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
 # @permission_classes([IsAuthenticated])
 def HarvestInventory(request):
-    # startdate = request.GET.get('start_date', '')
-    # enddate = request.GET.get('end_date', '')
-    # if startdate=='' or enddate == '':
-    #     return Response("The endpoint requires start date and end date.")
-    # else:
-    #     stockedvegetables = StockedVegetable.objects.filter(
-    #         harvested_on__range=[startdate, enddate])
-    #     return_list = []
-    #     if stockedvegetables:
-    #         for stocked in stockedvegetables:
-    #             item = PurchasedItem.objects.filter(
-    #                 stockedvegetables=stocked).first()
-    #             vegetable = stocked.vegetable
-    #             price = VegetablePrice.objects.filter(
-    #                 vegetable=vegetable,
-    #                 updated_on__gte=startdate,
-    #                 updated_on__lte=enddate).order_by('-updated_on')
-    #             return_list.append(
-    #                 {
-    #                     "name": vegetable.name,
-    #                     "total_available": stocked.quantity,
-    #                     "unit": vegetable.unit,
-    #                     "total_sold": item.total_amount,
-    #                     "price": price.price
-    #                 })
-    #     return Response(return_list)
-    data = [{"name":"Grapes", "total_available":10, "unit":"lbs", "total_sold":10, "price":2.99}]
-    return Response(data)
+    if not request.data:
+        return Response("The endpoint requires start date and end date.")
+    else:
+        startdate = request.data['start_date']
+        enddate = request.data['end_date']
+        stockedvegetables = StockedVegetable.objects.filter(
+            harvested_on__range=[startdate, enddate])
+        return_list = []
+        if stockedvegetables:
+            for stocked in stockedvegetables:
+                item = PurchasedItem.objects.filter(
+                    stocked_vegetable=stocked).first()
+                total_sold = 0 if item else item.total_amount
+                vegetable = stocked.vegetable
+                price = VegetablePrice.objects.filter(
+                    vegetable=vegetable,
+                    updated_on__gte=startdate,
+                    updated_on__lte=enddate).order_by('-updated_on')
+                return_list.append(
+                    {
+                        "name": vegetable.name,
+                        "total_available": stocked.quantity,
+                        "unit": vegetable.unit,
+                        "total_sold": total_sold,
+                        "price": price.price
+                    })
+        return Response(return_list)
 
 @api_view(['GET'])
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
