@@ -13,8 +13,8 @@ from django.db.models import Sum
 
 
 @api_view(['POST'])
-# @authentication_classes([SessionAuthentication, BasicAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def AddHarvest(request):
     item = json.loads(request.data["info"])
     name = item["name"].capitalize()
@@ -28,8 +28,8 @@ def AddHarvest(request):
 
 
 @api_view(['POST'])
-# @authentication_classes([SessionAuthentication, BasicAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def AddMerchandise(request):
     photo1 = request.FILES["photo1"]
     photo2 = request.FILES["photo2"]
@@ -62,13 +62,14 @@ def MerchDetailInventory(request, pk):
         'id': merch.id,
         'description': merch.description,
         'category': merch.categories,
+        'quantity': merch.quantity,
         'price': price.price,
         'photo_urls': [photos.image1.url, photos.image2.url, photos.image3.url]})
 
 
 @api_view(['POST'])
-# @authentication_classes([SessionAuthentication, BasicAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def AddProduce(request):
     photo = request.FILES["photo"]
     item = json.loads(request.data['info'])
@@ -102,8 +103,8 @@ def HarvestDetail(request, pk):
 
 
 @api_view(['GET'])
-# @authentication_classes([SessionAuthentication, BasicAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def ProduceDetail(request, pk):
     item = StockedVegetable.objects.get(id=pk)
     vegetable = Vegetable.objects.get(id=item.vegetable.id)
@@ -120,8 +121,8 @@ def ProduceDetail(request, pk):
 
 
 @api_view(['GET'])
-# @authentication_classes([SessionAuthentication, BasicAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def HarvestInventory(request):
     # dates from URL query
     startdate = request.GET.get('start_date')
@@ -153,8 +154,8 @@ def HarvestInventory(request):
         return Response(return_list)
 
 @api_view(['GET'])
-# @authentication_classes([SessionAuthentication, BasicAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def MerchandiseInventory(request):
     return_list = []
     for merch in Merchandise.objects.all():
@@ -175,8 +176,8 @@ def MerchandiseInventory(request):
 
 
 @api_view(['GET'])
-# @authentication_classes([SessionAuthentication, BasicAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def ProduceInventory(request):
     produce_list = []
 
@@ -193,57 +194,66 @@ def ProduceInventory(request):
         })
     return Response(produce_list)
 
-# update price left
-
 
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def UpdateVegetable(request):
-    image = request.FILES["image"]
-    body = json.loads(request.data['info'])
-    if 'oldname' in body and isinstance(body["oldname"], str):
-        vegToUpdate = Vegetable.objects.filter(name=body["oldname"]).first()
-        vegToUpdate.name = body["name"].capitalize()
+    body = json.loads(request.data['newData'])
+    is_photo = body["is_photo"]
+    is_price = body["is_price"]
+    vegToUpdate = Vegetable.objects.get(body["id"])
+    if is_photo:
+        image = request.FILES["image"]
         vegToUpdate.photo = image
-        vegToUpdate.unit = body["unit"].lower()
-        # unit_dict = {uname.lower(): unit for (unit, uname)
-        #              in VegetableType.choices}
-        vegToUpdate.categories = body["categories"]
-        vegToUpdate.save()
-        return Response(vegToUpdate.id)
-    else:
-        return Response("Vegetable name not specified")
 
-# update price and photos left
+    if is_price:
+        VegetablePrice.objects.create(Vegetable=vegToUpdate.id, price = body["price"])
+
+    vegToUpdate.name = body["name"].capitalize()
+    vegToUpdate.unit = body["unit"].lower()
+    vegToUpdate.categories = body["categories"]
+    new_id = vegToUpdate.save()
+
+    return Response(vegToUpdate.id)
+
+
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def UpdateMerchandise(request):
-    image1 = request.FILES["photo1"]
-    image2 = request.FILES["photo2"]
-    image3 = request.FILES["photo3"]
-    body = json.loads(request.data['info'])
-    if 'oldname' in body and isinstance(body["oldname"], str):
-        merchToUpdate = Merchandise.objects.filter(
-            name=body["oldname"]).first()
-        merchToUpdate.name = body["name"].capitalize()
-        merchToUpdate.description = body["description"]
-        merchToUpdate.quantity = body["quantity"]
-        # unit_dict = {uname.lower(): unit for (unit, uname)
-        #              in MerchandiseType.choices}
-        merchToUpdate.categories = body["categories"]
-        merchToUpdate.save()
-        return Response(merchToUpdate.id)
-    else:
-        return Response("Vegetable name not specified")
+    body = json.loads(request.data['newData'])
+    is_photo = body["is_photo"]
+    is_price = body["is_price"]
+    merchToUpdate = Merchandise.objects.get(body["id"])
+    if is_photo:
+        img1 = request.FILES["photo1"]
+        img2 = request.FILES["photo2"]
+        img3 = request.FILES["photo3"]
+        photos = MerchandisePhotos.objects.create(image1=img1, image2=img2, image=img3)
+        merchToUpdate.photos = photos
+
+    if is_price:
+        MerchandisePrice.objects.create(merchandise=merchToUpdate.id, price=body["price"])
+
+    merchToUpdate.name = body["name"].capitalize()
+    merchToUpdate.description = body["description"]
+    merchToUpdate.quantity = body["quantity"]
+    merchToUpdate.categories = body["categories"]
+    merchToUpdate.save()
+    return Response(merchToUpdate.id)
 
 
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def UpdateHarvest(request):
-    return Response("Harvest Not Specified")
+    body = json.loads(request.data['newData'])
+    harvestToUpdate = StockedVegetable.objects.get(body['id'])
+    harvestToUpdate.quantity = body['quantity']
+    harvestToUpdate.weight = body['weight']
+    harvestToUpdate.save()
+
 
 
 @api_view(['POST'])

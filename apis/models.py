@@ -138,17 +138,15 @@ class PurchasedItem(models.Model):
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     categories = models.IntegerField(choices=ProductType.choices)
     stocked_vegetable = models.ForeignKey(
-        to=StockedVegetable, on_delete=models.PROTECT, null=True)
+        to=StockedVegetable, on_delete=models.PROTECT, null=True, blank=True)
     merchandise = models.ForeignKey(
-        to=Merchandise, on_delete=models.PROTECT, null=True)
+        to=Merchandise, on_delete=models.PROTECT, null=True, blank=True)
 
     class Meta:
         constraints = [
             models.CheckConstraint(
                 name="Purchased item can only be either Vegetable or Merchandise",
-                check=models.Q(categories=1, stocked_vegetable__isnull=False, merchandise__isnull=True) and
-                models.Q(categories=2, merchandise__isnull=False,
-                         stocked_vegetable__isnull=True)
+                check=models.Q(categories=1, stocked_vegetable__isnull=False, merchandise__isnull=True) | models.Q(categories=2, merchandise__isnull=False, stocked_vegetable__isnull=True)
             )]
 
     def __str__(self):
