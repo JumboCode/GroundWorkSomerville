@@ -23,6 +23,7 @@ urlpatterns = [
     path('produce-inventory', inventory.ProduceInventory, name='produce-inventory'),
     path('harvest-detail/<str:pk>', inventory.HarvestDetail, name='harvest-detail'),
     path('produce-detail/<str:pk>', inventory.ProduceDetail, name='produce-detail'),
+    path('merch-detail-inv/<str:pk>', inventory.MerchDetailInventory, name="merch-detail-inv"),
 
     path('add-merchandise', inventory.AddMerchandise, name='add-merchandise'),
     path('add-produce', inventory.AddProduce, name='add-produce'),

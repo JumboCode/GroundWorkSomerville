@@ -8,7 +8,7 @@ class OrderSummary extends Component{
     constructor(props) {
         super(props);
         this.state = {
-          order: this.props.order? this.props.order : false, 
+          order: this.props.order, 
           orderNum: null
         };
 
@@ -31,8 +31,9 @@ class OrderSummary extends Component{
     }
 
     handleChange = () => {
-        this.setState({order: true});
-        this.setState({orderNum: this.getRandomInt()})
+        console.log()
+        // this.setState({order: true});
+        // this.setState({orderNum: this.getRandomInt()})
     }
 
 

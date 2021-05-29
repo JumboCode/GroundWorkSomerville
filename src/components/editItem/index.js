@@ -1,51 +1,3 @@
-// import React, {useState} from 'react';
-// import './styles.css';
-// import { Modal, Button } from 'react-bootstrap';
-// import EditUnit from "./EditUnit";
-// import axios from 'axios';
- 
-// const EditItem = ({show, onHide, id}) => {
-//     const [formData, setFormData] = useState({})
-//     const [image, setImage] = useState({})
-
-//     const submitData = () => {
-//         var form = new FormData();
-//         form.append('image', image);
-//         form.append('info', JSON.stringify({...formData, oldname:"Grapes", categories:"Vegetable"}))
-//         axios({
-//             method: "post",
-//             url: "update-produce",
-//             data: form,
-//             headers: { "Content-Type": "multipart/form-data" },
-//           })
-//         .then(function (response) {
-//             console.log(response);
-//         })
-//         .catch(function (response) {
-//             console.log(response);
-//         });
-          
-//     }
-
-//     return (
-//         // <Modal id="editModal" show={show} onHide={onHide} size="lg" scrollable={true} centered>
-//         //     <Modal.Header closeButton>
-//         //         <Modal.Title as="h5">Edit Item</Modal.Title>
-//         //     </Modal.Header>
-//         //     <Modal.Body  style={{'maxHeight': 'calc(100vh - 210px)', 'overflowY': 'auto'}}>
-//         //         <EditUnit id={id} sendFormData={(dat)=>setFormData(dat)} sendImage={(dat)=>setImage(dat)}/>
-//         //     </Modal.Body>
-//         //     <Button className="float-right" onClick={submitData}>Save</Button>
-//         // </Modal>
-//         <div>
-//             Saurav
-//         </div>
-//     )
-// }
-
-// export default EditItem;
-
-
 import React, { useState, useEffect } from 'react';
 import './styles.css';
 import Button from '../button/index.js';
@@ -55,7 +7,18 @@ import {Form, Row, Col} from 'react-bootstrap';
 const EditItem = ({update, id}) => {
     const [entries, setEntries] = useState({})
     const [files, setFiles] = useState({})
+    const[oldFiles, setOldFiles] = useState([])
     const [entrySucc, setEntrySucc] = useState(false)
+
+    useEffect(()=>{
+        axios.get('merch-detail-inv/' + id)
+        .then((resp) => {
+            const {photo_urls, ...entry} = resp.data
+            setEntries(entry)
+            setOldFiles(photo_urls)
+            console.log(photo_urls)
+        })
+    }, [id])
 
     const handleInputChange = (e, id) => {
         if (e.target.type === "file") {
@@ -64,6 +27,24 @@ const EditItem = ({update, id}) => {
             setEntries({...entries, [e.target.name]:e.target.value})
         }
     }
+
+    // const submitData = () => {
+    //     var form = new FormData();
+    //     form.append('image', image);
+    //     form.append('info', JSON.stringify({...formData, oldname:"Grapes", categories:"Vegetable"}))
+    //     axios({
+    //         method: "post",
+    //         url: "update-produce",
+    //         data: form,
+    //         headers: { "Content-Type": "multipart/form-data" },
+    //       })
+    //     .then(function (response) {
+    //         console.log(response);
+    //     })
+    //     .catch(function (response) {
+    //         console.log(response);
+    //     });
+    // }
 
     const sendEntries = (e) => {
         e.preventDefault()
@@ -141,6 +122,12 @@ const EditItem = ({update, id}) => {
                         <Col><Form.Control name="description" as="textarea" onChange={onChng} value={getValue(id, "description")} required/></Col>
                     </Form.Group>
                 </Col>
+            </Row>
+            <Row>
+                <Form.Label column>Old Images</Form.Label>
+                <Col><img src={oldFiles[0]} className="edit-old-photo" alt="det"/></Col>
+                <Col><img src={oldFiles[1]} className="edit-old-photo" alt="det"/></Col>
+                <Col><img src={oldFiles[2]} className="edit-old-photo" alt="det"/></Col>
             </Row>
             <Form.Group as={Row}>
                 <Form.Label column sm={1}>Images</Form.Label>
