@@ -102,8 +102,8 @@ def HarvestDetail(request, pk):
 
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 def ProduceDetail(request, pk):
     item = StockedVegetable.objects.get(id=pk)
     vegetable = Vegetable.objects.get(id=item.vegetable.id)
@@ -184,6 +184,7 @@ def ProduceInventory(request):
         price = VegetablePrice.objects.filter(
             vegetable=produce).latest('updated_on')
         produce_list.append({
+            "id": produce.id,
             "name": produce.name,
             "unit": produce.unit,
             "category": produce.categories,
