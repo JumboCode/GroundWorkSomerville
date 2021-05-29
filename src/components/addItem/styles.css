@@ -19,3 +19,16 @@
     float:right;
     margin: 20px;
 }
+
+.addItemDel{
+    width: 20px;
+}
+
+.add-item-button{
+    width: 100%;
+    display: block;
+}
+
+.add-item-button button{
+    margin-left: 42%;
+}

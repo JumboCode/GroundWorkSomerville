@@ -95,7 +95,6 @@ const AddProduce = (props) => {
                 <Button className="add-produce-button" type="Submit">Save</Button>
             </Form>
             {entrySucc && <div class="text-success ml-2">Successfully added entry</div>}
-            {/* <Button onClick={() => setNumEntries(numEntries + 1)}> Add A New Item </Button> */}
         </div>
     )
 }

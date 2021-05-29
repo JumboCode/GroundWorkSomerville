@@ -3,12 +3,13 @@ import './styles.css';
 import Button from '../button/index.js';
 import axios from 'axios';
 import {Form, Row, Col} from 'react-bootstrap';
+import del from './del.png';
 
-const AddItem = (props) => {
+const AddItem = ({update}) => {
     const [entries, setEntries] = useState({})
     const [files, setFiles] = useState({})
-    const [entrySucc, setEntrySucc] = useState(false)
-    const [numEntries, setNumEntries] = useState(1)
+    const [entrySucc, setEntrySucc] = useState({0:false})
+    const [numEntries, setNumEntries] = useState([0])
 
     const handleInputChange = (e, id) => {
         if (e.target.type === "file") {
@@ -20,115 +21,131 @@ const AddItem = (props) => {
 
     const sendEntries = (e) => {
         e.preventDefault()
-        Object.keys(entries).forEach((key) => {
-            var form = new FormData();
-            Object.entries(files[key]).forEach(([n, f]) => { form.append(n, f) });
-            form.append('info', JSON.stringify(entries[key]))
-            axios({
-                method: "post",
-                url: "add-merchandise",
-                data: form,
-                headers: { "Content-Type": "multipart/form-data" },
-              })
-            .then(function (response) {
-                console.log(response);
-                setEntrySucc(true)
-            })
-            .catch(function (response) {
-                console.log(response);
-            });
-
+        const newSucc = []
+        Object.keys(entries).forEach((key, i) => {
+            if (entries[key] !== undefined){
+                var form = new FormData();
+                Object.entries(files[key]).forEach(([n, f]) => { form.append(n, f) });
+                form.append('info', JSON.stringify(entries[key]))
+                axios({
+                    method: "post",
+                    url: "add-merchandise",
+                    data: form,
+                    headers: { "Content-Type": "multipart/form-data" },
+                })
+                .then(function (response) {
+                    console.log(response)
+                    update(key+i)
+                })
+                .catch(function (response) {
+                    console.log(response)
+                });
+                newSucc.push(true)
+            }
         })
+        setEntrySucc(newSucc)
     }
 
-    const entry = (id) => {
+    const getValue = (id, dat) =>{
+        const form = entries[id]
+        if (form !== undefined ) {
+            const val = form[dat]
+            if (val !== undefined){
+                return val
+            }
+        }
+        return ''
+    }
+
+    const getFile = (id, dat) => {
+        const fs = files[id]
+        if (fs !== undefined) {
+            const val = fs[dat]
+            if (val !== undefined){
+                return [val]
+            }
+        }
+        return ''
+    }
+
+    const delItem = (id) => {
+        if (numEntries.length > 1){
+            const newEntries = Object.assign({}, entries, {[id]: undefined})
+            setEntries(newEntries)
+            numEntries.splice(numEntries.indexOf(id), 1)
+            setNumEntries(numEntries)
+        }
+    }
+
+    const addNewItem = () => {
+        const finalEntry = numEntries[numEntries.length - 1] + 1
+        const newEntries = numEntries.concat([finalEntry])
+        setNumEntries(newEntries)
+        setEntrySucc(newEntries.map(() => {return false}))
+    }
+
+    const entry = (id, i) => {
         const onChng = (e) => handleInputChange(e, id)
         return(
-            // <div className="add-merch-entry" key={"merch-entry-"+id}>
-            //     <div>
-            //         <label>Name:</label>
-            //         <input type="text" onChange={onChng} name="name"/>
-            //         <label>Price:</label>
-            //         <input type="number" onChange={onChng} name="price"/>
-            //     </div>
-            //     <div>
-            //         <label>Description</label>
-            //         <input type="text" onChange={onChng} name="description"/>
-            //     </div>
-            //     <label>Available:</label>
-            //     <input type="number" onChange={onChng} name="quantity"/>
-            //     <label>Category:</label>
-            //     <input type="text" onChange={onChng} name="category"/>
-            //     <label>Photos:</label>
-            //     <div>
-            //         <input type="file" onChange={onChng} name="photo1"/>
-            //         <input type="file" onChange={onChng} name="photo2"/>
-            //         <input type="file" onChange={onChng} name="photo3"/>
-            //     </div>
-            // </div>
-            <Form key={"produce-entry-"+id} className="add-merch-entry" as="div">
+            <Form key={"merch-entry-"+id} className="add-merch-entry" as="div">
             <Row>
                 <Col sm={5}>
                     <Form.Group as={Row}>
                         <Form.Label column sm={2}>Name</Form.Label>
-                        <Col><Form.Control name="name" onChange={onChng} required/></Col>
+                        <Col><Form.Control name="name" onChange={onChng} required value={getValue(id, "name")}/></Col>
                     </Form.Group>
                 </Col>
 
                 <Col>
                     <Form.Group as={Row}>
                         <Form.Label column sm={4}>Available</Form.Label>
-                        <Col><Form.Control name="quantity" min={0} onChange={onChng} required/></Col>
+                        <Col><Form.Control type="number" name="quantity" min={0} onChange={onChng} value={getValue(id, "quantity")} required/></Col>
                     </Form.Group>
                 </Col>
 
                 <Col>
                     <Form.Group as={Row}>
-                        <Form.Label column sm={2}>Price</Form.Label>
-                        <Col><Form.Control name="price" type="number" step="0.01" min="0" onChange={onChng} required/></Col>
+                        <Form.Label column sm={4}>Price</Form.Label>
+                        <Col><Form.Control name="price" type="number" step="0.01" min="0" onChange={onChng} value={getValue(id, "price")} required/></Col>
                     </Form.Group>
                 </Col>
+                <Col xs={1}><img src={del} className="addItemDel" onClick={() => delItem(id)} alt="delete"/></Col>
             </Row>
             <Row>
                 <Col>
                     <Form.Group as={Row}>
                         <Form.Label column sm={4}>Category</Form.Label>
-                        <Col><Form.Control type="number" name="category" onChange={onChng} required/></Col>
+                        <Col><Form.Control type="number" name="category" onChange={onChng} value={getValue(id, "category")} required/></Col>
                     </Form.Group>
                 </Col>
                 <Col sm={8}>
                     <Form.Group as={Row}>
                         <Form.Label column sm={2}>Description</Form.Label>
-                        <Col><Form.Control name="description" as="textarea" onChange={onChng} required/></Col>
+                        <Col><Form.Control name="description" as="textarea" onChange={onChng} value={getValue(id, "description")} required/></Col>
                     </Form.Group>
                 </Col>
             </Row>
             <Form.Group as={Row}>
-                <Form.Label column sm={1}>Image</Form.Label>
-                <Col> <Form.File className="custom-file" required name="photo1" onChange={onChng}/> </Col>
-                <Col> <Form.File className="custom-file" required name="photo2" onChange={onChng}/> </Col>
-                <Col> <Form.File className="custom-file" required name="photo3" onChange={onChng}/> </Col>
+                <Form.Label column sm={1}>Images</Form.Label>
+                <Col> <Form.File className="custom-file" required name="photo1" onChange={onChng} files={getFile(id, "photo1")}/> </Col>
+                <Col> <Form.File className="custom-file" required name="photo2" onChange={onChng} files={getFile(id, "photo2")}/> </Col>
+                <Col> <Form.File className="custom-file" required name="photo3" onChange={onChng} files={getFile(id, "photo3")}/> </Col>
             </Form.Group>
-            {id !== numEntries-1 && <hr/>}
+            {entrySucc[i] && <div className="text-success ml-2">Successfully added entry</div>}
+            {i !== numEntries.length-1 && <hr/>}
             </Form>
-
         )
     }
 
     return (
         <div>
             <Form onSubmit={sendEntries}>
-                {[...Array(numEntries).keys()].map(entry)}
-                {/* <Form.Control.Feedback type="valid">The given entry is saved</Form.Control.Feedback> */}
-                <Button className="add-merch-button">Save</Button>
+                {numEntries.map(entry)}
+                <Button className="add-merch-button">Save all</Button>
             </Form>
-            {entrySucc && <div class="text-success ml-2">Successfully added entry</div>}
-
-            {/* <Button onClick={() => setNumEntries(numEntries + 1)}> Add A New Item </Button> */}
+            <div className="add-item-button"><Button onClick={addNewItem}> Add New Entry </Button></div>
         </div>
     )
 }
 
 export default AddItem;
-
-

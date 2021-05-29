@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './styles.css';
 import EditItem from '../editItem';
-import { Tab, Nav, Container, Row, Col } from 'react-bootstrap';
+import { Tab, Nav, Container, Row, Col, Modal } from 'react-bootstrap';
 // import ProduceItem from "./ProduceItem";
 import axios from 'axios';
 
@@ -29,8 +29,13 @@ const InventoryTab = (props) => {
         .then((resp) => {
             setProduce(resp.data)
         })
-    }, [])
+    }, [props.updated])
 
+    const showEdit = (e, i) => {
+        // setShowAddItem(true);
+        // setPopUpId(dat.id);
+        console.log(i)
+    }
     const getRow = (dat) => {
         const style = { color: "grey", cursor: "pointer" }
         return(
@@ -39,7 +44,7 @@ const InventoryTab = (props) => {
                 <td>{dat.price}</td>
                 <td>{dat.total_sold}</td>
                 <td>{dat.total_available}</td>
-                <td> <div onClick={()=> {setShowAddItem(true); setPopUpId(dat.id+1);}} style={style}>edit</div> </td>
+                <td> <div onClick={(e) => {showEdit(e, dat)}} style={style}>edit</div> </td>
             </tr>
         )
     }
@@ -112,7 +117,12 @@ const InventoryTab = (props) => {
                 
                 </Tab.Content>
             </Tab.Container>
-            <EditItem show={showAddItem} onHide={()=> setShowAddItem(false)} id={popupID}/>
+            <Modal show={showAddItem} onHide={()=> setShowAddItem(false)} size="lg" centered>
+                <Modal.Header closeButton><Modal.Title>Edit Merchandise </Modal.Title></Modal.Header>
+                <EditItem id={popupID}/>
+            </Modal>
+
+            {/* <EditItem show={showAddItem} onHide={()=> setShowAddItem(false)} id={popupID}/> */}
         </div>
     )
 }
