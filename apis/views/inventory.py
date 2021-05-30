@@ -53,10 +53,10 @@ def AddMerchandise(request):
 
 @api_view(['GET'])
 def MerchDetailInventory(request, pk):
-    merch = Merchandise.objects.get(id=pk)
+    merch = Merchandise.objects.get(pk=pk)
     price = MerchandisePrice.objects.filter(
         merchandise=pk).latest('updated_on')
-    photos = MerchandisePhotos.objects.get(id=merch.photos.id)
+    photos = MerchandisePhotos.objects.get(pk=merch.photos.id)
     return Response({
         'name': merch.name,
         'id': merch.id,
