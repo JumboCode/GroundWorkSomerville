@@ -44,7 +44,7 @@ const AddProduce = ({token}) => {
         return(
             <Form key={"produce-entry-"+id} className="add-produce-entry" as="div">
             <Row>
-                <Col sm={5}>
+                <Col sm={7}>
                     <Form.Group as={Row}>
                         <Form.Label column sm={2}>Name</Form.Label>
                         <Col><Form.Control name="name" onChange={onChng} required/></Col>
@@ -58,24 +58,19 @@ const AddProduce = ({token}) => {
                     </Form.Group>
                 </Col>
 
+            </Row>
+            <Row>
                 <Col>
                     <Form.Group as={Row}>
                         <Form.Label column sm={2}>Price</Form.Label>
                         <Col><Form.Control name="price" type="number" step="0.01" min="0" onChange={onChng} required/></Col>
                     </Form.Group>
                 </Col>
-            </Row>
-            <Row>
+
                 <Col>
                     <Form.Group as={Row}>
-                        <Form.Label column sm={4}>Category</Form.Label>
+                        <Form.Label column sm={3}>Category</Form.Label>
                         <Col><Form.Control type="number" name="category" onChange={onChng} required/></Col>
-                    </Form.Group>
-                </Col>
-                <Col sm={8}>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm={2}>Description</Form.Label>
-                        <Col><Form.Control name="description" as="textarea" onChange={onChng} required/></Col>
                     </Form.Group>
                 </Col>
             </Row>

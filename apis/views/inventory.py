@@ -103,26 +103,26 @@ def HarvestDetail(request, pk):
 
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 def ProduceDetail(request, pk):
-    item = StockedVegetable.objects.get(id=pk)
-    vegetable = Vegetable.objects.get(id=item.vegetable.id)
-    price = VegetablePrice.objects.get(
-        id=item.vegetable.id).latest("updated_on")
-    # should be the latest or according to the date?
+    vegetable = Vegetable.objects.get(pk=pk)
+    price = VegetablePrice.objects.filter(
+        vegetable=vegetable).latest("updated_on")
     return Response(
         {
+            "id": vegetable.id,
             "name":  vegetable.name,
             "unit": vegetable.unit,
             "price": price.price,
-            "photo_URL-list": [vegetable.photo.url]
+            "category": vegetable.categories,
+            "photo_url": vegetable.photo.url
         })
 
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 def HarvestInventory(request):
     # dates from URL query
     startdate = request.GET.get('start_date')
@@ -198,26 +198,26 @@ def ProduceInventory(request):
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 def UpdateVegetable(request):
     body = json.loads(request.data['newData'])
-    is_photo = body["is_photo"]
-    is_price = body["is_price"]
-    vegToUpdate = Vegetable.objects.get(body["id"])
-    if is_photo:
-        image = request.FILES["image"]
-        vegToUpdate.photo = image
+    vegToUpdate = Vegetable.objects.get(pk=body["id"])
 
-    if is_price:
-        VegetablePrice.objects.create(Vegetable=vegToUpdate.id, price = body["price"])
+    if request.FILES.get("photo", None):
+        vegToUpdate.photo = request.FILES["photo"]
 
-    vegToUpdate.name = body["name"].capitalize()
+    price = float(VegetablePrice.objects.filter(vegetable=vegToUpdate).latest('updated_on').price)
+
+    if price != body['price']:
+        VegetablePrice.objects.create(vegetable=vegToUpdate, price=body["price"])
+
+    vegToUpdate.name = body["name"]
     vegToUpdate.unit = body["unit"].lower()
-    vegToUpdate.categories = body["categories"]
+    vegToUpdate.categories = body["category"]
     vegToUpdate.save()
 
-    return Response(vegToUpdate.id)
+    return Response(vegToUpdate.photo.url)
 
 
 @api_view(['POST'])

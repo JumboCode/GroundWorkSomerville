@@ -4,7 +4,7 @@ import Button from '../button/index.js';
 import axios from 'axios';
 import {Form, Row, Col} from 'react-bootstrap';
 
-const EditItem = ({update, id}) => {
+const EditItem = ({id}) => {
     const [entries, setEntries] = useState({})
     const [files, setFiles] = useState({})
     const [oldFiles, setOldFiles] = useState([])
@@ -104,7 +104,7 @@ const EditItem = ({update, id}) => {
                 </Col>
             </Row>
             <Row>
-                <Form.Label column>Old Images</Form.Label>
+                <Form.Label column sm={2}>Old Images</Form.Label>
                 <Col><img src={oldFiles[0]} className="edit-old-photo" alt="det"/></Col>
                 <Col><img src={oldFiles[1]} className="edit-old-photo" alt="det"/></Col>
                 <Col><img src={oldFiles[2]} className="edit-old-photo" alt="det"/></Col>
@@ -116,7 +116,7 @@ const EditItem = ({update, id}) => {
                 <Col> <Form.File className="custom-file" name="photo3" onChange={onChng} files={getFile(id, "photo3")}/> </Col>
             </Form.Group>
             {entrySucc && <div className="text-success ml-2">Successfully edited entry</div>}
-            <Button className="add-merch-button">Save all</Button>
+            <Button className="add-merch-button">Save edits</Button>
             </Form>
         )
     }

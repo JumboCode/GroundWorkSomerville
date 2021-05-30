@@ -21,10 +21,10 @@ const InventoryTab = (props) => {
             setMerch(resp.data)
         })
 
-        // axios.get('harvest-inventory', {params: {start_date: "2021-04-05", end_date: "2021-05-21"}})
-        // .then((resp) => {
-        //     setHarvest(resp.data)
-        // })
+        axios.get('harvest-inventory', {params: {start_date: "2021-04-05", end_date: "2021-05-21"}})
+        .then((resp) => {
+            setHarvest(resp.data)
+        })
         axios.get('produce-inventory', {headers: {'Authorization': `Token ${props.token}`}})
         .then((resp) => {
             setProduce(resp.data)
