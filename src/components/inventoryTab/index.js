@@ -6,7 +6,7 @@ import { Tab, Nav, Container, Row, Col, Modal } from 'react-bootstrap';
 import axios from 'axios';
 
 
-const InventoryTab = (props) => {
+const InventoryTab = ({token, onQuantChange, updated, update}) => {
     const [showAddItem, setShowAddItem] = useState(false);
     const [produce, setProduce] = useState([]);
     const [merch, setMerch] = useState([]);
@@ -21,11 +21,11 @@ const InventoryTab = (props) => {
             setMerch(resp.data)
         })
 
-        axios.get('harvest-inventory', {params: {start_date: "2021-04-05", end_date: "2021-05-21"}})
-        .then((resp) => {
-            setHarvest(resp.data)
-        })
-        axios.get('produce-inventory', {headers: {'Authorization': `Token ${props.token}`}})
+        // axios.get('harvest-inventory', {params: {start_date: "2021-04-05", end_date: "2021-05-21"}})
+        // .then((resp) => {
+        //     setHarvest(resp.data)
+        // })
+        axios.get('produce-inventory', {headers: {'Authorization': `Token ${token}`}})
         .then((resp) => {
             setProduce(resp.data)
         })
@@ -34,7 +34,7 @@ const InventoryTab = (props) => {
         .then((resp) => {
             setProduPurchases(resp.data)
         })
-    }, [props.updated])
+    }, [updated])
 
     const showEdit = (e, i) => {
         setPopUpId(i);
@@ -167,19 +167,19 @@ const InventoryTab = (props) => {
         <div id="inventory-tab">
             <Tab.Container defaultActiveKey="merch">
                 <Nav>
-                    <Nav.Link as="div" eventKey="harvest" className="tab-button" onClick={(e)=> props.onQuantChange(true)}>
+                    <Nav.Link as="div" eventKey="harvest" className="tab-button" onClick={(e)=> onQuantChange(true)}>
                         Harvest
                     </Nav.Link>
-                    <Nav.Link as="div" eventKey="merch" className="tab-button" onClick={(e)=>props.onQuantChange(false)}>
+                    <Nav.Link as="div" eventKey="merch" className="tab-button" onClick={(e)=>onQuantChange(false)}>
                         Merchandise
                     </Nav.Link>
-                    <Nav.Link as="div" eventKey="produce" className="tab-button" onClick={(e)=>props.onQuantChange(false)}>
+                    <Nav.Link as="div" eventKey="produce" className="tab-button" onClick={(e)=>onQuantChange(false)}>
                         Produce
                     </Nav.Link>
-                    <Nav.Link as="div" eventKey="prodPurch" className="tab-button" onClick={(e)=>props.onQuantChange(false)}>
+                    <Nav.Link as="div" eventKey="prodPurch" className="tab-button" onClick={(e)=>onQuantChange(false)}>
                         Produce Purchase
                     </Nav.Link>
-                    <Nav.Link as="div" eventKey="merchPurch" className="tab-button" onClick={(e)=>props.onQuantChange(false)}>
+                    <Nav.Link as="div" eventKey="merchPurch" className="tab-button" onClick={(e)=>onQuantChange(false)}>
                         Merchandise Purchase
                     </Nav.Link>
 
@@ -200,20 +200,16 @@ const InventoryTab = (props) => {
                 <Tab.Pane eventKey="merchPurch" title="Produce Purchases">
                     {getMerchPurchaseTable(prodPurchases)}
                 </Tab.Pane>
-
-
-
-                
                 </Tab.Content>
             </Tab.Container>
             <Modal show={showAddItem} onHide={()=> setShowAddItem(false)} size="lg" centered>
                 <Modal.Header closeButton><Modal.Title>Edit Merchandise </Modal.Title></Modal.Header>
-                <EditItem id={popupID}/>
+                <EditItem id={popupID} update={update} token={token}/>
             </Modal>
 
             <Modal show={showEditProduce} onHide={()=> setShowEditProduce(false)} size="lg" centered>
                 <Modal.Header closeButton><Modal.Title>Edit Produce </Modal.Title></Modal.Header>
-                <EditProduce id={popupID}/>
+                <EditProduce id={popupID} update={update} token={token}/>
             </Modal>
 
 

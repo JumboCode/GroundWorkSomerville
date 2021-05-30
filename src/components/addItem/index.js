@@ -5,7 +5,7 @@ import axios from 'axios';
 import {Form, Row, Col} from 'react-bootstrap';
 import del from './del.png';
 
-const AddItem = ({update}) => {
+const AddItem = ({update, token}) => {
     const [entries, setEntries] = useState({})
     const [files, setFiles] = useState({})
     const [entrySucc, setEntrySucc] = useState({0:false})
@@ -31,7 +31,7 @@ const AddItem = ({update}) => {
                     method: "post",
                     url: "add-merchandise",
                     data: form,
-                    headers: { "Content-Type": "multipart/form-data" },
+                    headers: { "Content-Type": "multipart/form-data", 'Authorization': `Token ${token}` },
                 })
                 .then(function (response) {
                     console.log(response)

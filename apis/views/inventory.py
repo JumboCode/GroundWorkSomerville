@@ -14,7 +14,7 @@ from apis.decorators import mobile_market, groundwork_admin
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @groundwork_admin
 def AddHarvest(request):
@@ -211,6 +211,8 @@ def ProduceInventory(request):
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
 # @permission_classes([IsAuthenticated])
 @groundwork_admin
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def UpdateVegetable(request):
     body = json.loads(request.data['newData'])
     vegToUpdate = Vegetable.objects.get(pk=body["id"])
@@ -232,7 +234,7 @@ def UpdateVegetable(request):
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @groundwork_admin
 def UpdateMerchandise(request):
@@ -306,7 +308,6 @@ def DeleteVegetable(request, pk):
 
 
 @api_view(['GET'])
-@groundwork_admin
 def SearchVegetables(request, pk):
     items = Vegetable.objects.all().filter(name__icontains=pk)
     serializer = VegetableSerializer(items, many=True)

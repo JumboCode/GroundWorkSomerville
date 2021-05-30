@@ -4,7 +4,7 @@ import Button from '../button/index.js';
 import axios from 'axios';
 import {Form, Row, Col} from 'react-bootstrap';
 
-const AddProduce = ({token}) => {
+const AddProduce = ({token, update}) => {
     const [entries, setEntries] = useState({})
     const [files, setFiles] = useState({})
     const [entrySucc, setEntrySucc] = useState(false)
@@ -32,6 +32,7 @@ const AddProduce = ({token}) => {
               })
             .then(function (response) {
                 setEntrySucc(true);
+                update("produce" + key)
             })
             .catch(function (response) {
                 console.log(response);
