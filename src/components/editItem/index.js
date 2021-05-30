@@ -7,7 +7,7 @@ import {Form, Row, Col} from 'react-bootstrap';
 const EditItem = ({update, id}) => {
     const [entries, setEntries] = useState({})
     const [files, setFiles] = useState({})
-    const[oldFiles, setOldFiles] = useState([])
+    const [oldFiles, setOldFiles] = useState([])
     const [entrySucc, setEntrySucc] = useState(false)
 
     useEffect(()=>{
@@ -27,42 +27,23 @@ const EditItem = ({update, id}) => {
         }
     }
 
-    // const submitData = () => {
-    //     var form = new FormData();
-    //     form.append('image', image);
-    //     form.append('info', JSON.stringify({...formData, oldname:"Grapes", categories:"Vegetable"}))
-    //     axios({
-    //         method: "post",
-    //         url: "update-produce",
-    //         data: form,
-    //         headers: { "Content-Type": "multipart/form-data" },
-    //       })
-    //     .then(function (response) {
-    //         console.log(response);
-    //     })
-    //     .catch(function (response) {
-    //         console.log(response);
-    //     });
-    // }
-
-    const sendEntries = (e) => {
+    const submitData = (e) => {
         e.preventDefault()
         var form = new FormData();
         Object.entries(files).forEach(([n, f]) => { form.append(n, f) });
-        form.append('info', JSON.stringify(entries))
+        form.append('newData', JSON.stringify(entries))
         axios({
             method: "post",
-            url: "add-merchandise",
+            url: "update-merchandise",
             data: form,
             headers: { "Content-Type": "multipart/form-data" },
         })
-        .then(function (response) {
-            console.log(response)
-            // update(key+i)
+        .then(function (resp) {
+            setOldFiles(resp.data)
             setEntrySucc(true)
         })
         .catch(function (response) {
-            console.log(response)
+            console.log(response);
         });
     }
 
@@ -85,7 +66,7 @@ const EditItem = ({update, id}) => {
     const entry = (id, i) => {
         const onChng = (e) => handleInputChange(e, id)
         return(
-            <Form key={"merch-entry-"+id} className="add-merch-entry" onSubmit={sendEntries}>
+            <Form key={"merch-entry-"+id} className="add-merch-entry" onSubmit={submitData}>
             <Row>
                 <Col sm={5}>
                     <Form.Group as={Row}>
@@ -130,11 +111,11 @@ const EditItem = ({update, id}) => {
             </Row>
             <Form.Group as={Row}>
                 <Form.Label column sm={1}>Images</Form.Label>
-                <Col> <Form.File className="custom-file" required name="photo1" onChange={onChng} files={getFile(id, "photo1")}/> </Col>
-                <Col> <Form.File className="custom-file" required name="photo2" onChange={onChng} files={getFile(id, "photo2")}/> </Col>
-                <Col> <Form.File className="custom-file" required name="photo3" onChange={onChng} files={getFile(id, "photo3")}/> </Col>
+                <Col> <Form.File className="custom-file" name="photo1" onChange={onChng} files={getFile(id, "photo1")}/> </Col>
+                <Col> <Form.File className="custom-file" name="photo2" onChange={onChng} files={getFile(id, "photo2")}/> </Col>
+                <Col> <Form.File className="custom-file" name="photo3" onChange={onChng} files={getFile(id, "photo3")}/> </Col>
             </Form.Group>
-            {entrySucc && <div className="text-success ml-2">Successfully added entry</div>}
+            {entrySucc && <div className="text-success ml-2">Successfully edited entry</div>}
             <Button className="add-merch-button">Save all</Button>
             </Form>
         )

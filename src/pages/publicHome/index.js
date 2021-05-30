@@ -65,7 +65,7 @@ class PublicHome extends Component {
             this.setState({vegData:this.state.searchedData})
         } else {
             this.setState({vegData:this.state.searchedData.filter(dat => {
-                return(dat['category'] === id)
+                return(String(dat['category']) === String(id))
             })})
         }
     }

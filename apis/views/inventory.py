@@ -3,7 +3,7 @@ from apis.models import PurchasedItem, VegetablePrice, StockedVegetable, Merchan
 from apis.models import VegetableType, MerchandiseType
 from apis.serializers import HarvestSerializer, VegetableSerializer
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError, ParseError
@@ -68,7 +68,7 @@ def MerchDetailInventory(request, pk):
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def AddProduce(request):
     photo = request.FILES["photo"]
@@ -155,8 +155,8 @@ def HarvestInventory(request):
 
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 def MerchandiseInventory(request):
     return_list = []
     for merch in Merchandise.objects.all():
@@ -178,7 +178,7 @@ def MerchandiseInventory(request):
 
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def ProduceInventory(request):
     produce_list = []
@@ -221,29 +221,28 @@ def UpdateVegetable(request):
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 def UpdateMerchandise(request):
     body = json.loads(request.data['newData'])
-    is_photo = body["is_photo"]
-    is_price = body["is_price"]
-    merchToUpdate = Merchandise.objects.get(body["id"])
-    if is_photo:
-        img1 = request.FILES["photo1"]
-        img2 = request.FILES["photo2"]
-        img3 = request.FILES["photo3"]
-        photos = MerchandisePhotos.objects.create(image1=img1, image2=img2, image=img3)
-        merchToUpdate.photos = photos
-
-    if is_price:
-        MerchandisePrice.objects.create(merchandise=merchToUpdate.id, price=body["price"])
-
-    merchToUpdate.name = body["name"].capitalize()
+    merchToUpdate = Merchandise.objects.get(pk=body['id'])
+    photos = merchToUpdate.photos
+    if request.FILES.get("photo1", None):
+        photos.image1 = request.FILES["photo1"]
+    if request.FILES.get("photo2", None):
+        photos.image2 = request.FILES["photo2"]
+    if request.FILES.get("photo3", None):
+        photos.image3 = request.FILES["photo3"]
+    photos.save()
+    price = float(MerchandisePrice.objects.filter(merchandise=merchToUpdate).latest('updated_on').price)
+    if price != body['price']:
+        MerchandisePrice.objects.create(merchandise=merchToUpdate, price=body["price"])
+    merchToUpdate.name = body["name"]
     merchToUpdate.description = body["description"]
     merchToUpdate.quantity = body["quantity"]
-    merchToUpdate.categories = body["categories"]
+    merchToUpdate.categories = body["category"]
     merchToUpdate.save()
-    return Response(merchToUpdate.id)
+    return Response([photos.image1.url, photos.image2.url, photos.image3.url])
 
 
 @api_view(['POST'])

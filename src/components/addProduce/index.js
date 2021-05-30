@@ -4,7 +4,7 @@ import Button from '../button/index.js';
 import axios from 'axios';
 import {Form, Row, Col} from 'react-bootstrap';
 
-const AddProduce = (props) => {
+const AddProduce = ({token}) => {
     const [entries, setEntries] = useState({})
     const [files, setFiles] = useState({})
     const [entrySucc, setEntrySucc] = useState(false)
@@ -28,7 +28,7 @@ const AddProduce = (props) => {
                 method: "post",
                 url: "add-produce",
                 data: form,
-                headers: { "Content-Type": "multipart/form-data" },
+                headers: { "Content-Type": "multipart/form-data", 'Authorization': `Token ${token}`},
               })
             .then(function (response) {
                 setEntrySucc(true);
@@ -94,7 +94,7 @@ const AddProduce = (props) => {
                 {[...Array(numEntries).keys()].map(entry)}
                 <Button className="add-produce-button" type="Submit">Save</Button>
             </Form>
-            {entrySucc && <div class="text-success ml-2">Successfully added entry</div>}
+            {entrySucc && <div className="text-success ml-2">Successfully added entry</div>}
         </div>
     )
 }
