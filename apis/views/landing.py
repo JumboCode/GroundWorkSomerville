@@ -14,7 +14,7 @@ def MerchSummary(request):
     # unit_dict = {unit: uname.lower() for (unit, uname)
     #             in MerchandiseType.choices}
     for merch in merchs:
-        photos = MerchandisePhotos.objects.get(id=merch.photos.id)
+        photos = MerchandisePhotos.objects.get(pk=merch.photos.id)
         price = MerchandisePrice.objects.filter(
             merchandise=merch).latest('updated_on')
         summary.append({
@@ -29,10 +29,10 @@ def MerchSummary(request):
 
 @api_view(['GET'])
 def MerchDetail(request, pk):
-    merch = Merchandise.objects.get(id=pk)
+    merch = Merchandise.objects.get(pk=pk)
     price = MerchandisePrice.objects.filter(
         merchandise=pk).latest('updated_on')
-    photos = MerchandisePhotos.objects.get(id=merch.photos.id)
+    photos = MerchandisePhotos.objects.get(pk=merch.photos.id)
     return Response({
         'name': merch.name,
         'id': merch.id,
@@ -81,7 +81,7 @@ def SearchMerchandise(request, pk):
     summary = []
     items = Merchandise.objects.all().filter(name__icontains=pk)
     for merch in items:
-        photos = MerchandisePhotos.objects.get(id=merch.photos.id)
+        photos = MerchandisePhotos.objects.get(pk=merch.photos.id)
         price = MerchandisePrice.objects.filter(
             merchandise=merch.id).latest('updated_on')
         summary.append({
