@@ -142,7 +142,7 @@ def HarvestInventory(request):
                 price = VegetablePrice.objects.filter(
                     vegetable=vegetable,
                     updated_on__gte=startdate,
-                    updated_on__lte=enddate).order_by('-updated_on')
+                    updated_on__lte=enddate).latest('-updated_on')
                 return_list.append(
                     {
                         "name": vegetable.name,
