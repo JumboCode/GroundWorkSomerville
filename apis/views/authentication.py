@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from django.utils.crypto import get_random_string
-
+from django.template.loader import render_to_string
 
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
@@ -32,7 +32,8 @@ def AddUser(request):
     uName = get_random_string(10)
     password = get_random_string(10)
     user = User.objects.create_user(uName, email, password)
-    user.email_user("New Account!!!", uName+' '+password)
+    email_body = render_to_string('SendEmail.html', {'username': uName, 'password': password, 'usertype': userType })
+    user.email_user(email_body)
     UserProfile.objects.create(
         user=user, loggedInOnce=False, isGSAdmin=(userType == 'GA'))
     return Response(status=200)
