@@ -4,7 +4,7 @@ import Button from '../button/index.js';
 import axios from 'axios';
 import {Form, Row, Col} from 'react-bootstrap';
 
-const EditProduce = ({id}) => {
+const EditProduce = ({id, update, token}) => {
     const [entries, setEntries] = useState({})
     const [files, setFiles] = useState({})
     const [oldFiles, setOldFiles] = useState([])
@@ -14,7 +14,6 @@ const EditProduce = ({id}) => {
         axios.get('produce-detail/' + id)
         .then((resp) => {
             const {photo_url, ...entry} = resp.data
-            console.log(entry)
             setEntries(entry)
             setOldFiles(photo_url)
         })
@@ -37,12 +36,13 @@ const EditProduce = ({id}) => {
             method: "post",
             url: "update-produce",
             data: form,
-            headers: { "Content-Type": "multipart/form-data" },
+            headers: { "Content-Type": "multipart/form-data", 'Authorization': `Token ${token}`},
         })
         .then(function (resp) {
             console.log(resp.data)
             setOldFiles(resp.data)
             setEntrySucc(true)
+            update("produce-update" + id)
         })
         .catch(function (response) {
             console.log(response);

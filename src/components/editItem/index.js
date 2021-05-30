@@ -4,7 +4,7 @@ import Button from '../button/index.js';
 import axios from 'axios';
 import {Form, Row, Col} from 'react-bootstrap';
 
-const EditItem = ({id}) => {
+const EditItem = ({id, update, token}) => {
     const [entries, setEntries] = useState({})
     const [files, setFiles] = useState({})
     const [oldFiles, setOldFiles] = useState([])
@@ -36,11 +36,12 @@ const EditItem = ({id}) => {
             method: "post",
             url: "update-merchandise",
             data: form,
-            headers: { "Content-Type": "multipart/form-data" },
+            headers: { "Content-Type": "multipart/form-data", 'Authorization': `Token ${token}`},
         })
         .then(function (resp) {
             setOldFiles(resp.data)
             setEntrySucc(true)
+            update("merch-update" + id)
         })
         .catch(function (response) {
             console.log(response);

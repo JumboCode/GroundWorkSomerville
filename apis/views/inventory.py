@@ -13,7 +13,7 @@ from django.db.models import Sum
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def AddHarvest(request):
     item = json.loads(request.data["info"])
@@ -198,8 +198,8 @@ def ProduceInventory(request):
 
 
 @api_view(['POST'])
-# @authentication_classes([SessionAuthentication, BasicAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def UpdateVegetable(request):
     body = json.loads(request.data['newData'])
     vegToUpdate = Vegetable.objects.get(pk=body["id"])
@@ -221,7 +221,7 @@ def UpdateVegetable(request):
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def UpdateMerchandise(request):
     body = json.loads(request.data['newData'])
