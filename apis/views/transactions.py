@@ -40,7 +40,7 @@ def PurchaseProduce(request):
             else:
                 return Response("Invalid Vegetable name")
 
-        Transaction.objects.get(id=transaction).update(total_amount=current_total)
+        Transaction.objects.get(pk=transaction).update(total_amount=current_total)
         return Response({
             "transaction_id": transaction,
             "receipt_number": transaction.receipt_number,
@@ -70,7 +70,7 @@ def PurchaseMerchandise(request):
         else:
             return Response("Invalid Merchandise name")
 
-    Transaction.objects.get(id=transact).update(total_amount=current_total)
+    Transaction.objects.get(pk=transact).update(total_amount=current_total)
     return Response({
         "transaction_id": transact.id,
         "receipt_number": transact.receipt_number,
