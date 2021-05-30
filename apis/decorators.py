@@ -1,5 +1,18 @@
 from rest_framework.response import Response
 from rest_framework import status
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+
+def mobile_market(view):
+    user_login_required = user_passes_test(lambda user: not user.userprofile.isGSAdmin, login_url="/")
+    decorated_view = login_required(user_login_required(view))
+    return decorated_view
+
+
+def groundwork_admin(view):
+    user_login_required = user_passes_test(lambda user: user.userprofile.isGSAdmin, login_url="/")
+    decorated_view = login_required(user_login_required(view))
+    return decorated_view
 
 
 def user_loggedin(view_func):
@@ -8,7 +21,8 @@ def user_loggedin(view_func):
             return view_func(request, *args, **kwargs)
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
-        return wrapper_func
+    return wrapper_func
+
 
 
 def allowed_users(allowed_roles=[]):
