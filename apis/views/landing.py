@@ -64,16 +64,22 @@ def AllProduce(request):
     return Response(categories)
 
 
+@api_view(['GET'])
 def ProduceNames(request):
     return_list = Vegetable.objects.values_list('name', flat=True).distinct()
     return Response(return_list)
+
+
+@api_view(['GET'])
+def MerchandiseNames(request):
+    return_list = Merchandise.objects.values_list('name', flat=True).distinct()
+    return Response(return_list)
+
 
 @api_view(['GET'])
 def SearchMerchandise(request, pk):
     summary = []
     items = Merchandise.objects.all().filter(name__icontains=pk)
-    # unit_dict = {unit: uname.lower() for (unit, uname)
-    #             in MerchandiseType.choices}
     for merch in items:
         photos = MerchandisePhotos.objects.get(id=merch.photos.id)
         price = MerchandisePrice.objects.filter(
