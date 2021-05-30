@@ -64,6 +64,10 @@ def AllProduce(request):
     return Response(categories)
 
 
+def ProduceNames(request):
+    return_list = Vegetable.objects.values_list('name', flat=True).distinct()
+    return Response(return_list)
+
 @api_view(['GET'])
 def SearchMerchandise(request, pk):
     summary = []

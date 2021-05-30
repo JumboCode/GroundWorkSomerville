@@ -51,6 +51,8 @@ urlpatterns = [
     path('merchandise-purchases-detail/<str:receiptnum>', transactions.MerchPurchasesDetail, name='merchandise-purchases-detail'),
     path('edit-merchandise-purchases/<str:receiptnum>', transactions.MerchPurchasesEdit, name='edit-merchandise-purchases'),
     path('edit-produce-purchases/<str:username>', transactions.ProducePurchasesEdit, name='edit-produce-purchases'),
+
+    path('produce-names', landing.ProduceNames, name='produce-names'),
     url('', index, name="index")
 ]
 
