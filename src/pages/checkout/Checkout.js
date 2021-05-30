@@ -83,6 +83,7 @@ class Checkout extends Component {
         this.state.checkoutList.forEach(val => totalvalue+=val.quantity* val.value.price);
         const dropdowns = this.state.itemListData.map( ({name, produces}) => {
             return(<Dropdown items={produces} 
+                key={name}
                 type={name}
                 onAddItem={this.onAddItem}
                 onUpdateItem={this.onUpdateItem}
@@ -111,14 +112,11 @@ class Checkout extends Component {
                             {summary}
                         </div>
                         <div className="orderTotal">
-                            <OrderSummary total={totalvalue} />
+                            <OrderSummary total={totalvalue} cl={this.state.checkoutList} token={this.props.token}/>
                         </div>
                     </div>
-                    
                 </div>
-
             </div>
-
         )
     }
 }

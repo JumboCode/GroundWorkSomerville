@@ -16,9 +16,6 @@ class Quantity extends Component {
     IncrementItem = () => {
         if(this.props.quantity < 9) {
             this.props.onQuantChange(this.props.id, this.props.quantity + 1, "up");
-            console.log("in increment item")
-            console.log(this.props.quantity)
-            console.log(this.props.quantity +1)
             return {
                 quantity: this.props.quantity + 1
             }

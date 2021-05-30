@@ -3,6 +3,7 @@ import Button from '../button';
 import { withRouter } from "react-router-dom";
 
 import "./OrderSummary.css"
+import axios from "axios";
 
 class OrderSummary extends Component{    
     constructor(props) {
@@ -31,8 +32,21 @@ class OrderSummary extends Component{
     }
 
     handleChange = () => {
-        console.log()
-        // this.setState({order: true});
+        const dat = {items: [this.props.cl.map((i) => {return {id:i.value.id, quantity:i.quantity}})]}
+        console.log(dat)
+        axios({
+            method: "post",
+            url: "mm-checkout",
+            data: dat,
+            headers: {'Authorization': `Token ${this.props.token}`},
+            })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (response) {
+            console.log(response);
+        });
+      // this.setState({order: true});
         // this.setState({orderNum: this.getRandomInt()})
     }
 
