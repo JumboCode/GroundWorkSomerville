@@ -17,8 +17,7 @@ def PurchaseProduce(request):
         body = json.loads(request.body)
         user = UserProfile.objects.get(user__username=username)
         transaction = Transaction.objects.create(
-            user_id=user, is_picked=False,
-            is_paid=False, method_of_payment="Picking up at the store")
+            user_id=user, method_of_payment="Picking up at the store")
         total_amount = Transaction.objects.filter(user_id=user).aggregate(Sum('total_amount'))
         if user.last_paid:
             total_amount = Transaction.objects.filter(user_id=user, date__gte=user.last_paid).aggregate(Sum('total_amount'))
@@ -28,7 +27,8 @@ def PurchaseProduce(request):
             vegetable = Vegetable.objects.get(pk=item["id"])
             if vegetable:
                 stocked_veg = StockedVegetable.objects.filter(vegetable=vegetable).latest('harvested_on')
-                stocked_veg.update(quantity=F('quantity') - item['quantity'])
+                stocked_veg.quantity = stocked_veg.quantity - item['quantity']
+                stocked_veg.save()
                 category = vegetable.categories
                 price = VegetablePrice.filter(vegetable=vegetable).latest('updated_on').price
 
@@ -40,7 +40,9 @@ def PurchaseProduce(request):
             else:
                 return Response("Invalid Vegetable name")
 
-        Transaction.objects.get(pk=transaction).update(total_amount=current_total)
+        transaction = Transaction.objects.get(pk=transaction)
+        transaction.total_amount=current_total
+        transaction.save()
         return Response({
             "transaction_id": transaction,
             "receipt_number": transaction.receipt_number,
@@ -54,12 +56,13 @@ def PurchaseProduce(request):
 @api_view(['POST'])
 def PurchaseMerchandise(request):
     body = json.loads(request.body)
-    transact = Transaction.objects.create(is_picked=False, is_paid=False, method_of_payment="Picking up at the store")
+    transact = Transaction.objects.create(is_merch=True, method_of_payment="Picking up at the store")
     current_total = 0
     for item in body["items"]:
         merchandise = Merchandise.objects.filter(pk=item['id'])
         if merchandise:
-            merchandise.update(quantity=F('quantity') - item["quantity"])
+            merchandise.quantity = merchandise.quantity - item["quantity"]
+            merchandise.save()
             category = merchandise.categories
             price = MerchandisePrice.objects.filter(merchandise=merchandise).latest('updated_on').price
             PurchasedItem.objects.create(
@@ -70,7 +73,9 @@ def PurchaseMerchandise(request):
         else:
             return Response("Invalid Merchandise name")
 
-    Transaction.objects.get(pk=transact).update(total_amount=current_total)
+    transaction = Transaction.objects.get(pk=transact)
+    transaction.total_amount = current_total
+    transaction.save()
     return Response({
         "transaction_id": transact.id,
         "receipt_number": transact.receipt_number,
@@ -85,7 +90,10 @@ def ProducePurchases(request):
         last_ordered = transactions.first().date
         if user.last_paid:
             transactions = Transaction.objects.filter(user_id=user, date__gte=user.last_paid)
-        total_amount = transactions.aggregate(Sum('total_amount'))
+
+        total_amount = 0
+        if transactions:
+            total_amount = transactions.aggregate(Sum('total_amount'))["total_amount__sum"]
         return_list.append({
             "user_name": user.user.username,
             "total_owed": total_amount,
@@ -97,13 +105,15 @@ def ProducePurchases(request):
 
 @api_view(['POST'])
 def ProducePurchasesEdit(request, username):
-    UserProfile.objects.get(user__username=username).update(last_paid=datetime.now())
+    profile = UserProfile.objects.get(user__username=username)
+    profile.last_paid = datetime.now()
+    profile.save()
     return Response("Successfully edited the items")
 
 
 @api_view(['GET'])
 def MerchPurchases(request):
-    transactions = Transaction.objects.filter(user_id__is_null=False)
+    transactions = Transaction.objects.exclude(user_id__isnull=True).filter(is_merch=True)
     new_list = []
     for transact in transactions:
         new_list.append({
@@ -117,14 +127,18 @@ def MerchPurchases(request):
 
 
 @api_view(['GET'])
-def MerchPurchasesDetail(request, receipt_number):
-    transact =  Transaction.objects.get(receipt_number=receipt_number).id
-    return PurchasedItem.objects.filter(transaction=transact).values('total_amount', 'merchandise__name', 'total_price')
+def MerchPurchasesDetail(request, receiptnum):
+    transact =  Transaction.objects.get(receipt_number=receiptnum).id
+    all = PurchasedItem.objects.filter(transaction=transact).values('total_amount', 'merchandise__name', 'total_price')
+    return Response(all)
 
 
 
 @api_view(['POST'])
-def MerchPurchasesEdit(request, receipt_number):
+def MerchPurchasesEdit(request, receiptnum):
     body = json.loads(request.body)
-    Transaction.objects.get(receipt_number=receipt_number).update(is_paid=body['is_paid'], is_picked=body['is_picked'])
+    transaction = Transaction.objects.get(receipt_number=receiptnum)
+    transaction.is_paid = body['is_paid']
+    transaction.is_picked = body['is_picked']
+    transaction.save()
     return Response("Successfully edited the items")
