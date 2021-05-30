@@ -209,7 +209,7 @@ def UpdateVegetable(request):
 
     price = float(VegetablePrice.objects.filter(vegetable=vegToUpdate).latest('updated_on').price)
 
-    if price != body['price']:
+    if price != float(body['price']):
         VegetablePrice.objects.create(vegetable=vegToUpdate, price=body["price"])
 
     vegToUpdate.name = body["name"]
