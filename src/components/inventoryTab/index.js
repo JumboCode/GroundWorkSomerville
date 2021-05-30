@@ -25,8 +25,7 @@ const InventoryTab = (props) => {
         // .then((resp) => {
         //     setHarvest(resp.data)
         // })
-
-        axios.get('produce-inventory')
+        axios.get('produce-inventory', {headers: {'Authorization': `Token ${props.token}`}})
         .then((resp) => {
             setProduce(resp.data)
         })

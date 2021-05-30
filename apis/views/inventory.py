@@ -3,7 +3,7 @@ from apis.models import PurchasedItem, VegetablePrice, StockedVegetable, Merchan
 from apis.models import VegetableType, MerchandiseType
 from apis.serializers import HarvestSerializer, VegetableSerializer
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError, ParseError
@@ -68,7 +68,7 @@ def MerchDetailInventory(request, pk):
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def AddProduce(request):
     photo = request.FILES["photo"]
@@ -176,7 +176,7 @@ def MerchandiseInventory(request):
 
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def ProduceInventory(request):
     produce_list = []

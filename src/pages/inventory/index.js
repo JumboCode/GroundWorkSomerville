@@ -36,7 +36,7 @@ const Inventory = ({token}) => {
 
     return (
         <Container id="inventory" fluid><Row>
-            <Col><InventoryTab onQuantChange={onQuantChange} updated={updated}/></Col>
+            <Col><InventoryTab onQuantChange={onQuantChange} updated={updated} token={token}/></Col>
             <Col sm={4}><InventoryFilter token={token} harvest={harvest} update={setUpdated}/></Col>
         </Row></Container>
     )
