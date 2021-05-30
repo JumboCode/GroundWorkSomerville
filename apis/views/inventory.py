@@ -23,7 +23,7 @@ def AddHarvest(request):
     quantity = item["quantity"]
     weight = item["weight"]
     veg = Vegetable.objects.filter(name=name).first()
-    StockedVegetable.create(
+    StockedVegetable.objects.create(
         vegetable=veg, quantity=quantity, weight=weight)
     return Response("Added to the table.")
 
