@@ -1,4 +1,4 @@
-from apis.models import StockedVegetable, Vegetable, Transaction, PurchasedItem, Merchandise, UserProfile
+from apis.models import StockedVegetable, Vegetable, Transaction, PurchasedItem, Merchandise, UserProfile, VegetablePrice, MerchandisePrice
 from apis.serializers import TransactionSerializer
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
@@ -17,23 +17,26 @@ def PurchaseProduce(request):
         body = json.loads(request.body)
         user = UserProfile.objects.get(user__username=username)
         transaction = Transaction.objects.create(
-            user_id=user, is_picked=body["is_picked"],
-            is_paid=body["is_paid"], method_of_payment=body["method_payment"])
+            user_id=user, is_picked=False,
+            is_paid=False, method_of_payment="Picking up at the store")
         total_amount = Transaction.objects.filter(user_id=user).aggregate(Sum('total_amount'))
         if user.last_paid:
             total_amount = Transaction.objects.filter(user_id=user, date__gte=user.last_paid).aggregate(Sum('total_amount'))
 
         current_total = 0
         for item in body["items"]:
-            vegetable = Vegetable.objects.filter(name=item["name"].capitalize()).first()
+            vegetable = Vegetable.objects.get(pk=item["id"])
             if vegetable:
                 stocked_veg = StockedVegetable.objects.filter(vegetable=vegetable).latest('harvested_on')
                 stocked_veg.update(quantity=F('quantity') - item['quantity'])
+                category = vegetable.categories
+                price = VegetablePrice.filter(vegetable=vegetable).latest('updated_on').price
+
                 PurchasedItem.objects.create(
-                    transaction=transaction, categories=item['category'],
-                    total_price=item["price"], total_amount=item["quantity"],
+                    transaction=transaction, categories=category,
+                    total_price=price, total_amount=item["quantity"],
                     stocked_vegetable=stocked_veg, merchandise=None)
-                current_total += (item["price"]*item["quantity"])
+                current_total += (price * item["quantity"])
             else:
                 return Response("Invalid Vegetable name")
 
@@ -51,17 +54,19 @@ def PurchaseProduce(request):
 @api_view(['POST'])
 def PurchaseMerchandise(request):
     body = json.loads(request.body)
-    transact = Transaction.objects.create(is_picked=body["is_picked"], is_paid=body["is_paid"], method_of_payment=body["method_payment"])
+    transact = Transaction.objects.create(is_picked=False, is_paid=False, method_of_payment="Picking up at the store")
     current_total = 0
     for item in body["items"]:
-        merchandise = Merchandise.objects.filter(name=item['name'].capitalize()).first()
+        merchandise = Merchandise.objects.filter(pk=item['id'])
         if merchandise:
-            merchandise.update(quantity=F('quantity') - item["quantity"]) 
+            merchandise.update(quantity=F('quantity') - item["quantity"])
+            category = merchandise.categories
+            price = MerchandisePrice.objects.filter(merchandise=merchandise).latest('updated_on').price
             PurchasedItem.objects.create(
-                transaction=transact, categories=body["category"],
-                total_price=item["price"], total_amount=item["quantity"],
+                transaction=transact, categories=category,
+                total_price=price, total_amount=item["quantity"],
                 stocked_vegetable=None, merchandise=merchandise)
-            current_total += (item["price"]*item["quantity"])
+            current_total += (price * item["quantity"])
         else:
             return Response("Invalid Merchandise name")
 

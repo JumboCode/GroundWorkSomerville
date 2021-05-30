@@ -215,14 +215,14 @@ def UpdateVegetable(request):
     vegToUpdate.name = body["name"].capitalize()
     vegToUpdate.unit = body["unit"].lower()
     vegToUpdate.categories = body["categories"]
-    new_id = vegToUpdate.save()
+    vegToUpdate.save()
 
     return Response(vegToUpdate.id)
 
 
 @api_view(['POST'])
-# @authentication_classes([SessionAuthentication, BasicAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def UpdateMerchandise(request):
     body = json.loads(request.data['newData'])
     merchToUpdate = Merchandise.objects.get(pk=body['id'])
@@ -233,10 +233,14 @@ def UpdateMerchandise(request):
         photos.image2 = request.FILES["photo2"]
     if request.FILES.get("photo3", None):
         photos.image3 = request.FILES["photo3"]
+
     photos.save()
+
     price = float(MerchandisePrice.objects.filter(merchandise=merchToUpdate).latest('updated_on').price)
+
     if price != body['price']:
         MerchandisePrice.objects.create(merchandise=merchToUpdate, price=body["price"])
+
     merchToUpdate.name = body["name"]
     merchToUpdate.description = body["description"]
     merchToUpdate.quantity = body["quantity"]
