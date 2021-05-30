@@ -137,7 +137,7 @@ def HarvestInventory(request):
             for stocked in stockedvegetables:
                 item = PurchasedItem.objects.filter(
                     stocked_vegetable=stocked).first()
-                total_sold = 0 if item else item.total_amount
+                total_sold = 0 if not item else item.total_amount
                 vegetable = stocked.vegetable
                 price = VegetablePrice.objects.filter(
                     vegetable=vegetable,
@@ -153,6 +153,7 @@ def HarvestInventory(request):
                     })
         return Response(return_list)
 
+
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
@@ -161,6 +162,7 @@ def MerchandiseInventory(request):
     for merch in Merchandise.objects.all():
         item = PurchasedItem.objects.filter(
             merchandise=merch).aggregate(total_sold=Sum('total_amount'))
+        total_sold = 0 if not item else item['total_sold']
         price = MerchandisePrice.objects.filter(
             merchandise=merch).latest('updated_on')
         return_list.append(
@@ -168,7 +170,7 @@ def MerchandiseInventory(request):
                 "id": merch.id,
                 "name": merch.name,
                 "total_available": merch.quantity,
-                "total_sold": item['total_sold'],
+                "total_sold": total_sold,
                 "price": price.price
             }
         )
