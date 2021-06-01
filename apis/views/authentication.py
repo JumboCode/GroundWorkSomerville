@@ -33,7 +33,7 @@ def AddUser(request):
     password = get_random_string(10)
     user = User.objects.create_user(uName, email, password)
     email_body = render_to_string('SendEmail.html', {'username': uName, 'password': password, 'usertype': userType })
-    user.email_user(email_body)
+    user.email_user("New User Account for Groundwork Somerville marketplace", email_body)
     UserProfile.objects.create(
         user=user, loggedInOnce=False, isGSAdmin=(userType == 'GA'))
     return Response(status=200)
