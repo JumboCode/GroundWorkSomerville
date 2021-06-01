@@ -29,6 +29,9 @@ const Inventory = ({token}) => {
 
     const [harvest, setHarvest] = useState(true)
     const [updated, setUpdated] = useState(true)
+    const [sD, sSD] = useState(new Date("2021/05/01"));
+    const [eD, sED] = useState(new Date());
+
 
     const onQuantChange = (newData) => {
         setHarvest(newData)
@@ -36,8 +39,8 @@ const Inventory = ({token}) => {
 
     return (
         <Container id="inventory" fluid><Row>
-            <Col><InventoryTab onQuantChange={onQuantChange} updated={updated} token={token} update={setUpdated}/></Col>
-            <Col sm={4}><InventoryFilter token={token} harvest={harvest} update={setUpdated}/></Col>
+            <Col><InventoryTab onQuantChange={onQuantChange} updated={updated} token={token} update={setUpdated} sD={sD} eD={eD}/></Col>
+            <Col sm={4}><InventoryFilter token={token} harvest={harvest} update={setUpdated} sD={sD} eD={eD} sSD={sSD} sED={sED}/></Col>
         </Row></Container>
     )
 }

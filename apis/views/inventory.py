@@ -155,6 +155,7 @@ def HarvestInventory(request):
                     updated_on__lte=enddate).latest('-updated_on')
                 return_list.append(
                     {
+                        "id": stocked.id,
                         "name": vegetable.name,
                         "total_available": stocked.quantity,
                         "unit": vegetable.unit,

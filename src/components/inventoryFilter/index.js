@@ -10,11 +10,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './styles.css';
 
-const InventoryFilter = ({token, harvest, update}) => {
+const InventoryFilter = ({token, harvest, update, sD, eD, sSD, sED}) => {
     const [showAddItem, setShowAddItem] = useState(false);
     const [showAddUser, setShowAddUser] = useState(false);
     const [showAddHarvest, setShowAddHarvest] = useState(false);
     const [showAddProduce, setShowAddProduce] = useState(false);
+  
 
     return (
         <div id="inventory-filter">
@@ -26,7 +27,9 @@ const InventoryFilter = ({token, harvest, update}) => {
             </Form>
             {harvest && <div className="date-picker">
                 <div>Date viewing:</div>
-                <DatePicker/>
+                <DatePicker selected={sD} onChange={(date) => sSD(date)} selectsStart startDate={sD} endDate={eD}/>
+                <DatePicker selected={eD} onChange={(date) => sED(date)} selectsEnd startDate={sD} endDate={eD} minDate={sD}/>
+
             </div>}
             <div className="sort-inventory">
                 <div>Sort by:</div>
