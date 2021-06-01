@@ -16,12 +16,12 @@ const NavBar = ({ isAuth, logout, showLogin, showCart}) => {
     return(
         <Navbar collapseOnSelect expand="sm" sticky="top" bg="light" style={style}>
             <Navbar.Brand>
-                {/* <Link to="/" onClick={(e) => showCart(false)}>
+                <Link to="/" onClick={(e) => showCart(false)}>
                     <Image src={logo} height="80"/>
-                </Link> */}
-                <a href = "http://www.groundworksomerville.org/">
+                </Link>
+                {/* <a href = "http://www.groundworksomerville.org/">
                     <Image src={logo} height="80"/>
-                </a>
+                </a> */}
             </Navbar.Brand>
             <Navbar.Toggle/>
             <Navbar.Collapse>

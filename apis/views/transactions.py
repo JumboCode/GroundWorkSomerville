@@ -71,9 +71,9 @@ def PurchaseMerchandise(request):
         else:
             return Response("Invalid Merchandise name")
 
-    transaction = Transaction.objects.get(pk=transact)
-    transaction.total_amount = current_total
-    transaction.save()
+    # transaction = Transaction.objects.get(pk=transact)
+    transact.total_amount = current_total
+    transact.save()
     return Response({
         "transaction_id": transact.id,
         "receipt_number": transact.receipt_number,
@@ -85,19 +85,20 @@ def ProducePurchases(request):
     return_list = []
     for user in UserProfile.objects.filter(isGSAdmin=False):
         transactions = Transaction.objects.filter(user_id=user).order_by('-date')
-        last_ordered = transactions.first().date
-        if user.last_paid:
-            transactions = Transaction.objects.filter(user_id=user, date__gte=user.last_paid)
+        if transactions.count() != 0:
+            last_ordered = transactions.first().date
+            if user.last_paid:
+                transactions = Transaction.objects.filter(user_id=user, date__gte=user.last_paid)
 
-        total_amount = 0
-        if transactions:
-            total_amount = transactions.aggregate(Sum('total_amount'))["total_amount__sum"]
-        return_list.append({
-            "user_name": user.user.username,
-            "total_owed": total_amount,
-            "last_paid": user.last_paid,
-            "last_ordered": last_ordered
-            })
+            total_amount = 0
+            if transactions:
+                total_amount = transactions.aggregate(Sum('total_amount'))["total_amount__sum"]
+            return_list.append({
+                "user_name": user.user.username,
+                "total_owed": total_amount,
+                "last_paid": user.last_paid,
+                "last_ordered": last_ordered
+                })
     return Response(return_list)
 
 

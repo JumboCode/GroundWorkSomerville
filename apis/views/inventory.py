@@ -265,9 +265,7 @@ def UpdateMerchandise(request):
 # @groundwork_admin
 def UpdateHarvest(request):
     body = json.loads(request.data['newData'])
-    print(body)
     harvestToUpdate = StockedVegetable.objects.get(pk=body['id'])
-    print("here")
     harvestToUpdate.quantity = body['quantity']
     harvestToUpdate.weight = body['weight']
     harvestToUpdate.save()
