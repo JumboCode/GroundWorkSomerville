@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './styles.css';
 import EditItem from '../editItem';
 import EditProduce from '../editProduce';
+import EditHarvest from '../editHarvest';
 import { Tab, Nav, Container, Row, Col, Modal } from 'react-bootstrap';
 import axios from 'axios';
 
@@ -15,6 +16,7 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
     const [prodPurchases, setProduPurchases] = useState([]);
     const [merchPurchases, setMerchPurchases] = useState([]);
     const [showEditProduce, setShowEditProduce] = useState(false)
+    const [showEditHarvest, setShowEditHarvest] = useState(false)
 
     useEffect(() =>{
         axios.get('merchandise-inventory', {headers: {'Authorization': `Token ${token}`}})
@@ -43,7 +45,7 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
         const startDate = sD.getFullYear() + '-' + (sD.getMonth()+1) + '-' + sD.getDate()
         const endDate = eD.getFullYear() + '-' + (eD.getMonth()+1) + '-' + eD.getDate()
 
-        axios.get('harvest-inventory', {params: {start_date: startDate, end_date: endDate}})
+        axios.get('harvest-inventory', {params: {start_date: startDate, end_date: endDate}, headers: {'Authorization': `Token ${token}`}})
         .then((resp) => {
             setHarvest(resp.data)
         })
@@ -185,7 +187,7 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
                 <td>{dat.total_available}</td>
                 <td>{dat.total_sold}</td>
                 <td>{dat.unit}</td>
-                <td> <div onClick={(e) => {showEdit(e, dat.id)}} style={style}>edit</div> </td>
+                <td> <div onClick={(e) => {setPopUpId(dat.id); setShowEditHarvest(true)}} style={style}>edit</div> </td>
             </tr>
         )
     }
@@ -257,6 +259,11 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
             <Modal show={showEditProduce} onHide={()=> setShowEditProduce(false)} size="lg" centered>
                 <Modal.Header closeButton><Modal.Title>Edit Produce </Modal.Title></Modal.Header>
                 <EditProduce id={popupID} update={update} token={token}/>
+            </Modal>
+
+            <Modal show={showEditHarvest} onHide={()=> setShowEditHarvest(false)} size="lg" centered>
+                <Modal.Header closeButton><Modal.Title>Edit Harvest</Modal.Title></Modal.Header>
+                <EditHarvest id={popupID} update={update} token={token}/>
             </Modal>
 
 

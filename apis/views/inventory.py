@@ -92,21 +92,16 @@ def AddProduce(request):
 
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 # @groundwork_admin
 def HarvestDetail(request, pk):
     item = StockedVegetable.objects.get(id=pk)
-    vegetable = Vegetable.objects.get(id=item.vegetable.id)
-    price = VegetablePrice.objects.get(
-        id=item.vegetable.id).latest("updated_on")
-    # should be the latest or according to the date?
     return Response(
         {
-            "name":  vegetable.name,
-            "unit": vegetable.unit,
-            "price": price.price,
-            "photo_URL-list": [vegetable.photo.url]
+            "name": item.vegetable.name,
+            "quantity": item.quantity,
+            "weight": item.weight,
         })
 
 
@@ -130,8 +125,8 @@ def ProduceDetail(request, pk):
 
 
 @api_view(['GET'])
-# @authentication_classes([SessionAuthentication, BasicAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 # @groundwork_admin
 def HarvestInventory(request):
     # dates from URL query
@@ -166,8 +161,8 @@ def HarvestInventory(request):
 
 
 @api_view(['GET'])
-# @authentication_classes([SessionAuthentication, BasicAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 # @groundwork_admin
 def MerchandiseInventory(request):
     return_list = []
@@ -265,15 +260,18 @@ def UpdateMerchandise(request):
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 # @groundwork_admin
 def UpdateHarvest(request):
     body = json.loads(request.data['newData'])
-    harvestToUpdate = StockedVegetable.objects.get(body['id'])
+    print(body)
+    harvestToUpdate = StockedVegetable.objects.get(pk=body['id'])
+    print("here")
     harvestToUpdate.quantity = body['quantity']
     harvestToUpdate.weight = body['weight']
     harvestToUpdate.save()
+    return Response("Successful")
 
 
 
