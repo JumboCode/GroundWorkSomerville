@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles.css';
 import Button from '../button/index.js';
 import axios from 'axios';
 import {Form, Row, Col} from 'react-bootstrap';
 
-const AddHarvest = ({token}) => {
+const AddHarvest = ({token, show}) => {
     const [entries, setEntries] = useState({})
     const [entrySucc, setEntrySucc] = useState(false)
+    const [produce, setProduce] = useState([])
+
+    useEffect(() => {
+        if (show){
+            axios.get("produce-names")
+            .then((resp) => {
+                setProduce(resp.data)
+            })
+        }
+    }, [show])
 
     const onChng = (e) => {
         setEntries({...entries, [e.target.name]:e.target.value})
@@ -32,6 +42,10 @@ const AddHarvest = ({token}) => {
         });
     }
 
+    const getProduce = (item) => {
+        return(<option value={item} key={item}>{item}</option>)
+    }
+
     return (
         <div>
             <Form className="add-produce-entry" onSubmit={sendEntries}>
@@ -39,7 +53,10 @@ const AddHarvest = ({token}) => {
                     <Col>
                         <Form.Group as={Row}>
                             <Form.Label column sm={1}>Name</Form.Label>
-                            <Col><Form.Control name="name" onChange={onChng} required/></Col>
+                            <Col><select name="name" onChange={onChng} required defaultValue={""} className="add-harvest-drop">
+                                <option value="" disabled hidden>Select a produce</option>
+                                {produce.map(getProduce)}
+                            </select></Col>
                         </Form.Group>
                     </Col>
                 </Row>

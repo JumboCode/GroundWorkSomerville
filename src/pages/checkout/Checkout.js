@@ -112,7 +112,7 @@ class Checkout extends Component {
                             {summary}
                         </div>
                         <div className="orderTotal">
-                            <OrderSummary total={totalvalue} cl={this.state.checkoutList} token={this.props.token}/>
+                            <OrderSummary total={totalvalue} cl={this.state.checkoutList} token={this.props.token} api="mm-checkout"/>
                         </div>
                     </div>
                 </div>

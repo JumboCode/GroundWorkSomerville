@@ -62,7 +62,7 @@ const InventoryFilter = ({token, harvest, update}) => {
 
             <Modal show={showAddHarvest} onHide={()=> setShowAddHarvest(false)} size="lg" centered>
                 <Modal.Header closeButton><Modal.Title>Add Harvest</Modal.Title></Modal.Header>
-                <AddHarvest update={update} token={token}/>
+                <AddHarvest update={update} token={token} show={showAddHarvest}/>
             </Modal>
 
             <AddUser show={showAddUser} onHide={()=> setShowAddUser(false)} token={token}/>

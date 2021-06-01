@@ -10,3 +10,10 @@
     text-align: center;
     color: gray;
 }
+
+.add-harvest-drop {
+    width: 50%;
+    height: 35px;
+    border-color: rgb(221, 218, 218);
+    border-radius: 5px;
+}
