@@ -106,12 +106,6 @@ const EditProduce = ({id, update, token}) => {
                         </select></Col>
                     </Form.Group>
                 </Col>
-                {/* <Col sm={8}>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm={2}>Description</Form.Label>
-                        <Col><Form.Control name="description" as="textarea" onChange={onChng} value={getValue(id, "description")} required/></Col>
-                    </Form.Group>
-                </Col> */}
             </Row>
             <Row>
                 <Form.Label column sm={2}>Old Image</Form.Label>

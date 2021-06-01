@@ -27,9 +27,8 @@ const InventoryFilter = ({token, harvest, update, sD, eD, sSD, sED}) => {
             </Form>
             {harvest && <div className="date-picker">
                 <div>Date viewing:</div>
-                <DatePicker selected={sD} onChange={(date) => sSD(date)} selectsStart startDate={sD} endDate={eD}/>
+                <div><DatePicker selected={sD} onChange={(date) => sSD(date)} selectsStart startDate={sD} endDate={eD}/></div>
                 <DatePicker selected={eD} onChange={(date) => sED(date)} selectsEnd startDate={sD} endDate={eD} minDate={sD}/>
-
             </div>}
             <div className="sort-inventory">
                 <div>Sort by:</div>
