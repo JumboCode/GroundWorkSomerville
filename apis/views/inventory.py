@@ -146,8 +146,7 @@ def HarvestInventory(request):
                 vegetable = stocked.vegetable
                 price = VegetablePrice.objects.filter(
                     vegetable=vegetable,
-                    updated_on__gte=startdate,
-                    updated_on__lte=enddate).latest('-updated_on')
+                    updated_on__range = [startdate, enddate]).latest('-updated_on')
                 return_list.append(
                     {
                         "id": stocked.id,

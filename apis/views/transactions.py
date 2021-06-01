@@ -30,13 +30,12 @@ def PurchaseProduce(request):
             stocked_veg = StockedVegetable.objects.filter(vegetable=vegetable).latest('harvested_on')
             stocked_veg.quantity = stocked_veg.quantity - item['quantity']
             stocked_veg.save()
-            category = vegetable.categories
             price = VegetablePrice.objects.filter(vegetable=vegetable).latest('updated_on').price
 
             PurchasedItem.objects.create(
-                transaction=transaction, categories=category,
+                transaction=transaction, categories=1,
                 total_price=price, total_amount=item["quantity"],
-                stocked_vegetable=stocked_veg, merchandise=None)
+                stocked_vegetable=stocked_veg)
             current_total += (price * item["quantity"])
         else:
             return Response("Invalid Vegetable name")
@@ -61,12 +60,10 @@ def PurchaseMerchandise(request):
         if merchandise:
             merchandise.quantity = merchandise.quantity - item["quantity"]
             merchandise.save()
-            category = merchandise.categories
             price = MerchandisePrice.objects.filter(merchandise=merchandise).latest('updated_on').price
             PurchasedItem.objects.create(
-                transaction=transact, categories=category,
-                total_price=price, total_amount=item["quantity"],
-                stocked_vegetable=None, merchandise=merchandise)
+                transaction=transact, categories=2,
+                total_price=price, total_amount=item["quantity"], merchandise=merchandise)
             current_total += (price * item["quantity"])
         else:
             return Response("Invalid Merchandise name")
@@ -121,8 +118,8 @@ def MerchPurchases(request):
             "receipt_number": transact.receipt_number,
             "date_bought": transact.date,
             "total_owed": transact.total_amount,
-            "paid": transact.is_paid,
-            "picked_up": transact.is_picked
+            "paid": transact.is_paid.split('T')[0],
+            "picked_up": transact.is_picked.split('T')[0]
         })
     return Response(new_list)
 

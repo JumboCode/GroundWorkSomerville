@@ -56,13 +56,14 @@ def AllProduce(request):
             stocked = StockedVegetable.objects.filter(vegetable=vegetable).first()
             price = VegetablePrice.objects.filter(
                 vegetable=vegetable).latest('updated_on')
+            quantity = 0 if not stocked else stocked.quantity
             produces.append(
                 {"id": vegetable.id,
                  "name": vegetable.name,
                  "photo_url": vegetable.photo.url,
                  "unit": vegetable.unit,
                  "price": price.price,
-                 "available_amount": stocked.quantity})
+                 "available_amount": quantity})
         categories.append({"name": choices[1], "produces": produces})
     return Response(categories)
 
