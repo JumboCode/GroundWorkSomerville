@@ -43,7 +43,7 @@ def MerchDetail(request, pk):
 
 
 @api_view(['GET'])
-@mobile_market
+# @mobile_market
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
 # @permission_classes([IsAuthenticated])
 def AllProduce(request):

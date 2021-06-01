@@ -13,10 +13,11 @@ const InventoryTab = ({token, onQuantChange, updated, update}) => {
     const [popupID, setPopUpId] = useState(0);
     const [harvest, setHarvest] = useState([]);
     const [prodPurchases, setProduPurchases] = useState([]);
+    const [merchPurchases, setMerchPurchases] = useState([]);
     const [showEditProduce, setShowEditProduce] = useState(false)
 
     useEffect(() =>{
-        axios.get('merchandise-inventory')
+        axios.get('merchandise-inventory', {headers: {'Authorization': `Token ${token}`}})
         .then((resp) => {
             setMerch(resp.data)
         })
@@ -34,6 +35,12 @@ const InventoryTab = ({token, onQuantChange, updated, update}) => {
         .then((resp) => {
             setProduPurchases(resp.data)
         })
+
+        axios.get('merchandise-purchases')
+        .then((resp) => {
+            setMerchPurchases(resp.data)
+        })
+
     }, [updated])
 
     const showEdit = (e, i) => {
@@ -104,7 +111,8 @@ const InventoryTab = ({token, onQuantChange, updated, update}) => {
     const getPurchaseRow = (dat) => {
         const style = { color: "grey", cursor: "pointer" }
         return(
-            <tr key={dat.user_name}>
+            <tr key={"purchase"+dat.user_name}>
+                <td>{dat.user_name}</td>
                 <td>{dat.total_owed}</td>
                 <td>{dat.last_paid}</td>
                 <td>{dat.last_ordered}</td>
@@ -116,7 +124,7 @@ const InventoryTab = ({token, onQuantChange, updated, update}) => {
     const getMerchPurchaseRow = (dat) => {
         const style = { color: "grey", cursor: "pointer" }
         return(
-            <tr key={dat.receipt_number}>
+            <tr key={"merch" + dat.receipt_number}>
                 <td>{dat.date_bought}</td>
                 <td>{dat.total_owed}</td>
                 <td>{dat.paid}</td>
@@ -198,7 +206,7 @@ const InventoryTab = ({token, onQuantChange, updated, update}) => {
                     {getProdPurchaseTable(prodPurchases)}
                 </Tab.Pane>
                 <Tab.Pane eventKey="merchPurch" title="Produce Purchases">
-                    {getMerchPurchaseTable(prodPurchases)}
+                    {getMerchPurchaseTable(merchPurchases)}
                 </Tab.Pane>
                 </Tab.Content>
             </Tab.Container>

@@ -112,7 +112,7 @@ class PublicHome extends Component {
     minicart(cart){
         const getCartItem = ([name, item]) => {
             return(
-                <tr><td>{name}</td> 
+                <tr key={name+"cart-row-"}><td>{name}</td> 
                 <td>{item.quantity}</td>
                 <td>${item.price}</td></tr>
             )
@@ -121,7 +121,9 @@ class PublicHome extends Component {
             <div className="mini-cart">
                 <h4 className="filter-header">My Cart: {Object.keys(cart).length} items</h4>
                 <table className="mini-cart-table">
-                    {Object.entries(cart).map(getCartItem)}
+                    <tbody>
+                        {Object.entries(cart).map(getCartItem)}
+                    </tbody>
                 </table>
                 <div className="mini-checkout-center">
                 <Link to="cart"><Button className="minicart-button">Checkout</Button></Link>

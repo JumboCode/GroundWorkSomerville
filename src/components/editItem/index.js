@@ -11,7 +11,7 @@ const EditItem = ({id, update, token}) => {
     const [entrySucc, setEntrySucc] = useState(false)
 
     useEffect(()=>{
-        axios.get('merch-detail-inv/' + id)
+        axios.get('merch-detail-inv/' + id, {headers: {'Authorization': `Token ${token}`}})
         .then((resp) => {
             const {photo_urls, ...entry} = resp.data
             setEntries(entry)

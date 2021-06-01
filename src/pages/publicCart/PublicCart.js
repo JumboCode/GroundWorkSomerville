@@ -21,7 +21,7 @@ class PublicCart extends Component {
 
     render() {
         const {cart} = this.props;
-        // console.log(cart)
+        console.log()
         let total = 0;
         const cartItems = Object.entries(cart).map( ([name, item]) => {
             total+= item.price * item.quantity;
@@ -79,7 +79,7 @@ class PublicCart extends Component {
                         <div className="cartSection">
                             <div className="listItems">{getTable(cart)}</div> 
                         </div>
-                        <div className="orderSection"><OrderSummary total={total} order={true}/></div>
+                        <div className="orderSection"><OrderSummary total={total} order={true} cl={Object.values(cart)} api={"public-checkout"}/></div>
                     </div> 
                 </div>}
             </div>

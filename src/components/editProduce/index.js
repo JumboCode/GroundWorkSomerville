@@ -11,7 +11,7 @@ const EditProduce = ({id, update, token}) => {
     const [entrySucc, setEntrySucc] = useState(false)
 
     useEffect(()=>{
-        axios.get('produce-detail/' + id)
+        axios.get('produce-detail/' + id, {headers: {'Authorization': `Token ${token}`}})
         .then((resp) => {
             const {photo_url, ...entry} = resp.data
             setEntries(entry)
