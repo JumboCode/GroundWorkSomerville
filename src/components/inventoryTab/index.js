@@ -43,8 +43,6 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
         const startDate = sD.getFullYear() + '-' + (sD.getMonth()+1) + '-' + sD.getDate()
         const endDate = eD.getFullYear() + '-' + (eD.getMonth()+1) + '-' + eD.getDate()
 
-        console.log(startDate, endDate)
-        console.log(eD)
         axios.get('harvest-inventory', {params: {start_date: startDate, end_date: endDate}})
         .then((resp) => {
             setHarvest(resp.data)

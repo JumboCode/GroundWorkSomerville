@@ -18,11 +18,12 @@ def MerchSummary(request):
         photos = MerchandisePhotos.objects.get(pk=merch.photos.id)
         price = MerchandisePrice.objects.filter(
             merchandise=merch).latest('updated_on')
+        cat = list(filter(lambda x: x[0] == merch.categories, MerchandiseType.choices))[0][1]
         summary.append({
             'name': merch.name,
             'id': merch.id,
             'photo_url': photos.image1.url,
-            'category': merch.categories,
+            'category': cat,
             'price': price.price
         })
     return Response(summary)

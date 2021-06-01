@@ -32,3 +32,10 @@
 .add-item-button button{
     margin-left: 42%;
 }
+
+.add-merch-drop {
+    width: 100%;
+    height: 35px;
+    border-color: rgb(221, 218, 218);
+    border-radius: 5px;
+}

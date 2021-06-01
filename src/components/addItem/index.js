@@ -115,7 +115,13 @@ const AddItem = ({update, token}) => {
                 <Col>
                     <Form.Group as={Row}>
                         <Form.Label column sm={4}>Category</Form.Label>
-                        <Col><Form.Control type="number" name="category" onChange={onChng} value={getValue(id, "category")} required/></Col>
+                        {/* <Col><Form.Control type="number" name="category" onChange={onChng} value={getValue(id, "category")} required/></Col> */}
+                        <Col><select name="category" onChange={onChng} required defaultValue="" className="add-merch-drop">
+                            <option value='' disabled hidden>Select one</option>
+                            <option value={1}>Apparel</option>
+                            <option value={2}>Sticker</option>
+                            <option value={3}>Others</option>
+                        </select></Col>
                     </Form.Group>
                 </Col>
                 <Col sm={8}>

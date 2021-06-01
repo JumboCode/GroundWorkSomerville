@@ -71,7 +71,14 @@ const AddProduce = ({token, update}) => {
                 <Col>
                     <Form.Group as={Row}>
                         <Form.Label column sm={3}>Category</Form.Label>
-                        <Col><Form.Control type="number" name="category" onChange={onChng} required/></Col>
+                        {/* <Col><Form.Control type="number" name="category" onChange={onChng} required/></Col> */}
+                        <Col><select name="category" onChange={onChng} required defaultValue="" className="add-produce-drop">
+                            <option value='' disabled hidden>Select one</option>
+                            <option value={1}>Fruit</option>
+                            <option value={2}>Vegetable</option>
+                            <option value={3}>Herb</option>
+                            <option value={4}>Others</option>
+                        </select></Col>
                     </Form.Group>
                 </Col>
             </Row>
