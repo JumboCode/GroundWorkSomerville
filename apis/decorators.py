@@ -4,13 +4,13 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 
 def mobile_market(view):
-    user_login_required = user_passes_test(lambda user: not user.userprofile.isGSAdmin, login_url="/login/")
+    user_login_required = user_passes_test(lambda user: not user.userprofile.isGSAdmin)
     decorated_view = login_required(user_login_required(view))
     return decorated_view
 
 
 def groundwork_admin(view):
-    user_login_required = user_passes_test(lambda user: user.userprofile.isGSAdmin, login_url="/login/")
+    user_login_required = user_passes_test(lambda user: user.userprofile.isGSAdmin)
     decorated_view = login_required(user_login_required(view))
     return decorated_view
 
