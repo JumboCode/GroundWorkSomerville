@@ -3,6 +3,7 @@ import './styles.css';
 import EditItem from '../editItem';
 import EditProduce from '../editProduce';
 import EditHarvest from '../editHarvest';
+import EditMerchProduce from '../editMerchPurchase';
 import { Tab, Nav, Container, Row, Col, Modal } from 'react-bootstrap';
 import axios from 'axios';
 
@@ -17,6 +18,8 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
     const [merchPurchases, setMerchPurchases] = useState([]);
     const [showEditProduce, setShowEditProduce] = useState(false)
     const [showEditHarvest, setShowEditHarvest] = useState(false)
+    const [showEditMerchPurch, setShowEditMerchPurch] = useState(false)
+    const [merchEdit, setMerchEdit] = useState([false, false])
 
     useEffect(() =>{
         axios.get('merchandise-inventory', {headers: {'Authorization': `Token ${token}`}})
@@ -116,6 +119,20 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
             </div>)
     }
 
+    const pay = (uname) => {
+        axios({
+            method: "post",
+            url: "edit-produce-purchases/" + uname,
+            headers: { 'Authorization': `Token ${token}`},
+        })
+        .then(function (resp) {
+            update("prod_update" + uname)
+        })
+        .catch(function (response) {
+            console.log(response);
+        });
+    }
+
     const getPurchaseRow = (dat) => {
         const style = { color: "grey", cursor: "pointer" }
         return(
@@ -124,9 +141,15 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
                 <td>{dat.total_owed}</td>
                 <td>{dat.last_paid}</td>
                 <td>{dat.last_ordered}</td>
-                <td> <div onClick={(e) => {showEdit(e, dat.id)}} style={style}>edit</div> </td>
+                <td> <div onClick={(e) => pay(dat.user_name)} style={style} name={dat.user_name}>paid</div> </td>
             </tr>
         )
+    }
+
+    const editMerchProduce = (e, rn, paid, picked) => {
+        setShowEditMerchPurch(true)
+        setPopUpId(rn)
+        setMerchEdit([paid, picked])
     }
 
     const getMerchPurchaseRow = (dat) => {
@@ -137,7 +160,7 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
                 <td>{dat.total_owed}</td>
                 <td>{dat.paid}</td>
                 <td>{dat.picked_up}</td>
-                <td> <div onClick={(e) => {showEdit(e, dat.id)}} style={style}>edit</div> </td>
+                <td> <div onClick={(e) => {editMerchProduce(e, dat.receipt_number, dat.paid, dat.picked_up)}} style={style}>edit</div> </td>
             </tr>
         )
     }
@@ -266,7 +289,10 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
                 <EditHarvest id={popupID} update={update} token={token}/>
             </Modal>
 
-
+            <Modal show={showEditMerchPurch} onHide={()=> setShowEditMerchPurch(false)} size="lg" centered>
+                <Modal.Header closeButton><Modal.Title>Edit Merchandise Purchase</Modal.Title></Modal.Header>
+                <EditMerchProduce id={popupID} update={update} token={token} editDat={merchEdit}/>
+            </Modal>
         </div>
     )
 }

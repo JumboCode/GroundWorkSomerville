@@ -103,6 +103,8 @@ def ProducePurchases(request):
 
 
 @api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def ProducePurchasesEdit(request, username):
     profile = UserProfile.objects.get(user__username=username)
     profile.last_paid = datetime.now()
@@ -134,8 +136,11 @@ def MerchPurchasesDetail(request, receiptnum):
 
 
 @api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def MerchPurchasesEdit(request, receiptnum):
     body = json.loads(request.body)
+    print(receiptnum)
     transaction = Transaction.objects.get(receipt_number=receiptnum)
     transaction.is_paid = body['is_paid']
     transaction.is_picked = body['is_picked']
