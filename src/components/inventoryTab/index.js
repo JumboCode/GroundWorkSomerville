@@ -156,10 +156,11 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
         const style = { color: "grey", cursor: "pointer" }
         return(
             <tr key={"merch" + dat.receipt_number}>
+                <td>{dat.receipt_number}</td>
                 <td>{dat.date_bought}</td>
                 <td>{dat.total_owed}</td>
-                <td>{dat.paid}</td>
-                <td>{dat.picked_up}</td>
+                <td>{dat.paid ? "Yes":"No"}</td>
+                <td>{dat.picked_up  ? "Yes":"No"}</td>
                 <td> <div onClick={(e) => {editMerchProduce(e, dat.receipt_number, dat.paid, dat.picked_up)}} style={style}>edit</div> </td>
             </tr>
         )
@@ -240,13 +241,13 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
             <Tab.Container defaultActiveKey="harvest">
                 <Nav>
                     <Nav.Link as="div" eventKey="harvest" className="tab-button" onClick={(e)=> onQuantChange(true)}>
-                        Harvest
+                        Weekly Harvest
                     </Nav.Link>
                     <Nav.Link as="div" eventKey="merch" className="tab-button" onClick={(e)=>onQuantChange(false)}>
                         Merchandise
                     </Nav.Link>
                     <Nav.Link as="div" eventKey="produce" className="tab-button" onClick={(e)=>onQuantChange(false)}>
-                        Produce
+                        Seasonal Produce
                     </Nav.Link>
                     <Nav.Link as="div" eventKey="prodPurch" className="tab-button" onClick={(e)=>onQuantChange(false)}>
                         Produce Purchase

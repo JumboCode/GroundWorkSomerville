@@ -94,8 +94,6 @@ class App extends Component {
                     <Switch>
                         <Route exact path='/'>{home}</Route>
                         <Route exact path='/info' component={InfoPage}></Route>
-                        <Route exact path='/checkout' component={Checkout}></Route>
-                        <Route exact path='/inventory' component={Inventory}></Route>
                         <Route exact path='/cart' render={() => <Cart cart={cart} setCart={setCart}/>}></Route>
                         <Route exact path='/edit-account'>
                             {isAuth ? <EditAccount token={token} activate={activate} activated={activated}/> : <Redirect to='/'/>}

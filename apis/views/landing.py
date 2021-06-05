@@ -2,7 +2,7 @@ from apis.models import Vegetable, Merchandise, MerchandisePrice, MerchandisePho
 from apis.models import VegetablePrice, StockedVegetable
 from apis.models import VegetableType
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from apis.decorators import mobile_market
@@ -45,8 +45,8 @@ def MerchDetail(request, pk):
 
 @api_view(['GET'])
 # @mobile_market
-# @authentication_classes([SessionAuthentication, BasicAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def AllProduce(request):
     categories = []
     for choices in VegetableType.choices:

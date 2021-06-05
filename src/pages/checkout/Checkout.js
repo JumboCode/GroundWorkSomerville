@@ -19,7 +19,8 @@ class Checkout extends Component {
     }
 
     componentDidMount(){
-        axios.get('all-produce')
+        const { token } = this.props
+        axios.get('all-produce', {headers: {'Authorization': `Token ${token}`}})
         .then((resp) => {
             this.setState({itemListData: resp.data})
         })

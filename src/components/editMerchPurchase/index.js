@@ -18,7 +18,8 @@ const EditHarvest = ({id, update, token, editDat}) => {
         })
         .then(function (resp) {
             setEntrySucc(true)
-            update("harvest-update" + id)
+            const {is_paid, is_picked} = entries
+            update("merch-update" + id + (is_paid?"a":"b") + (is_picked?"c":"d"))
         })
         .catch(function (response) {
             console.log(response);
