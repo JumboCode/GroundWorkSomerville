@@ -9,8 +9,6 @@ from apis.decorators import mobile_market
 
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
 def MerchSummary(request):
     summary = []
     merchs = Merchandise.objects.all()
@@ -30,8 +28,6 @@ def MerchSummary(request):
 
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
 def MerchDetail(request, pk):
     merch = Merchandise.objects.get(pk=pk)
     price = MerchandisePrice.objects.filter(
