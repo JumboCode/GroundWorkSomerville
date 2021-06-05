@@ -9,11 +9,11 @@ from apis.decorators import mobile_market
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def MerchSummary(request):
     summary = []
     merchs = Merchandise.objects.all()
-    # unit_dict = {unit: uname.lower() for (unit, uname)
-    #             in MerchandiseType.choices}
     for merch in merchs:
         photos = MerchandisePhotos.objects.get(pk=merch.photos.id)
         price = MerchandisePrice.objects.filter(
@@ -30,6 +30,8 @@ def MerchSummary(request):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def MerchDetail(request, pk):
     merch = Merchandise.objects.get(pk=pk)
     price = MerchandisePrice.objects.filter(
@@ -44,7 +46,6 @@ def MerchDetail(request, pk):
 
 
 @api_view(['GET'])
-# @mobile_market
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def AllProduce(request):
@@ -69,6 +70,8 @@ def AllProduce(request):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def ProduceNames(request):
     return_list = Vegetable.objects.values_list('name', flat=True).distinct()
     return Response(return_list)

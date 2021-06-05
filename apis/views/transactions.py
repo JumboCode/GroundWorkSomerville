@@ -78,6 +78,8 @@ def PurchaseMerchandise(request):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def ProducePurchases(request):
     return_list = []
     for user in UserProfile.objects.filter(isGSAdmin=False):
@@ -113,6 +115,8 @@ def ProducePurchasesEdit(request, username):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def MerchPurchases(request):
     transactions = Transaction.objects.filter(is_merch=True)
     new_list = []
@@ -128,6 +132,8 @@ def MerchPurchases(request):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def MerchPurchasesDetail(request, receiptnum):
     transact =  Transaction.objects.get(receipt_number=receiptnum).id
     all = PurchasedItem.objects.filter(transaction=transact).values('total_amount', 'merchandise__name', 'total_price')
