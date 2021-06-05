@@ -16,7 +16,6 @@ from apis.decorators import mobile_market, groundwork_admin
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-# @groundwork_admin
 def AddHarvest(request):
     item = json.loads(request.data["info"])
     name = item["name"].capitalize()
@@ -31,7 +30,6 @@ def AddHarvest(request):
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-# @groundwork_admin
 def AddMerchandise(request):
     photo1 = request.FILES["photo1"]
     photo2 = request.FILES["photo2"]
@@ -55,7 +53,6 @@ def AddMerchandise(request):
 
 
 @api_view(['GET'])
-# @groundwork_admin
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def MerchDetailInventory(request, pk):
@@ -76,7 +73,6 @@ def MerchDetailInventory(request, pk):
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-# @groundwork_admin
 def AddProduce(request):
     photo = request.FILES["photo"]
     item = json.loads(request.data['info'])
@@ -94,7 +90,6 @@ def AddProduce(request):
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-# @groundwork_admin
 def HarvestDetail(request, pk):
     item = StockedVegetable.objects.get(id=pk)
     return Response(
@@ -108,7 +103,6 @@ def HarvestDetail(request, pk):
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-# @groundwork_admin
 def ProduceDetail(request, pk):
     vegetable = Vegetable.objects.get(pk=pk)
     price = VegetablePrice.objects.filter(
@@ -127,9 +121,7 @@ def ProduceDetail(request, pk):
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-# @groundwork_admin
 def HarvestInventory(request):
-    # dates from URL query
     startdate = request.GET.get('start_date')
     enddate = request.GET.get('end_date')
     if (not startdate) or (not enddate):
@@ -162,7 +154,6 @@ def HarvestInventory(request):
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-# @groundwork_admin
 def MerchandiseInventory(request):
     return_list = []
     for merch in Merchandise.objects.all():
@@ -186,7 +177,6 @@ def MerchandiseInventory(request):
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-# @groundwork_admin
 def ProduceInventory(request):
     produce_list = []
 
@@ -205,9 +195,8 @@ def ProduceInventory(request):
 
 
 @api_view(['POST'])
-# @authentication_classes([SessionAuthentication, BasicAuthentication])
-# @permission_classes([IsAuthenticated])
-# @groundwork_admin
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def UpdateVegetable(request):
     body = json.loads(request.data['newData'])
     vegToUpdate = Vegetable.objects.get(pk=body["id"])
@@ -231,7 +220,6 @@ def UpdateVegetable(request):
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-# @groundwork_admin
 def UpdateMerchandise(request):
     body = json.loads(request.data['newData'])
     merchToUpdate = Merchandise.objects.get(pk=body['id'])
@@ -261,7 +249,6 @@ def UpdateMerchandise(request):
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-# @groundwork_admin
 def UpdateHarvest(request):
     body = json.loads(request.data['newData'])
     harvestToUpdate = StockedVegetable.objects.get(pk=body['id'])
@@ -273,9 +260,8 @@ def UpdateHarvest(request):
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-# @groundwork_admin
 def CreateVegetable(request):
     serializer = VegetableSerializer(data=request.data)
     if serializer.is_valid():
@@ -286,7 +272,8 @@ def CreateVegetable(request):
 
 
 @api_view(['GET'])
-# @groundwork_admin
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def ListVegetables(request):
     items = Vegetable.objects.all()
     serializer = VegetableSerializer(items, many=True)
@@ -294,9 +281,8 @@ def ListVegetables(request):
 
 
 @api_view(['DELETE'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-# @groundwork_admin
 def DeleteVegetable(request, pk):
     itemToDelete = Vegetable.objects.get(id=pk)
     itemToDelete.delete()
@@ -304,6 +290,8 @@ def DeleteVegetable(request, pk):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def SearchVegetables(request, pk):
     items = Vegetable.objects.all().filter(name__icontains=pk)
     serializer = VegetableSerializer(items, many=True)
