@@ -2,18 +2,18 @@ from apis.models import Vegetable, Merchandise, MerchandisePrice, MerchandisePho
 from apis.models import VegetablePrice, StockedVegetable
 from apis.models import VegetableType
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from apis.decorators import mobile_market
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def MerchSummary(request):
     summary = []
     merchs = Merchandise.objects.all()
-    # unit_dict = {unit: uname.lower() for (unit, uname)
-    #             in MerchandiseType.choices}
     for merch in merchs:
         photos = MerchandisePhotos.objects.get(pk=merch.photos.id)
         price = MerchandisePrice.objects.filter(
@@ -30,6 +30,8 @@ def MerchSummary(request):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def MerchDetail(request, pk):
     merch = Merchandise.objects.get(pk=pk)
     price = MerchandisePrice.objects.filter(
@@ -44,9 +46,8 @@ def MerchDetail(request, pk):
 
 
 @api_view(['GET'])
-# @mobile_market
-# @authentication_classes([SessionAuthentication, BasicAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def AllProduce(request):
     categories = []
     for choices in VegetableType.choices:
@@ -69,6 +70,8 @@ def AllProduce(request):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def ProduceNames(request):
     return_list = Vegetable.objects.values_list('name', flat=True).distinct()
     return Response(return_list)
