@@ -45,7 +45,7 @@ urlpatterns = [
 
     path('all-produce', landing.AllProduce, name="all-produce"),
     path('mm-checkout', transactions.PurchaseProduce, name="mm-checkout"),
-
+    path('401error', authentication.yourView, name="401error"),
     path('produce-purchases', transactions.ProducePurchases, name='produce-purchases'),
     path('merchandise-purchases', transactions.MerchPurchases, name='merchandise-purchases'),
     path('merchandise-purchases-detail/<str:receiptnum>', transactions.MerchPurchasesDetail, name='merchandise-purchases-detail'),

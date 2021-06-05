@@ -257,19 +257,19 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
 
                 </Nav>
                 <Tab.Content className="hello123">
-                <Tab.Pane eventKey="harvest" title="Harvest Inventory">
+                <Tab.Pane eventKey="harvest" title="Weekly Harvest Inventory">
                     {getHarvestTable()}
                 </Tab.Pane>
                 <Tab.Pane eventKey="merch" title="Merchandise Inventory">
                     {getTable(merch)}
                 </Tab.Pane>
-                <Tab.Pane eventKey="produce" title="Produce Inventory">
+                <Tab.Pane eventKey="produce" title="Seasonal Produce Inventory">
                     {getProduceTable(produce)}
                 </Tab.Pane>
                 <Tab.Pane eventKey="prodPurch" title="Produce Purchases">
                     {getProdPurchaseTable(prodPurchases)}
                 </Tab.Pane>
-                <Tab.Pane eventKey="merchPurch" title="Produce Purchases">
+                <Tab.Pane eventKey="merchPurch" title="Merchandise Purchases">
                     {getMerchPurchaseTable(merchPurchases)}
                 </Tab.Pane>
                 </Tab.Content>
@@ -280,12 +280,12 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
             </Modal>
 
             <Modal show={showEditProduce} onHide={()=> setShowEditProduce(false)} size="lg" centered>
-                <Modal.Header closeButton><Modal.Title>Edit Produce </Modal.Title></Modal.Header>
+                <Modal.Header closeButton><Modal.Title>Edit Seasonal Produce </Modal.Title></Modal.Header>
                 <EditProduce id={popupID} update={update} token={token}/>
             </Modal>
 
             <Modal show={showEditHarvest} onHide={()=> setShowEditHarvest(false)} size="lg" centered>
-                <Modal.Header closeButton><Modal.Title>Edit Harvest</Modal.Title></Modal.Header>
+                <Modal.Header closeButton><Modal.Title>Edit Weekly Harvest</Modal.Title></Modal.Header>
                 <EditHarvest id={popupID} update={update} token={token}/>
             </Modal>
 

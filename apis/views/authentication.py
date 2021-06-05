@@ -8,6 +8,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from django.utils.crypto import get_random_string
 from django.template.loader import render_to_string
+from django.http import HttpResponse
+
 
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
@@ -24,6 +26,8 @@ def logout(request):
     request.user.auth_token.delete()
     return Response(status=200)
 
+def yourView(request):    
+    return HttpResponse('401 Unauthorized', status=401)
 
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])

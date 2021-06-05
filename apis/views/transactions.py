@@ -84,8 +84,11 @@ def ProducePurchases(request):
         transactions = Transaction.objects.filter(user_id=user).order_by('-date')
         if transactions.count() != 0:
             last_ordered = transactions.first().date
+            last_paid = None
+
             if user.last_paid:
                 transactions = Transaction.objects.filter(user_id=user, date__gte=user.last_paid)
+                last_paid = user.last_paid.date()
 
             total_amount = 0
             if transactions:
@@ -93,8 +96,8 @@ def ProducePurchases(request):
             return_list.append({
                 "user_name": user.user.username,
                 "total_owed": total_amount,
-                "last_paid": user.last_paid,
-                "last_ordered": last_ordered
+                "last_paid": last_paid,
+                "last_ordered": last_ordered.date()
                 })
     return Response(return_list)
 
@@ -111,15 +114,15 @@ def ProducePurchasesEdit(request, username):
 
 @api_view(['GET'])
 def MerchPurchases(request):
-    transactions = Transaction.objects.exclude(user_id__isnull=True).filter(is_merch=True)
+    transactions = Transaction.objects.filter(is_merch=True)
     new_list = []
     for transact in transactions:
         new_list.append({
             "receipt_number": transact.receipt_number,
-            "date_bought": transact.date,
+            "date_bought": transact.date.date(),
             "total_owed": transact.total_amount,
-            "paid": transact.is_paid.split('T')[0],
-            "picked_up": transact.is_picked.split('T')[0]
+            "paid": transact.is_paid,
+            "picked_up": transact.is_picked
         })
     return Response(new_list)
 
