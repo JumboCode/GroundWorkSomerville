@@ -32,12 +32,12 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
             setProduce(resp.data)
         })
 
-        axios.get('produce-purchases')
+        axios.get('produce-purchases', {headers: {'Authorization': `Token ${token}`}})
         .then((resp) => {
             setProduPurchases(resp.data)
         })
 
-        axios.get('merchandise-purchases')
+        axios.get('merchandise-purchases', {headers: {'Authorization': `Token ${token}`}})
         .then((resp) => {
             setMerchPurchases(resp.data)
         })

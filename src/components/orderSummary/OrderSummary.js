@@ -47,12 +47,6 @@ const OrderSummary = ({total, cl, token, api}) => {
         }
         {complete &&  
         <div className="orderDone">
-          <div className="doneButtons">
-            <Button className="small-Btn" 
-              onClick={printReceipt}>
-                Print Receipt
-            </Button>
-          </div>
           <p className="orderMsg">Your order is:</p>
           <p className="orderNum">#{orderResp.receipt_number}</p>
           <p className="orderMsg">We'll contact you when your produce is ready for pickup!</p>

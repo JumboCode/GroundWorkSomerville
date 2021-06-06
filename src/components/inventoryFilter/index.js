@@ -46,8 +46,8 @@ const InventoryFilter = ({token, harvest, update, sD, eD, sSD, sED}) => {
             </div>
             <div className="add-buttons">
                 <Button onClick={()=> setShowAddItem(true)} className="mb-2">Add Merchandise</Button>
-                <Button onClick={()=> setShowAddProduce(true)} className="mb-2">Add Produce</Button>
-                <Button onClick={()=> setShowAddHarvest(true)}>Add New Harvest</Button>
+                <Button onClick={()=> setShowAddProduce(true)} className="mb-2">Add Seasonal Produce</Button>
+                <Button onClick={()=> setShowAddHarvest(true)}>Add Weekly Harvest</Button>
             </div>
             <BsButton onClick={()=> setShowAddUser(true)} variant="outline-success" className="saurav">Add New User</BsButton>
 
