@@ -26,7 +26,6 @@ class PublicCart extends Component {
         let total = 0;
         const cartItems = Object.entries(cart).map( ([name, item]) => {
             total+= item.price * item.quantity;
-            console.log("available " + item.available)
             return <Item key={name}
                          item={{...item, name:name}}
                          quantity={item.quantity}
