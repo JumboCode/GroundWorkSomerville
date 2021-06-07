@@ -8,13 +8,11 @@ class Quantity extends Component {
       this.state = {
         quantity: this.props.quantity,
         show: true,
-        max: 5,
-        min: 0
       };
     }
   
     IncrementItem = () => {
-        if(this.props.quantity < 9) {
+        if(this.props.quantity < this.props.max) {
             this.props.onQuantChange(this.props.id, this.props.quantity + 1, "up");
             return {
                 quantity: this.props.quantity + 1
