@@ -40,6 +40,7 @@ const VegetableDetail = ({onHide, detailID, addToCart}) => {
                 { "value": {"id": detailID},
                  "price":details.price,
                  "quantity":quantity,
+                 "available":details.available,
                  "photo_url":images[0]})
             onHide()
         }
@@ -64,7 +65,7 @@ const VegetableDetail = ({onHide, detailID, addToCart}) => {
                     Select quantity:
                     <div className="detail-actions">
                         <span className="detail-quant">
-                            <Quantity id = {details.id} quantity={quantity} onQuantChange={onQuantChange}/>
+                            <Quantity id = {details.id} quantity={quantity} onQuantChange={onQuantChange} max={details.available}/>
                         </span>
                         <span className="detail-cart">
                             <Button onClick={editCart}>Add to cart</Button>

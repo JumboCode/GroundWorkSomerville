@@ -23,7 +23,6 @@ class Item extends Component {
             } else {
                 this.props.onUpdateItem(this.props.id, newData)
             }
-  
         })
     }
 
@@ -76,7 +75,8 @@ class Item extends Component {
                             <Quantity 
                                 id = {this.props.id}
                                 quantity={quantityvar}
-                                onQuantChange={this.onQuantChange} 
+                                onQuantChange={this.onQuantChange}
+                                max = {this.props.available}
                             />
                         </div>
                         <div className="itemColumn-small small-Total">

@@ -8,7 +8,7 @@ class PublicCart extends Component {
     constructor(props) {
         super(props)
         this.onCheckoutChange = this.onCheckoutChange.bind(this);
-
+        this.onChangeItem = this.onChangeItem.bind(this);
         this.state = {
             checkout: false
         }
@@ -19,16 +19,22 @@ class PublicCart extends Component {
         })
     }
 
+    onChangeItem(a, b){}
+
     render() {
         const {cart} = this.props;
-        console.log()
         let total = 0;
         const cartItems = Object.entries(cart).map( ([name, item]) => {
             total+= item.price * item.quantity;
+            console.log("available " + item.available)
             return <Item key={name}
                          item={{...item, name:name}}
                          quantity={item.quantity}
-                         checkout={false}/>
+                         checkout={false}
+                         available={item.available}
+                         onAddItem={this.onChangeItem}
+                         onUpdateItem={this.onChangeItem}
+                         onRemoveItem={this.onChangeItem}/>
             }
         )
 

@@ -78,6 +78,7 @@ class Checkout extends Component {
                         onAddItem={this.onAddItem}
                         onUpdateItem={this.onUpdateItem}
                         onRemoveItem={this.onRemoveItem}
+                        available={item.available_amount}
                         />
         })
         let totalvalue = 0; 

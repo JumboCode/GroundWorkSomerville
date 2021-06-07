@@ -21,6 +21,7 @@ class Dropdown extends Component {
   
     render() {
         const checkoutItems = this.props.items.map((item) => {
+          if (item.available_amount != 0){
           let quantlist = this.props.checkoutList? this.props.checkoutList.filter(citem => citem.value.id === item.id) : null
           let quant = 0
           if (quantlist !== null){
@@ -39,7 +40,9 @@ class Dropdown extends Component {
                             onAddItem={this.props.onAddItem}
                             onUpdateItem={this.props.onUpdateItem}
                             onRemoveItem={this.props.onRemoveItem}
+                            available={item.available_amount}
                             />
+        }
         })
         const showList = this.state.showList;
 
