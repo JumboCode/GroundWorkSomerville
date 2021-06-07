@@ -17,6 +17,7 @@ class VegetableType(models.IntegerChoices):
     FRUIT = 1, "Fruit"
     VEGETABLE = 2, "Vegetable"
     HERB = 3, "Herb"
+    PEPPER = 5, "Pepper"
     OTHERS = 4, "Others"
 
 def increment_receipt_number():
