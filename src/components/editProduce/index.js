@@ -97,12 +97,13 @@ const EditProduce = ({id, update, token}) => {
                     <Form.Group as={Row}>
                         <Form.Label column sm={3}>Category</Form.Label>
                         {/* <Col><Form.Control type="number" name="category" onChange={onChng} value={getValue(id, "category")} required/></Col> */}
-                        <Col><select name="category" onChange={onChng} required defaultValue="" value={getValue(id, "category")} className="add-produce-drop">
+                        <Col><select name="category" onChange={onChng} required value={getValue(id, "category")} className="add-produce-drop">
                             <option value='' disabled hidden>Select one</option>
                             <option value={1}>Fruit</option>
                             <option value={2}>Vegetable</option>
                             <option value={3}>Herb</option>
-                            <option value={4}>Others</option>
+                            <option value={4}>Pepper</option>
+                            <option value={5}>Others</option>
                         </select></Col>
                     </Form.Group>
                 </Col>

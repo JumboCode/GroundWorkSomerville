@@ -11,7 +11,7 @@ const AddHarvest = ({token, show}) => {
 
     useEffect(() => {
         if (show){
-            axios.get("produce-names")
+            axios.get("produce-names", {headers: {'Authorization': `Token ${token}`}})
             .then((resp) => {
                 setProduce(resp.data)
             })
