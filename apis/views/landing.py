@@ -36,6 +36,7 @@ def MerchDetail(request, pk):
     return Response({
         'name': merch.name,
         'id': merch.id,
+        'available': merch.quantity,
         'description': merch.description,
         'price': price.price,
         'photo_urls': [photos.image1.url, photos.image2.url, photos.image3.url]})
