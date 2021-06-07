@@ -77,7 +77,8 @@ const AddProduce = ({token, update}) => {
                             <option value={1}>Fruit</option>
                             <option value={2}>Vegetable</option>
                             <option value={3}>Herb</option>
-                            <option value={4}>Others</option>
+                            <option value={4}>Pepper</option>
+                            <option value={5}>Others</option>
                         </select></Col>
                     </Form.Group>
                 </Col>
