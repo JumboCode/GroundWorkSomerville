@@ -23,7 +23,7 @@ class VegetableType(models.IntegerChoices):
 def increment_receipt_number():
     last_transact = Transaction.objects.all().order_by('id').last()
     if not last_transact:
-        return 'SG0001'
+        return 'SG1'
     receipt_num = last_transact.receipt_number
     receipt_int = int(receipt_num.split('SG')[-1])
     new_receipt_int = receipt_int + 1
