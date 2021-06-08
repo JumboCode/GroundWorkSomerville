@@ -4,7 +4,6 @@ from .models import Vegetable, Harvest, Transaction, Merchandise, MerchandisePri
 from .models import PurchasedItem, UserProfile, VegetablePrice, StockedVegetable
 from .models import MerchandisePhotos
 
-admin.site.register(User)
 admin.site.register(Vegetable)
 admin.site.register(StockedVegetable)
 admin.site.register(Harvest)
