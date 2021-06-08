@@ -7,7 +7,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'groundworks-staging.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'groundworks-staging.herokuapp.com', 'groundworks-marketplace.herokuapp.com']
 
 
 # Application definition
