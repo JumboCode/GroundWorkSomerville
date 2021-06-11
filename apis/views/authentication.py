@@ -36,7 +36,8 @@ def AddUser(request):
     uName = get_random_string(10)
     password = get_random_string(10)
     user = User.objects.create_user(uName, email, password)
-    email_body = render_to_string('SendEmail.html', {'username': uName, 'password': password, 'usertype': userType })
+    priv = "Groundwork Somerville Admin" if userType == 'GA' else "Mobile Market User"
+    email_body = render_to_string('SendEmail.html', {'username': uName, 'password': password, 'usertype': priv })
     user.email_user("New User Account for Groundwork Somerville marketplace", email_body)
     UserProfile.objects.create(
         user=user, loggedInOnce=False, isGSAdmin=(userType == 'GA'))
