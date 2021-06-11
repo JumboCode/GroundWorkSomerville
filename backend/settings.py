@@ -122,6 +122,7 @@ if IS_HEROKU:
     }
     AWS_LOCATION = 'media'
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    EMAIL_USE_TLS = True
     EMAIL_HOST = os.environ['EMAIL_HOST']
     EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
