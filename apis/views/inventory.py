@@ -30,6 +30,19 @@ def AddHarvest(request):
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
+def DeleteHarvest(request, pk):
+    
+    return Response("Deleted harvest")
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def DeleteProduce(request, pk):
+    return Response("Deleted produce")
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def AddMerchandise(request):
     photo1 = request.FILES["photo1"]
     photo2 = request.FILES["photo2"]
