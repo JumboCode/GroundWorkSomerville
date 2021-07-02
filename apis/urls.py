@@ -31,8 +31,9 @@ urlpatterns = [
 
     path('update-produce', inventory.UpdateVegetable, name="update-vegetable"),
     path('update-merchandise', inventory.UpdateMerchandise, name='update-merchandise'),
-    path('update-harvest', inventory.UpdateHarvest, name='update=harvest'),
-
+    path('update-harvest', inventory.UpdateHarvest, name='update-harvest'),
+    path('delete-harvest', inventory.DeleteHarvest, name='delete-harvest'),
+    path('delete-produce', inventory.DeleteProduce, name='delete-produce'),
     path('user', authentication.GetUser, name="user-info"),
     path('add-user', authentication.AddUser, name="add-user"),
     path('changepass', authentication.ChangePassword, name="change-pass"),
