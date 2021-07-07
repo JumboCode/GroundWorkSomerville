@@ -3,8 +3,9 @@ import './styles.css';
 import Button from '../button/index.js';
 import axios from 'axios';
 import {Form, Row, Col} from 'react-bootstrap';
+import {Button as BButton} from 'react-bootstrap'
 
-const EditProduce = ({id, update, token}) => {
+const EditProduce = ({id, update, token, hide}) => {
     const [entries, setEntries] = useState({})
     const [files, setFiles] = useState({})
     const [oldFiles, setOldFiles] = useState([])
@@ -65,6 +66,22 @@ const EditProduce = ({id, update, token}) => {
         return ''
     }
 
+    const deleteItem = () => {
+        axios({
+            method: "post",
+            url: "delete-produce/" + id,
+            headers: {'Authorization': `Token ${token}`}
+        })
+        .then(function (resp) {
+            update("produce-delete" + id)
+            hide()
+        })
+        .catch(function (response) {
+            console.log(response);
+        });
+
+    }
+
     const entry = (id, i) => {
         const onChng = (e) => handleInputChange(e, id)
         return(
@@ -111,11 +128,14 @@ const EditProduce = ({id, update, token}) => {
             <Row>
                 <Form.Label column sm={2}>Old Image</Form.Label>
                 <Col sm={3}><img src={oldFiles} className="edit-old-photo-p" alt="det"/></Col>
-                <Col>
+                <Col sm={5}>
                     <Form.Group>
                         <Form.Label>New Image</Form.Label>
                         <Form.File className="custom-file" name="photo" onChange={onChng}/>
                     </Form.Group>
+                </Col>
+                <Col>
+                    <BButton variant="danger" onClick={deleteItem}>Delete</BButton>
                 </Col>
             </Row>
 

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './styles.css';
 import Button from '../button/index.js';
 import axios from 'axios';
-import {Form, Row, Col} from 'react-bootstrap';
+import {Form, Row, Col, Button as BButton} from 'react-bootstrap';
 
-const EditHarvest = ({id, update, token}) => {
+const EditHarvest = ({id, update, token, hide}) => {
     const [entries, setEntries] = useState({})
     const [entrySucc, setEntrySucc] = useState(false)
 
@@ -39,6 +39,22 @@ const EditHarvest = ({id, update, token}) => {
         });
     }
 
+    const deleteItem = () => {
+        axios({
+            method: "post",
+            url: "delete-harvest/" + id,
+            headers: {'Authorization': `Token ${token}`}
+        })
+        .then(function (resp) {
+            update("harvest-delete" + id)
+            hide()
+        })
+        .catch(function (response) {
+            console.log(response);
+        });
+
+    }
+
     const getValue = (id, dat) =>{
         const val = entries[dat]
         if (val !== undefined){
@@ -52,12 +68,15 @@ const EditHarvest = ({id, update, token}) => {
         return(
             <Form key={"merch-entry-"+id} className="add-merch-entry" onSubmit={submitData}>
             <Row>
-                <Col>
+                <Col sm={10}>
                     <Form.Group as={Row}>
-                        <Form.Label column sm={1}>Name: </Form.Label>
+                        <Form.Label column sm={2}>Name: </Form.Label>
                         {/* <Form.Label column bold></Form.Label> */}
                         <Form.Label column className="font-weight-bold">{entries.name}</Form.Label>
                     </Form.Group>
+                </Col>
+                <Col>
+                    <BButton variant="danger" onClick={deleteItem}>Delete</BButton>
                 </Col>
 
             </Row>

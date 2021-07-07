@@ -282,12 +282,12 @@ const InventoryTab = ({token, onQuantChange, updated, update, sD, eD}) => {
 
             <Modal show={showEditProduce} onHide={()=> setShowEditProduce(false)} size="lg" centered>
                 <Modal.Header closeButton><Modal.Title>Edit Seasonal Produce </Modal.Title></Modal.Header>
-                <EditProduce id={popupID} update={update} token={token}/>
+                <EditProduce id={popupID} update={update} token={token} hide={()=> setShowEditProduce(false)}/>
             </Modal>
 
             <Modal show={showEditHarvest} onHide={()=> setShowEditHarvest(false)} size="lg" centered>
                 <Modal.Header closeButton><Modal.Title>Edit Weekly Harvest</Modal.Title></Modal.Header>
-                <EditHarvest id={popupID} update={update} token={token}/>
+                <EditHarvest id={popupID} update={update} token={token} hide={()=> setShowEditHarvest(false)}/>
             </Modal>
 
             <Modal show={showEditMerchPurch} onHide={()=> setShowEditMerchPurch(false)} size="lg" centered>
