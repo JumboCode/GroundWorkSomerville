@@ -36,7 +36,7 @@ def DeleteMerchandise(request, pk):
     MerchandisePrice.objects.filter(merchandise=obj).delete()
     PurchasedItem.objects.filter(merchandise=obj).delete()
     obj.delete()
-    return Response("Deleted harvest")
+    return Response("Deleted merchandise")
 
 
 @api_view(['POST'])
@@ -294,7 +294,6 @@ def UpdateHarvest(request):
     harvestToUpdate.weight = body['weight']
     harvestToUpdate.save()
     return Response("Successful")
-
 
 
 @api_view(['POST'])
