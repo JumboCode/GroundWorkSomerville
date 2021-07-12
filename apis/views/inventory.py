@@ -30,15 +30,36 @@ def AddHarvest(request):
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def DeleteHarvest(request, pk):
-    
+def DeleteMerchandise(request, pk):
+    obj = Merchandise.objects.get(pk=pk)
+    MerchandisePrice.objects.filter(merchandise=obj).delete()
+    PurchasedItem.objects.filter(merchandise=obj).delete()
+    obj.delete()
     return Response("Deleted harvest")
+
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def DeleteHarvest(request, pk):
+    obj = StockedVegetable.objects.get(pk=pk)
+    PurchasedItem.objects.filter(stocked_vegetable=obj).delete()
+    obj.delete()
+    return Response("Deleted harvest")
+
 
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def DeleteProduce(request, pk):
+    obj = Vegetable.objects.get(pk=pk)
+    VegetablePrice.objects.filter(vegetable=obj).delete()
+    for obj1 in StockedVegetable.objects.filter(vegetable=obj):
+        PurchasedItem.objects.filter(stocked_vegetable=obj1).delete()
+        obj1.delete()
+    obj.delete()
     return Response("Deleted produce")
+
 
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])

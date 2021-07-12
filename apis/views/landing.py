@@ -43,8 +43,8 @@ def MerchDetail(request, pk):
 
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
+#@authentication_classes([TokenAuthentication])
+#@permission_classes([IsAuthenticated])
 def AllProduce(request):
     categories = []
     for choices in VegetableType.choices:
