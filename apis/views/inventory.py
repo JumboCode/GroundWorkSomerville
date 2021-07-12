@@ -159,8 +159,6 @@ def ProduceDetail(request, pk):
 def HarvestInventory(request):
     startdate = request.GET.get('start_date')
     enddate = request.GET.get('end_date')
-    print(startdate)
-    print(enddate)
     if (not startdate) or (not enddate):
         return Response("The endpoint requires start date and end date.")
     else:
@@ -175,7 +173,6 @@ def HarvestInventory(request):
                     stocked_vegetable=stocked).first()
                 total_sold = 0 if not item else item.total_amount
                 vegetable = stocked.vegetable
-                print( VegetablePrice.objects.filter(updated_on__range = [sdate, edate]))
                 price = VegetablePrice.objects.filter(
                     vegetable=vegetable,
                     updated_on__range = [sdate, edate]).latest('-updated_on')
@@ -307,8 +304,6 @@ def CreateVegetable(request):
     serializer = VegetableSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-    else:
-        print("invalid data")
     return Response(serializer.data)
 
 
