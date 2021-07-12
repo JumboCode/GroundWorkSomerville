@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from apis.models import Vegetable, Harvest, Merchandise, MerchandisePrice, StockedVegetable
 from apis.models import PurchasedItem, VegetablePrice, StockedVegetable, MerchandisePhotos
 from apis.models import VegetableType, MerchandiseType
@@ -158,11 +159,15 @@ def ProduceDetail(request, pk):
 def HarvestInventory(request):
     startdate = request.GET.get('start_date')
     enddate = request.GET.get('end_date')
+    print(startdate)
+    print(enddate)
     if (not startdate) or (not enddate):
         return Response("The endpoint requires start date and end date.")
     else:
+        sdate = datetime.strptime(startdate, '%Y-%m-%d')
+        edate = datetime.strptime(enddate, '%Y-%m-%d') + timedelta(1)
         stockedvegetables = StockedVegetable.objects.filter(
-            harvested_on__range=[startdate, enddate])
+            harvested_on__range=[sdate, edate])
         return_list = []
         if stockedvegetables:
             for stocked in stockedvegetables:
@@ -170,9 +175,11 @@ def HarvestInventory(request):
                     stocked_vegetable=stocked).first()
                 total_sold = 0 if not item else item.total_amount
                 vegetable = stocked.vegetable
+                print( VegetablePrice.objects.filter(updated_on__range = [sdate, edate]))
                 price = VegetablePrice.objects.filter(
                     vegetable=vegetable,
-                    updated_on__range = [startdate, enddate]).latest('-updated_on')
+                    updated_on__range = [sdate, edate]).latest('-updated_on')
+
                 return_list.append(
                     {
                         "id": stocked.id,
